@@ -15,7 +15,7 @@ all:
 	cmake .. && \
 	cmake --build . --parallel $(THREADS)
 
-# 	cp $(BUILD_DIR)/Debug/_cubix_python.pyd $(BUILD_DIR)/_cubix_python.pyd
+# 	cp $(BUILD_DIR)/Debug/_cubik_python.pyd $(BUILD_DIR)/_cubik_python.pyd
 # 	cp -r $(BUILD_DIR)/tests/solutions $(BUILD_DIR)/tests/Debug
 
 release:
@@ -23,15 +23,15 @@ release:
 	cmake -DCMAKE_BUILD_TYPE=Release .. && \
 	cmake --build . --config Release --parallel $(THREADS)
 
-# 	cp $(RELEASE_DIR)/Release/_cubix_python.pyd $(RELEASE_DIR)/_cubix_python.pyd
+# 	cp $(RELEASE_DIR)/Release/_cubik_python.pyd $(RELEASE_DIR)/_cubik_python.pyd
 # 	cp -r $(RELEASE_DIR)/tests/solutions $(RELEASE_DIR)/tests/Release
 
 run:
-	cd $(BUILD_DIR)/Debug && ./cubix.exe
+	cd $(BUILD_DIR)/Debug && ./cubik.exe
 
 test:
-	cd build/tests && ./cubix_tests
-#	cd build/tests/Debug && ./cubix_tests.exe
+	cd build/tests && ./cubik_tests
+#	cd build/tests/Debug && ./cubik_tests.exe
 
 clean:
 	rm -f src/a.exe

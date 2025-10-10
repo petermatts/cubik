@@ -1,4 +1,4 @@
-name: Cubix CI
+name: Cubik CI
 
 on:
     push:
@@ -38,7 +38,7 @@ jobs:
 
             - name: Run tests
               working-directory: ${{ env.BUILD_DIR }}/tests
-              run: ./cubix_tests
+              run: ./cubik_tests
 
             - name: Upload test logs (if failed)
               if: failure()
@@ -74,7 +74,7 @@ jobs:
               run: |
                   robocopy solutions Release/solutions /e /mir /r:1 /w:1
                   cd Release
-                  .\cubix_tests.exe
+                  .\cubik_tests.exe
               working-directory: ${{ env.BUILD_DIR }}/tests
 
             - name: Upload test logs (if failed)
@@ -108,7 +108,7 @@ jobs:
 
             - name: Run tests
               working-directory: ${{ env.BUILD_DIR }}/tests
-              run: ./cubix_tests
+              run: ./cubik_tests
 
             - name: Upload test logs (if failed)
               if: failure()

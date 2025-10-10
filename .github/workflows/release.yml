@@ -1,4 +1,4 @@
-name: Cubix Release
+name: Cubik Release
 
 on:
     workflow_dispatch:
@@ -48,13 +48,13 @@ jobs:
             - name: Package artifact
               run: |
                   cd ${{ env.BUILD_DIR }}
-                  tar -czf ../cubix-linux.tar.gz *
+                  tar -czf ../cubik-linux.tar.gz *
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: cubix-linux
-                  path: cubix-linux.tar.gz
+                  name: cubik-linux
+                  path: cubik-linux.tar.gz
 
     build-windows:
         name: Build (Windows)
@@ -75,13 +75,13 @@ jobs:
 
             - name: Package artifact
               run: |
-                  Compress-Archive -Path $env:BUILD_DIR\* -DestinationPath cubix-windows.zip
+                  Compress-Archive -Path $env:BUILD_DIR\* -DestinationPath cubik-windows.zip
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: cubix-windows
-                  path: cubix-windows.zip
+                  name: cubik-windows
+                  path: cubik-windows.zip
 
     build-macos:
         name: Build (macOS)
@@ -106,13 +106,13 @@ jobs:
             - name: Package artifact
               run: |
                   cd ${{ env.BUILD_DIR }}
-                  tar -czf ../cubix-macos.tar.gz *
+                  tar -czf ../cubik-macos.tar.gz *
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: cubix-macos
-                  path: cubix-macos.tar.gz
+                  name: cubik-macos
+                  path: cubik-macos.tar.gz
 
     release:
         name: Create GitHub Release
@@ -134,6 +134,6 @@ jobs:
                   name: ${{ github.event.inputs.release_name || github.event.inputs.tag }}
                   prerelease: ${{ github.event.inputs.prerelease == 'true' }}
                   files: |
-                      artifacts/cubix-linux/cubix-linux.tar.gz
-                      artifacts/cubix-windows/cubix-windows.zip
-                      artifacts/cubix-macos/cubix-macos.tar.gz
+                      artifacts/cubik-linux/cubik-linux.tar.gz
+                      artifacts/cubik-windows/cubik-windows.zip
+                      artifacts/cubik-macos/cubik-macos.tar.gz

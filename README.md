@@ -1,6 +1,6 @@
-![CI](https://github.com/petermatts/Cubix/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/petermatts/Cubik/actions/workflows/ci.yml/badge.svg)
 
-# Cubix
+# Cubik
 
 C++ module for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
 

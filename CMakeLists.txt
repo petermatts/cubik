@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Cubix LANGUAGES CXX)
+project(Cubik LANGUAGES CXX)
 
 # Use C++17 or later
 set(CMAKE_CXX_STANDARD 17)
@@ -33,7 +33,7 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 # Create a shared library for core logic
-add_library(cubix_core
+add_library(cubik_core
     src/cube.cpp
     src/common.cpp
     src/moves/B.cpp
@@ -49,19 +49,19 @@ add_library(cubix_core
     src/moves/Y.cpp
     src/moves/Z.cpp
 )
-target_include_directories(cubix_core PUBLIC src)
+target_include_directories(cubik_core PUBLIC src)
 
 
 # SWIG configuration
-set_source_files_properties(interface/cubix.i PROPERTIES CPLUSPLUS ON)
+set_source_files_properties(interface/cubik.i PROPERTIES CPLUSPLUS ON)
 set(CMAKE_SWIG_FLAGS "-w503")
 
 add_definitions(-DSWIG_PYTHON_INTERPRETER_NO_DEBUG)
 
-swig_add_library(cubix_python
+swig_add_library(cubik_python
     LANGUAGE python
     TYPE MODULE
-    SOURCES interface/cubix.i
+    SOURCES interface/cubik.i
             src/cube.cpp
             src/common.cpp
             src/moves/B.cpp
@@ -79,7 +79,7 @@ swig_add_library(cubix_python
 )
 
 # Link SWIG module with Python and core logic
-target_include_directories(cubix_python PRIVATE ${Python3_INCLUDE_DIRS})
+target_include_directories(cubik_python PRIVATE ${Python3_INCLUDE_DIRS})
 
 if(Python3_LIBRARIES MATCHES "optimized;(.+);debug;(.+)")
     foreach(lib ${Python3_LIBRARIES})
@@ -87,16 +87,16 @@ if(Python3_LIBRARIES MATCHES "optimized;(.+);debug;(.+)")
             set(Python3_LIB_ONLY "${lib}")
         endif()
     endforeach()
-    swig_link_libraries(cubix_python PRIVATE ${Python3_LIB_ONLY} cubix_core)
+    swig_link_libraries(cubik_python PRIVATE ${Python3_LIB_ONLY} cubik_core)
 else()
     # Fallback for single-lib scenarios
-    swig_link_libraries(cubix_python PRIVATE ${Python3_LIBRARIES} cubix_core)
+    swig_link_libraries(cubik_python PRIVATE ${Python3_LIBRARIES} cubik_core)
 endif()
 
 # Build main executable
 # todo: add compiler optimiztions?
-add_executable(cubix main.cpp)
-target_include_directories(cubix PRIVATE ${tomlplusplus_SOURCE_DIR}) # todo remove this
-target_link_libraries(cubix PRIVATE cubix_core)
+add_executable(cubik main.cpp)
+target_include_directories(cubik PRIVATE ${tomlplusplus_SOURCE_DIR}) # todo remove this
+target_link_libraries(cubik PRIVATE cubik_core)
 
 add_subdirectory(tests)
