@@ -1,8 +1,8 @@
-from build import cubix
+from build import cubik
 import pytest
 # ? use unittest library instead
 
-cube = cubix.Cube()
+cube = cubik.Cube()
 
 cubeU = cube.U()
 
