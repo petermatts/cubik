@@ -13,8 +13,8 @@
 using namespace std;
 
 Cube::Cube() {
-    top = WHITE_FACE; // 19173961
-    bottom = YELLOW_FACE; // 38347922
+    up = WHITE_FACE; // 19173961
+    down = YELLOW_FACE; // 38347922
     front = GREEN_FACE; // 57521883
     back = BLUE_FACE; // 76695844
     left = ORANGE_FACE; // 115043766
@@ -22,20 +22,20 @@ Cube::Cube() {
 }
 
 Cube::Cube(const Cube &cube) {
-    top = cube.top;
+    up = cube.up;
     front = cube.front;
     left = cube.left;
     right = cube.right;
     back = cube.back;
-    bottom = cube.bottom;
+    down = cube.down;
 }
 
 Cube::~Cube() = default;
 
 array<uint32_t, 6> Cube::state_array() const {
     assert(verify_orientation());
-    uint8_t c_top = static_cast<uint8_t>((top << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_bottom = static_cast<uint8_t>((bottom << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
     uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
     uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
     uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
@@ -46,10 +46,10 @@ array<uint32_t, 6> Cube::state_array() const {
     vector<uint32_t> state_vector;
 
     for(uint8_t color : colors) {
-        if(c_top == color) {
-            state_vector.push_back(top);
-        } else if (c_bottom == color) {
-            state_vector.push_back(bottom);
+        if(c_up == color) {
+            state_vector.push_back(up);
+        } else if (c_down == color) {
+            state_vector.push_back(down);
         } else if (c_front == color) {
             state_vector.push_back(front);
         } else if (c_back == color) {
@@ -66,8 +66,8 @@ array<uint32_t, 6> Cube::state_array() const {
 }
 
 bool Cube::verify_orientation() const {
-    uint8_t c_top = static_cast<uint8_t>((top << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_bottom = static_cast<uint8_t>((bottom << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
     uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
     uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
     uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
@@ -76,7 +76,7 @@ bool Cube::verify_orientation() const {
     
     // check for valid opposite centers
     array<uint8_t, 3> poles = {
-        static_cast<uint8_t>(c_top + c_bottom),
+        static_cast<uint8_t>(c_up + c_down),
         static_cast<uint8_t>(c_front + c_back),
         static_cast<uint8_t>(c_left + c_right)
     };
@@ -101,7 +101,7 @@ bool Cube::verify_orientation() const {
         {{YELLOW, ORANGE, GREEN}}
     }};
 
-    array<uint8_t, 3> center_cycle = {c_top, c_right, c_front};
+    array<uint8_t, 3> center_cycle = {c_up, c_right, c_front};
 
     bool result = false;
     for(auto c : cycles) {
@@ -123,19 +123,19 @@ string Cube::toString() {
     const char* space = __USE_EMOJI ? "" : " ";
     string msg = "\n";
 
-    // top
+    // up
     msg += square_space;
-    msg += getColor((top << CLEAR_TOP_LEFT) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_TOP_MIDDLE) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_TOP_RIGHT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_TOP_LEFT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_TOP_MIDDLE) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_TOP_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n" + square_space;
-    msg += getColor((top << CLEAR_MIDDLE_LEFT) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_CENTER) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_MIDDLE_RIGHT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_MIDDLE_LEFT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_CENTER) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_MIDDLE_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n" + square_space;
-    msg += getColor((top << CLEAR_BOTTOM_LEFT) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_BOTTOM_MIDDLE) >> CLEAR) + space;
-    msg += getColor((top << CLEAR_BOTTOM_RIGHT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_BOTTOM_LEFT) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_BOTTOM_MIDDLE) >> CLEAR) + space;
+    msg += getColor((up << CLEAR_BOTTOM_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n";
 
     // left front right back
@@ -179,19 +179,19 @@ string Cube::toString() {
     msg += getColor((back << CLEAR_BOTTOM_RIGHT) >> CLEAR) + space;
     msg += "\n";
 
-    // bottom
+    // down
     msg += square_space;
-    msg += getColor((bottom << CLEAR_TOP_LEFT) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_TOP_MIDDLE) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_TOP_RIGHT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_TOP_LEFT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_TOP_MIDDLE) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_TOP_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n" + square_space;
-    msg += getColor((bottom << CLEAR_MIDDLE_LEFT) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_CENTER) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_MIDDLE_RIGHT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_MIDDLE_LEFT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_CENTER) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_MIDDLE_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n" + square_space;
-    msg += getColor((bottom << CLEAR_BOTTOM_LEFT) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_BOTTOM_MIDDLE) >> CLEAR) + space;
-    msg += getColor((bottom << CLEAR_BOTTOM_RIGHT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_BOTTOM_LEFT) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_BOTTOM_MIDDLE) >> CLEAR) + space;
+    msg += getColor((down << CLEAR_BOTTOM_RIGHT) >> CLEAR) + space;
     msg += square_space + square_space + "\n";
 
     return msg;

@@ -99,12 +99,12 @@ class Cube {
 
 
     private:
-    uint32_t top;
+    uint32_t up;
     uint32_t front;
     uint32_t left;
     uint32_t right;
     uint32_t back;
-    uint32_t bottom;
+    uint32_t down;
     
     bool verify_orientation() const;
 };

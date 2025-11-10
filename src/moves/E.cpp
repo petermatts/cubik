@@ -1,7 +1,7 @@
 #include "cube.hpp"
 
 Cube Cube::E() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // edges
@@ -28,7 +28,7 @@ Cube Cube::E() const {
 }
 
 Cube Cube::E_prime() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // edges
@@ -55,7 +55,7 @@ Cube Cube::E_prime() const {
 }
 
 Cube Cube::E2() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // edges

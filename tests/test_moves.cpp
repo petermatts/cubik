@@ -71,28 +71,28 @@ array<uint32_t, 6> state(string toml_path) {
     try {
         toml::table solution = toml::parse_file(toml_path);
         
-        uint32_t top = 0, front = 0, left = 0, right = 0, back = 0, bottom = 0;
+        uint32_t up = 0, front = 0, left = 0, right = 0, back = 0, down = 0;
         uint8_t u = 0, d = 0, l = 0, r = 0, f = 0, b = 0;
 
-        if(auto node_view = solution["up"]) { set_face(node_view, top); }
+        if(auto node_view = solution["up"]) { set_face(node_view, up); }
         if(auto node_view = solution["front"]) { set_face(node_view, front); }
         if(auto node_view = solution["left"]) { set_face(node_view, left); }
         if(auto node_view = solution["right"]) { set_face(node_view, right); }
         if(auto node_view = solution["back"]) { set_face(node_view, back); }
-        if(auto node_view = solution["down"]) { set_face(node_view, bottom); }
+        if(auto node_view = solution["down"]) { set_face(node_view, down); }
 
-        uint8_t c_top = static_cast<uint8_t>((top << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_bottom = static_cast<uint8_t>((bottom << CLEAR_CENTER) >> CLEAR);
+        uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
+        uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
         uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
         uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
         uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
         uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
 
         for(uint8_t color : colors) {
-            if(c_top == color) {
-                state_vector.push_back(top);
-            } else if (c_bottom == color) {
-                state_vector.push_back(bottom);
+            if(c_up == color) {
+                state_vector.push_back(up);
+            } else if (c_down == color) {
+                state_vector.push_back(down);
             } else if (c_front == color) {
                 state_vector.push_back(front);
             } else if (c_back == color) {
