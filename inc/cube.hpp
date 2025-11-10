@@ -88,7 +88,6 @@ class Cube {
     string toString();
     
     array<uint32_t, 6> state_array() const;
-    // void __from_state(array<uint32_t, 6> state);
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
     friend bool operator!=(const Cube &cube1, const Cube &cube2);
