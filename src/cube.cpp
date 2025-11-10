@@ -198,11 +198,6 @@ string Cube::toString() {
 }
 
 bool operator==(const Cube &cube1, const Cube &cube2) {
-    // vector<uint32_t> faces1 = {cube1.top, cube1.bottom, cube1.left, cube1.right, cube1.front, cube1.back};
-    // vector<uint32_t> faces2 = {cube2.top, cube2.bottom, cube2.left, cube2.right, cube2.front, cube2.back};
-    // sort(faces1.begin(), faces1.end());
-    // sort(faces2.begin(), faces2.end());
-
     return cube1.state_array() == cube2.state_array();
 }
 
