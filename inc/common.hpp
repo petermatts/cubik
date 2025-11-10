@@ -5,36 +5,36 @@
 #include <string>
 
 // define colors
-#define WHITE 0
-#define YELLOW 1 
-#define GREEN 2
-#define BLUE 3
-#define RED 4
-#define ORANGE 5
+#define WHITE 1U
+#define YELLOW 2U
+#define GREEN 3U
+#define BLUE 4U
+#define RED 5U
+#define ORANGE 6U
 
 // define positions (within face)
-#define TOP_LEFT 0
-#define TOP_MIDDLE 3
-#define TOP_RIGHT 6
-#define MIDDLE_LEFT 9
-#define CENTER 12
-#define MIDDLE_RIGHT 15
-#define BOTTOM_LEFT 18
-#define BOTTOM_MIDDLE 21
-#define BOTTOM_RIGHT 24
+#define TOP_LEFT 0U
+#define TOP_MIDDLE 3U
+#define TOP_RIGHT 6U
+#define MIDDLE_LEFT 9U
+#define CENTER 12U
+#define MIDDLE_RIGHT 15U
+#define BOTTOM_LEFT 18U
+#define BOTTOM_MIDDLE 21U
+#define BOTTOM_RIGHT 24U
 
 // clears, equivalent to 32 - position - 3
-#define CLEAR_TOP_LEFT 29
-#define CLEAR_TOP_MIDDLE 26
-#define CLEAR_TOP_RIGHT 23
-#define CLEAR_MIDDLE_LEFT 20
-#define CLEAR_CENTER 17
-#define CLEAR_MIDDLE_RIGHT 14
-#define CLEAR_BOTTOM_LEFT 11
-#define CLEAR_BOTTOM_MIDDLE 8
-#define CLEAR_BOTTOM_RIGHT 5
+#define CLEAR_TOP_LEFT 29U
+#define CLEAR_TOP_MIDDLE 26U
+#define CLEAR_TOP_RIGHT 23U
+#define CLEAR_MIDDLE_LEFT 20U
+#define CLEAR_CENTER 17U
+#define CLEAR_MIDDLE_RIGHT 14U
+#define CLEAR_BOTTOM_LEFT 11U
+#define CLEAR_BOTTOM_MIDDLE 8U
+#define CLEAR_BOTTOM_RIGHT 5U
 
-#define CLEAR 29
+#define CLEAR 29U
 
 // define faces
 #define WHITE_FACE (WHITE << TOP_LEFT) + (WHITE << TOP_MIDDLE) + (WHITE << TOP_RIGHT) + (WHITE << MIDDLE_LEFT) + (WHITE << CENTER) + (WHITE << MIDDLE_RIGHT) + (WHITE << BOTTOM_LEFT) + (WHITE << BOTTOM_MIDDLE) + (WHITE << BOTTOM_RIGHT)
@@ -53,8 +53,26 @@
 // #define ORANGE_FACE (7 << TOP_LEFT) + (7 << TOP_MIDDLE) + (ORANGE << TOP_RIGHT) + (ORANGE << MIDDLE_LEFT) + (ORANGE << CENTER) + (ORANGE << MIDDLE_RIGHT) + (ORANGE << BOTTOM_LEFT) + (ORANGE << BOTTOM_MIDDLE) + (ORANGE << BOTTOM_RIGHT)
 
 std::string getColor(uint32_t num);
+uint8_t extract(uint32_t face, uint8_t shift);
 uint32_t get(uint32_t num, int from);
 void set(uint32_t &num, int to, uint32_t set_val);
+
+template <typename T, std::size_t N>
+bool array_circular_equal(const std::array<T, N> &a, const std::array<T, N> &b) {
+    if constexpr (N == 0) return true;
+
+    for (std::size_t shift = 0; shift < N; ++shift) {
+        bool equal = true;
+        for (std::size_t i = 0; i < N; ++i) {
+            if (a[(i + shift) % N] != b[i]) {
+                equal = false;
+                break;
+            }
+        }
+        if (equal) return true;
+    }
+    return false;
+};
 
 #pragma once
 extern bool __USE_EMOJI;

@@ -87,7 +87,7 @@ class Cube {
     bool isSolved();
     string toString();
     
-    array<uint32_t, 6> __get_state();
+    array<uint32_t, 6> state_array() const;
     // void __from_state(array<uint32_t, 6> state);
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
@@ -97,7 +97,7 @@ class Cube {
     string __repr__(); //? add more special python support
     bool __eq__(const Cube &other);
     bool __ne__(const Cube &other);
-    
+
 
     private:
     uint32_t top;
@@ -106,6 +106,8 @@ class Cube {
     uint32_t right;
     uint32_t back;
     uint32_t bottom;
+    
+    bool verify_orientation() const;
 };
 
 #endif // CUBE_HPP

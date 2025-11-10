@@ -1,7 +1,10 @@
+#include "common.hpp"
 #include "cube.hpp"
 #include "moves.hpp"
 
 #include <array>
+#include <cassert>
+#include <cstdint>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -10,12 +13,12 @@
 using namespace std;
 
 Cube::Cube() {
-    top = WHITE_FACE; // 0
-    bottom = YELLOW_FACE; // 19173961
-    front = GREEN_FACE; // 38347922
-    back = BLUE_FACE; // 57521883
-    left = ORANGE_FACE; // 95869805
-    right = RED_FACE; // 76695844
+    top = WHITE_FACE; // 19173961
+    bottom = YELLOW_FACE; // 38347922
+    front = GREEN_FACE; // 57521883
+    back = BLUE_FACE; // 76695844
+    left = ORANGE_FACE; // 115043766
+    right = RED_FACE; // 95869805
 }
 
 Cube::Cube(const Cube &cube) {
@@ -29,17 +32,86 @@ Cube::Cube(const Cube &cube) {
 
 Cube::~Cube() = default;
 
-array<uint32_t, 6> Cube::__get_state() {
-    array<uint32_t, 6> state = {
-        top,
-        front,
-        left,
-        right,
-        back,
-        bottom
-    };
-    
+array<uint32_t, 6> Cube::state_array() const {
+    assert(verify_orientation());
+    uint8_t c_top = static_cast<uint8_t>((top << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_bottom = static_cast<uint8_t>((bottom << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
+
+    array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+    array<uint32_t, 6> state;
+    vector<uint32_t> state_vector;
+
+    for(uint8_t color : colors) {
+        if(c_top == color) {
+            state_vector.push_back(top);
+        } else if (c_bottom == color) {
+            state_vector.push_back(bottom);
+        } else if (c_front == color) {
+            state_vector.push_back(front);
+        } else if (c_back == color) {
+            state_vector.push_back(back);
+        } else if (c_left == color) {
+            state_vector.push_back(left);
+        } else if (c_right == color) {
+            state_vector.push_back(right);
+        }
+    }
+
+    copy(state_vector.begin(), state_vector.end(), state.begin());
     return state;
+}
+
+bool Cube::verify_orientation() const {
+    uint8_t c_top = static_cast<uint8_t>((top << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_bottom = static_cast<uint8_t>((bottom << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
+
+    
+    // check for valid opposite centers
+    array<uint8_t, 3> poles = {
+        static_cast<uint8_t>(c_top + c_bottom),
+        static_cast<uint8_t>(c_front + c_back),
+        static_cast<uint8_t>(c_left + c_right)
+    };
+
+    array<uint8_t, 3> axes {
+        WHITE + YELLOW,
+        GREEN + BLUE,
+        RED + ORANGE
+    };
+
+    sort(poles.begin(), poles.end());
+    sort(axes.begin(), axes.end());
+
+    array<array<uint8_t, 3>, 8> cycles = {{
+        {{WHITE, BLUE, RED}},
+        {{WHITE, ORANGE, BLUE}},
+        {{WHITE, GREEN, ORANGE}},
+        {{WHITE, RED, GREEN}},
+        {{YELLOW, BLUE, ORANGE}},
+        {{YELLOW, RED, BLUE}},
+        {{YELLOW, GREEN, RED}},
+        {{YELLOW, ORANGE, GREEN}}
+    }};
+
+    array<uint8_t, 3> center_cycle = {c_top, c_right, c_front};
+
+    bool result = false;
+    for(auto c : cycles) {
+        if(array_circular_equal(c, center_cycle)) {
+            result = true;
+            break;
+        }
+    }
+
+    return (poles == axes) && result;
 }
 
 bool Cube::isSolved() {
@@ -126,12 +198,12 @@ string Cube::toString() {
 }
 
 bool operator==(const Cube &cube1, const Cube &cube2) {
-    vector<uint32_t> faces1 = {cube1.top, cube1.bottom, cube1.left, cube1.right, cube1.front, cube1.back};
-    vector<uint32_t> faces2 = {cube2.top, cube2.bottom, cube2.left, cube2.right, cube2.front, cube2.back};
-    sort(faces1.begin(), faces1.end());
-    sort(faces2.begin(), faces2.end());
+    // vector<uint32_t> faces1 = {cube1.top, cube1.bottom, cube1.left, cube1.right, cube1.front, cube1.back};
+    // vector<uint32_t> faces2 = {cube2.top, cube2.bottom, cube2.left, cube2.right, cube2.front, cube2.back};
+    // sort(faces1.begin(), faces1.end());
+    // sort(faces2.begin(), faces2.end());
 
-    return faces1 == faces2;
+    return cube1.state_array() == cube2.state_array();
 }
 
 bool operator!=(const Cube &cube1, const Cube &cube2) {
