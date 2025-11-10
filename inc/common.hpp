@@ -53,7 +53,7 @@
 // #define ORANGE_FACE (7 << TOP_LEFT) + (7 << TOP_MIDDLE) + (ORANGE << TOP_RIGHT) + (ORANGE << MIDDLE_LEFT) + (ORANGE << CENTER) + (ORANGE << MIDDLE_RIGHT) + (ORANGE << BOTTOM_LEFT) + (ORANGE << BOTTOM_MIDDLE) + (ORANGE << BOTTOM_RIGHT)
 
 std::string getColor(uint32_t num);
-uint8_t get(uint32_t num, int from);
+uint8_t get(uint32_t num, uint8_t from);
 void set(uint32_t &num, int to, uint8_t set_val);
 
 template <typename T, std::size_t N>

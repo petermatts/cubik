@@ -52,7 +52,7 @@ string getColor(uint32_t num) {
     }
 }
 
-uint8_t get(uint32_t num, int from) {
+uint8_t get(uint32_t num, uint8_t from) {
     return static_cast<uint8_t>((num << (32-from-3)) >> CLEAR); 
 }
 
