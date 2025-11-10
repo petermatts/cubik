@@ -1,15 +1,15 @@
 #include "cube.hpp"
 
 Cube Cube::U() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corner
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, get(newCube.top, TOP_RIGHT));
-    set(newCube.top, TOP_RIGHT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, get(newCube.up, TOP_RIGHT));
+    set(newCube.up, TOP_RIGHT, temp);
 
     temp = get(newCube.back, TOP_RIGHT);
     set(newCube.back, TOP_RIGHT, get(newCube.left, TOP_RIGHT));
@@ -24,11 +24,11 @@ Cube Cube::U() const {
     set(newCube.right, TOP_LEFT, temp);
 
     // edge
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, MIDDLE_LEFT));
-    set(newCube.top, MIDDLE_LEFT, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, MIDDLE_LEFT));
+    set(newCube.up, MIDDLE_LEFT, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, temp);
 
     temp = get(newCube.back, TOP_MIDDLE);
     set(newCube.back, TOP_MIDDLE, get(newCube.left, TOP_MIDDLE));
@@ -40,15 +40,15 @@ Cube Cube::U() const {
 }
 
 Cube Cube::U_prime() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corner
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, TOP_RIGHT));
-    set(newCube.top, TOP_RIGHT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, TOP_RIGHT));
+    set(newCube.up, TOP_RIGHT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, temp);
 
     temp = get(newCube.back, TOP_RIGHT);
     set(newCube.back, TOP_RIGHT, get(newCube.right, TOP_RIGHT));
@@ -63,11 +63,11 @@ Cube Cube::U_prime() const {
     set(newCube.left, TOP_LEFT, temp);
 
     // edge
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, get(newCube.top, MIDDLE_LEFT));
-    set(newCube.top, MIDDLE_LEFT, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, get(newCube.up, MIDDLE_LEFT));
+    set(newCube.up, MIDDLE_LEFT, temp);
 
     temp = get(newCube.back, TOP_MIDDLE);
     set(newCube.back, TOP_MIDDLE, get(newCube.right, TOP_MIDDLE));
@@ -79,17 +79,17 @@ Cube Cube::U_prime() const {
 }
 
 Cube Cube::U2() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corners
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, temp);
 
-    temp = get(newCube.top, TOP_RIGHT);
-    set(newCube.top, TOP_RIGHT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, temp);
+    temp = get(newCube.up, TOP_RIGHT);
+    set(newCube.up, TOP_RIGHT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, temp);
 
     temp = get(newCube.front, TOP_LEFT);
     set(newCube.front, TOP_LEFT, get(newCube.back, TOP_LEFT));
@@ -108,13 +108,13 @@ Cube Cube::U2() const {
     set(newCube.right, TOP_RIGHT, temp);
 
     // edges
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, temp);
 
-    temp = get(newCube.top, MIDDLE_LEFT);
-    set(newCube.top, MIDDLE_LEFT, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, temp);
+    temp = get(newCube.up, MIDDLE_LEFT);
+    set(newCube.up, MIDDLE_LEFT, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, temp);
 
     temp = get(newCube.front, TOP_MIDDLE);
     set(newCube.front, TOP_MIDDLE, get(newCube.back, TOP_MIDDLE));
@@ -128,15 +128,15 @@ Cube Cube::U2() const {
 }
 
 Cube Cube::u() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corner
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, get(newCube.top, TOP_RIGHT));
-    set(newCube.top, TOP_RIGHT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, get(newCube.up, TOP_RIGHT));
+    set(newCube.up, TOP_RIGHT, temp);
 
     temp = get(newCube.back, TOP_RIGHT);
     set(newCube.back, TOP_RIGHT, get(newCube.left, TOP_RIGHT));
@@ -151,11 +151,11 @@ Cube Cube::u() const {
     set(newCube.right, TOP_LEFT, temp);
 
     // edge
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, MIDDLE_LEFT));
-    set(newCube.top, MIDDLE_LEFT, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, MIDDLE_LEFT));
+    set(newCube.up, MIDDLE_LEFT, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, temp);
 
     temp = get(newCube.back, TOP_MIDDLE);
     set(newCube.back, TOP_MIDDLE, get(newCube.left, TOP_MIDDLE));
@@ -186,15 +186,15 @@ Cube Cube::u() const {
 }
 
 Cube Cube::u_prime() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corner
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, TOP_RIGHT));
-    set(newCube.top, TOP_RIGHT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, TOP_RIGHT));
+    set(newCube.up, TOP_RIGHT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, temp);
 
     temp = get(newCube.back, TOP_RIGHT);
     set(newCube.back, TOP_RIGHT, get(newCube.right, TOP_RIGHT));
@@ -209,11 +209,11 @@ Cube Cube::u_prime() const {
     set(newCube.left, TOP_LEFT, temp);
 
     // edge
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, get(newCube.top, MIDDLE_LEFT));
-    set(newCube.top, MIDDLE_LEFT, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, get(newCube.up, MIDDLE_LEFT));
+    set(newCube.up, MIDDLE_LEFT, temp);
 
     temp = get(newCube.back, TOP_MIDDLE);
     set(newCube.back, TOP_MIDDLE, get(newCube.right, TOP_MIDDLE));
@@ -244,17 +244,17 @@ Cube Cube::u_prime() const {
 }
 
 Cube Cube::u2() const {
-    uint32_t temp = 0;
+    uint8_t temp = 0;
     Cube newCube = *this;
 
     // corners
-    temp = get(newCube.top, TOP_LEFT);
-    set(newCube.top, TOP_LEFT, get(newCube.top, BOTTOM_RIGHT));
-    set(newCube.top, BOTTOM_RIGHT, temp);
+    temp = get(newCube.up, TOP_LEFT);
+    set(newCube.up, TOP_LEFT, get(newCube.up, BOTTOM_RIGHT));
+    set(newCube.up, BOTTOM_RIGHT, temp);
 
-    temp = get(newCube.top, TOP_RIGHT);
-    set(newCube.top, TOP_RIGHT, get(newCube.top, BOTTOM_LEFT));
-    set(newCube.top, BOTTOM_LEFT, temp);
+    temp = get(newCube.up, TOP_RIGHT);
+    set(newCube.up, TOP_RIGHT, get(newCube.up, BOTTOM_LEFT));
+    set(newCube.up, BOTTOM_LEFT, temp);
 
     temp = get(newCube.front, TOP_LEFT);
     set(newCube.front, TOP_LEFT, get(newCube.back, TOP_LEFT));
@@ -273,13 +273,13 @@ Cube Cube::u2() const {
     set(newCube.right, TOP_RIGHT, temp);
 
     // edges
-    temp = get(newCube.top, TOP_MIDDLE);
-    set(newCube.top, TOP_MIDDLE, get(newCube.top, BOTTOM_MIDDLE));
-    set(newCube.top, BOTTOM_MIDDLE, temp);
+    temp = get(newCube.up, TOP_MIDDLE);
+    set(newCube.up, TOP_MIDDLE, get(newCube.up, BOTTOM_MIDDLE));
+    set(newCube.up, BOTTOM_MIDDLE, temp);
 
-    temp = get(newCube.top, MIDDLE_LEFT);
-    set(newCube.top, MIDDLE_LEFT, get(newCube.top, MIDDLE_RIGHT));
-    set(newCube.top, MIDDLE_RIGHT, temp);
+    temp = get(newCube.up, MIDDLE_LEFT);
+    set(newCube.up, MIDDLE_LEFT, get(newCube.up, MIDDLE_RIGHT));
+    set(newCube.up, MIDDLE_RIGHT, temp);
 
     temp = get(newCube.front, TOP_MIDDLE);
     set(newCube.front, TOP_MIDDLE, get(newCube.back, TOP_MIDDLE));

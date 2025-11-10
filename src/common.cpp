@@ -52,15 +52,11 @@ string getColor(uint32_t num) {
     }
 }
 
-uint8_t extract(uint32_t face, uint8_t shift) {
-    return static_cast<uint8_t>((face << shift) >> CLEAR);
+uint8_t get(uint32_t num, int from) {
+    return static_cast<uint8_t>((num << (32-from-3)) >> CLEAR); 
 }
 
-uint32_t get(uint32_t num, int from) {
-    return (num << (32-from-3)) >> CLEAR; 
-}
-
-void set(uint32_t &num, int to, uint32_t set_val) {
+void set(uint32_t &num, int to, uint8_t set_val) {
     assert(set_val < 8);
     num &= ~(7 << to);
     num |= (set_val << to);
