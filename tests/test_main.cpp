@@ -122,3 +122,12 @@ TEST_F(CubeTest, SequenceAndInverseRestoreCubeBD_) {
     restored = scrambled.B().D();
     EXPECT_TRUE(restored.isSolved());
 }
+
+TEST_F(CubeTest, WholeRotationIsSame) {
+    Cube x = solved.X();
+    Cube y = solved.Y();
+    Cube z = solved.Z();
+    EXPECT_TRUE(solved == x);
+    EXPECT_TRUE(solved == y);
+    EXPECT_TRUE(solved == z);
+}

@@ -1,6 +1,7 @@
 # Manual Additions
 docs/notes
 .vscode
+.clang-format
 
 # CMake
 build

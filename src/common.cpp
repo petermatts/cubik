@@ -1,5 +1,5 @@
-#include <cstdint>
 #include <cassert>
+#include <cstdint>
 #include <string>
 
 #include "common.hpp"
@@ -50,6 +50,10 @@ string getColor(uint32_t num) {
             // cout << num << endl;
             return "?";
     }
+}
+
+uint8_t extract(uint32_t face, uint8_t shift) {
+    return static_cast<uint8_t>((face << shift) >> CLEAR);
 }
 
 uint32_t get(uint32_t num, int from) {

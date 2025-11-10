@@ -2,6 +2,8 @@
 # Makefile
 ##############################################################################
 
+MAKEFLAGS += --no-print-directory
+
 BUILD_DIR := build
 RELEASE_DIR := release
 
