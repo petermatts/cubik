@@ -33,7 +33,7 @@ jobs:
               env:
                   CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
                   CIBW_TEST_REQUIRES: "pytest"
-                  CIBW_TEST_COMMAND: "pytest {project}/tests -q"
+                  CIBW_TEST_COMMAND: "ls -R {project}/tests && pytest {project}/tests -q"
                   # CIBW_CMAKE_OPTIONS: "-DENABLE_TESTING=ON"
 
             - name: Test wheels
