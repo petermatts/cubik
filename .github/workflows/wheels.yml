@@ -1,30 +1,47 @@
-name: Build Wheels
+name: Build Wheels and Test
 
 on:
     workflow_dispatch:
     push:
         tags:
-            - "v*"
+            - "v*" # Only trigger PyPI upload on version tags
 
 jobs:
     build:
-        name: Build on ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 os: [ubuntu-latest, macos-latest, windows-latest]
 
         steps:
-            - uses: actions/checkout@v4
+            - name: Checkout
+              uses: actions/checkout@v4
 
-            - uses: pypa/cibuildwheel@v2.18
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: 3.11 # cibuildwheel will handle all versions
+
+            - name: Install cibuildwheel
+              run: pip install cibuildwheel==2.18 scikit-build-core setuptools wheel twine
+
+            - name: Build wheels
+              uses: pypa/cibuildwheel@v2.18
               with:
                   package-dir: .
+                  output-dir: wheelhouse
               env:
                   CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
-                  CIBWtest_command: "pytest -q"
-            # - name: Upload to PyPI
-            #   if: startsWith(github.ref, 'refs/tags/')
-            #   uses: pypa/gh-action-pypi-publish@v1.8.8
-            #   with:
-            #     password: ${{ secrets.PYPI_API_TOKEN }}
+                  CIBW_TEST_COMMAND: "pytest -q"
+                  # CIBW_CMAKE_OPTIONS: "-DENABLE_TESTING=ON"
+
+            - name: Test wheels
+              run: |
+                  pip install wheelhouse/*.whl
+                  pytest tests
+
+            - name: Upload to PyPI
+              if: startsWith(github.ref, 'refs/tags/')
+              uses: pypa/gh-action-pypi-publish@v1.8.8
+              with:
+                  password: ${{ secrets.PYPI_API_TOKEN }}
