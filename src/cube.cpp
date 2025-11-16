@@ -213,14 +213,6 @@ string Cube::__repr__() {
     return toString();
 }
 
-bool Cube::__eq__(const Cube &other) {
-    return *this == other;
-}
-
-bool Cube::__ne__(const Cube &other) {
-    return *this != other;
-}
-
 Cube Cube::apply_moves(const vector<string> &moves) {
     Cube newCube = *this;
 

@@ -8,6 +8,9 @@ build
 release
 _deps
 
+# Distribution code
+dist
+
 # Prerequisites
 *.d
 
