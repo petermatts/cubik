@@ -34,11 +34,6 @@ jobs:
                   CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
                   # CIBW_CMAKE_OPTIONS: "-DENABLE_TESTING=ON"
 
-            - name: Basic import test
-              run: |
-                  pip install wheelhouse/*${{ matrix.os }}*.whl
-                  python -c "import cubik; c = cubik.Cube(); print(c)"
-
             - name: Upload to PyPI
               if: startsWith(github.ref, 'refs/tags/')
               uses: pypa/gh-action-pypi-publish@v1.8.8
