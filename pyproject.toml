@@ -32,3 +32,6 @@ cmake.define = { ENABLE_TESTING = "OFF" }
 
 # Ensure we build the extension inside the package directory
 wheel.install-dir = "cubik"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
