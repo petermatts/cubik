@@ -7,7 +7,7 @@ name = "cubik"
 version = "0.1.0"
 description = "Fast Rubik's Cube engine with Python bindings"
 readme = "README.md"
-authors = [{ name = "Matthew Peters", email = "your@email.com" }]
+authors = [{ name = "Matthew Peters" }]
 requires-python = ">=3.8"
 license = { text = "MIT" }
 keywords = ["rubik", "cube", "puzzle", "solver"]
