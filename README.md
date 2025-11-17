@@ -71,7 +71,7 @@ Cube Layout:
 ```text
           +---------+
           |         |
-          |    T    |
+          |    U    |
           |         |
 +---------+---------+---------+---------+
 |         |         |         |         |
@@ -86,7 +86,7 @@ Cube Layout:
 
 | Letter | Face  |
 | ------ | ----- |
-| T      | Top   |
+| U      | Up    |
 | L      | Left  |
 | F      | Front |
 | R      | Right |
