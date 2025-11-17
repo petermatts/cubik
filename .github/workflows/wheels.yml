@@ -30,7 +30,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
-          sed -i "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
+          sed -i '' "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
 
       # Windows version
       - name: Patch pyproject.toml (Windows)
