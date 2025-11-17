@@ -1,4 +1,5 @@
 ![CI](https://github.com/petermatts/Cubik/actions/workflows/ci.yml/badge.svg)
+![GitHub Release](https://img.shields.io/github/v/release/petermatts/cubik)
 
 # Cubik
 
@@ -71,7 +72,7 @@ Cube Layout:
 ```text
           +---------+
           |         |
-          |    T    |
+          |    U    |
           |         |
 +---------+---------+---------+---------+
 |         |         |         |         |
@@ -86,7 +87,7 @@ Cube Layout:
 
 | Letter | Face  |
 | ------ | ----- |
-| T      | Top   |
+| U      | Up    |
 | L      | Left  |
 | F      | Front |
 | R      | Right |

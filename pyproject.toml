@@ -1,0 +1,34 @@
+[build-system]
+requires = ["scikit-build-core>=0.9", "swig>=4.1.1"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "cubik"
+version = "0.0.0"
+description = "Fast Rubik's Cube engine with Python bindings"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [{ name = "Matthew Peters" }]
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["rubik", "cube", "puzzle", "solver"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/petermatts/cubik"
+
+[tool.scikit-build]
+# Make sure the CMake project name is picked up
+cmake.source-dir = "."
+
+# Where your Python package lives
+wheel.packages = ["cubik"]
+
+# Pass options to CMake if needed
+cmake.define = { ENABLE_TESTING = "OFF" }
+
+# Ensure we build the extension inside the package directory
+wheel.install-dir = "cubik"

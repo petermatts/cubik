@@ -9,12 +9,12 @@ RELEASE_DIR := release
 
 THREADS := 1
 
-.PHONY: clean clean-all all run test release
-.SILENT: clean clean-all all run test release
+.PHONY: clean clean-all all run test release wheel
+.SILENT: clean clean-all all run test release wheel
 
 all:
 	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && \
-	cmake .. && \
+	cmake -DENABLE_TESTING=ON .. && \
 	cmake --build . --parallel $(THREADS)
 
 # 	cp $(BUILD_DIR)/Debug/_cubik_python.pyd $(BUILD_DIR)/_cubik_python.pyd
@@ -27,6 +27,9 @@ release:
 
 # 	cp $(RELEASE_DIR)/Release/_cubik_python.pyd $(RELEASE_DIR)/_cubik_python.pyd
 # 	cp -r $(RELEASE_DIR)/tests/solutions $(RELEASE_DIR)/tests/Release
+
+wheel:
+	./wheel.sh
 
 run:
 	cd $(BUILD_DIR)/Debug && ./cubik.exe

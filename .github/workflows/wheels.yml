@@ -1,0 +1,104 @@
+name: Build Wheels and Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*" # Only trigger PyPI upload on version tags
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Extract version from git tag
+      - name: Extract version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          VERSION="${TAG#v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      # Linux
+      - name: Patch pyproject.toml (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sed -i "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
+
+      # macOS
+      - name: Patch pyproject.toml (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          sed -i '' "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
+
+      # Windows
+      - name: Patch pyproject.toml (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = '${{ env.VERSION }}'
+          (Get-Content pyproject.toml) -replace '^version = .+$', "version = `"$version`"" | Set-Content pyproject.toml
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install cibuildwheel and dependencies
+        run: pip install cibuildwheel==2.18 scikit-build-core setuptools wheel twine
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.18
+        with:
+          package-dir: .
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
+          CIBW_PROJECT_VERSION: ${{ env.VERSION }}
+
+      - name: Upload wheels artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-ubuntu-latest
+          path: wheelhouse/ubuntu
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-macos-latest
+          path: wheelhouse/macos
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-windows-latest
+          path: wheelhouse/windows
+
+      - name: Gather all wheels
+        run: |
+          mkdir -p wheelhouse/all
+          cp wheelhouse/ubuntu/*.whl wheelhouse/all/
+          cp wheelhouse/macos/*.whl wheelhouse/all/
+          cp wheelhouse/windows/*.whl wheelhouse/all/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.8.8
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: wheelhouse/all
+          skip-existing: true

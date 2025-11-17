@@ -2,6 +2,8 @@
 #define COMMON_H
 
 #include <stdint.h>
+#include <array>
+#include <cstddef>
 #include <string>
 
 // define colors

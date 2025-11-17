@@ -31,7 +31,7 @@ jobs:
               run: mkdir -p ${{ env.BUILD_DIR }}
 
             - name: Run CMake configure
-              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release
+              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTING=ON
 
             - name: Build the project
               run: cmake --build ${{ env.BUILD_DIR }} --config Release
@@ -65,7 +65,7 @@ jobs:
               run: mkdir ${{ env.BUILD_DIR }}
 
             - name: Run CMake configure
-              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release
+              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTING=ON
 
             - name: Build the project
               run: cmake --build ${{ env.BUILD_DIR }} --config Release
@@ -101,7 +101,7 @@ jobs:
               run: mkdir -p ${{ env.BUILD_DIR }}
 
             - name: Run CMake configure
-              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release
+              run: cmake -S . -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTING=ON
 
             - name: Build the project
               run: cmake --build ${{ env.BUILD_DIR }} --config Release

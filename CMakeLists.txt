@@ -1,20 +1,21 @@
 cmake_minimum_required(VERSION 3.15)
 project(Cubik LANGUAGES CXX)
 
-# Use C++17 or later
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Enable Fetching External Dependencies
 include(FetchContent)
 
-# GoogleTest
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG v1.17.0
-)
-FetchContent_MakeAvailable(googletest)
+# ========== Optional: Only download googletest if tests enabled ==========
+option(ENABLE_TESTING "Enable unit tests" OFF)
+if(ENABLE_TESTING)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.17.0
+    )
+    FetchContent_MakeAvailable(googletest)
+endif()
 
 # toml++
 FetchContent_Declare(
@@ -24,15 +25,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tomlplusplus)
 
-# Enable SWIG and Python
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-
-# Add the main source directory
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc)
-
-# Create a shared library for core logic
+# ========== Core C++ Library ==========
 add_library(cubik_core
     src/cube.cpp
     src/common.cpp
@@ -49,54 +42,42 @@ add_library(cubik_core
     src/moves/Y.cpp
     src/moves/Z.cpp
 )
-target_include_directories(cubik_core PUBLIC src)
 
+# Required for using cubik_core inside a shared library (SWIG module)
+set_property(TARGET cubik_core PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-# SWIG configuration
-set_source_files_properties(interface/cubik.i PROPERTIES CPLUSPLUS ON)
+target_include_directories(cubik_core PUBLIC inc)
+
+# ========== SWIG Python Module ==========
+find_package(SWIG REQUIRED)
+include(${SWIG_USE_FILE})
 set(CMAKE_SWIG_FLAGS "-w503")
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 
-add_definitions(-DSWIG_PYTHON_INTERPRETER_NO_DEBUG)
+set_source_files_properties(interface/cubik.i PROPERTIES CPLUSPLUS ON)
 
-swig_add_library(cubik_python
-    LANGUAGE python
+swig_add_library(cubik
     TYPE MODULE
+    LANGUAGE python
     SOURCES interface/cubik.i
-            src/cube.cpp
-            src/common.cpp
-            src/moves/B.cpp
-            src/moves/D.cpp
-            src/moves/E.cpp
-            src/moves/F.cpp
-            src/moves/L.cpp
-            src/moves/M.cpp
-            src/moves/R.cpp
-            src/moves/S.cpp
-            src/moves/U.cpp
-            src/moves/X.cpp
-            src/moves/Y.cpp
-            src/moves/Z.cpp
 )
 
-# Link SWIG module with Python and core logic
-target_include_directories(cubik_python PRIVATE ${Python3_INCLUDE_DIRS})
+swig_link_libraries(cubik PRIVATE cubik_core Python3::Module)
 
-if(Python3_LIBRARIES MATCHES "optimized;(.+);debug;(.+)")
-    foreach(lib ${Python3_LIBRARIES})
-        if(lib MATCHES ".*/?python[0-9]+\\.lib$")
-            set(Python3_LIB_ONLY "${lib}")
-        endif()
-    endforeach()
-    swig_link_libraries(cubik_python PRIVATE ${Python3_LIB_ONLY} cubik_core)
-else()
-    # Fallback for single-lib scenarios
-    swig_link_libraries(cubik_python PRIVATE ${Python3_LIBRARIES} cubik_core)
+# Place generated module in Python package when installing wheels
+install(TARGETS cubik
+    LIBRARY DESTINATION cubik
+    RUNTIME DESTINATION cubik   # Windows
+)
+
+# ========== Optional CLI executable ==========
+add_executable(cubik_cli main.cpp)
+target_link_libraries(cubik_cli PRIVATE cubik_core)
+
+install(TARGETS cubik_cli DESTINATION bin)
+
+# ========== Tests ==========
+if(ENABLE_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
 endif()
-
-# Build main executable
-# todo: add compiler optimiztions?
-add_executable(cubik main.cpp)
-target_include_directories(cubik PRIVATE ${tomlplusplus_SOURCE_DIR}) # todo remove this
-target_link_libraries(cubik PRIVATE cubik_core)
-
-add_subdirectory(tests)
