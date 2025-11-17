@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 name = "cubik"
 version = "0.0.0"
 description = "Fast Rubik's Cube engine with Python bindings"
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 authors = [{ name = "Matthew Peters" }]
 requires-python = ">=3.8"
 license = { text = "MIT" }
