@@ -25,14 +25,21 @@ jobs:
           VERSION="${TAG#v}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # Linux/macOS version
-      - name: Patch pyproject.toml (Unix)
-        if: runner.os != 'Windows'
+      # Linux
+      - name: Patch pyproject.toml (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sed -i "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
+
+      # macOS
+      - name: Patch pyproject.toml (macOS)
+        if: runner.os == 'macOS'
         shell: bash
         run: |
           sed -i '' "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
 
-      # Windows version
+      # Windows
       - name: Patch pyproject.toml (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
