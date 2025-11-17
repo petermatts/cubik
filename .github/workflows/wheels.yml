@@ -25,14 +25,20 @@ jobs:
           VERSION="${TAG#v}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # Patch pyproject.toml version dynamically
-      - name: Patch pyproject.toml
+      # Linux/macOS version
+      - name: Patch pyproject.toml (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
         run: |
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            pwsh -Command "$version = '${{ env.VERSION }}'; (Get-Content pyproject.toml) -replace '^version = .+$', 'version = `"$version`"' | Set-Content pyproject.toml"
-          else
-            sed -i "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
-          fi
+          sed -i "s/^version = .*/version = \"${{ env.VERSION }}\"/" pyproject.toml
+
+      # Windows version
+      - name: Patch pyproject.toml (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = '${{ env.VERSION }}'
+          (Get-Content pyproject.toml) -replace '^version = .+$', "version = `"$version`"" | Set-Content pyproject.toml
 
       - name: Set up Python
         uses: actions/setup-python@v4
