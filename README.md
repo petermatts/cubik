@@ -1,4 +1,5 @@
 ![CI](https://github.com/petermatts/Cubik/actions/workflows/ci.yml/badge.svg)
+![GitHub Release](https://img.shields.io/github/v/release/petermatts/cubik)
 
 # Cubik
 
