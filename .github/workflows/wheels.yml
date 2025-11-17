@@ -1,80 +1,81 @@
 name: Build Wheels and Release
 
 on:
-    workflow_dispatch:
-    push:
-        tags:
-            - "v*" # Only trigger PyPI upload on version tags
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*" # Only trigger PyPI upload on version tags
 
 jobs:
-    build:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: [ubuntu-latest, macos-latest, windows-latest]
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
-        steps:
-          - name: Checkout
-            uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-          # Extract version from tag, e.g., v0.1.3 -> 0.1.3
-          - name: Extract version
-            run: |
-              TAG="${GITHUB_REF#refs/tags/}"
-              echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+      # Extract version from tag (cross-platform)
+      - name: Extract version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
-          - name: Set up Python
-            uses: actions/setup-python@v4
-            with:
-                python-version: 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
 
-          - name: Install cibuildwheel
-            run: pip install cibuildwheel==2.18 scikit-build-core setuptools wheel twine
+      - name: Install cibuildwheel and dependencies
+        run: pip install cibuildwheel==2.18 scikit-build-core setuptools wheel twine
 
-          - name: Build wheels
-            uses: pypa/cibuildwheel@v2.18
-            with:
-                package-dir: .
-                output-dir: wheelhouse
-            env:
-                CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
-                CIBW_PROJECT_VERSION: ${{ env.VERSION }}
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.18
+        with:
+          package-dir: .
+          output-dir: wheelhouse
+        env:
+          CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-*"
+          CIBW_PROJECT_VERSION: ${{ env.VERSION }}
 
-          - name: Artifact wheels
-            uses: actions/upload-artifact@v4
-            with:
-              name: wheels-${{ matrix.os }}
-              path: wheelhouse/*.whl
+      - name: Upload wheels artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
 
-    publish:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/download-artifact@v4
-            with:
-                name: wheels-ubuntu-latest
-                path: wheelhouse/ubuntu
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-ubuntu-latest
+          path: wheelhouse/ubuntu
 
-          - uses: actions/download-artifact@v4
-            with:
-                name: wheels-macos-latest
-                path: wheelhouse/macos
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-macos-latest
+          path: wheelhouse/macos
 
-          - uses: actions/download-artifact@v4
-            with:
-                name: wheels-windows-latest
-                path: wheelhouse/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: wheels-windows-latest
+          path: wheelhouse/windows
 
-          - name: Gather all wheels
-            run: |
-              mkdir -p wheelhouse/all
-              cp wheelhouse/ubuntu/*.whl wheelhouse/all/
-              cp wheelhouse/macos/*.whl wheelhouse/all/
-              cp wheelhouse/windows/*.whl wheelhouse/all/
+      - name: Gather all wheels
+        run: |
+          mkdir -p wheelhouse/all
+          cp wheelhouse/ubuntu/*.whl wheelhouse/all/
+          cp wheelhouse/macos/*.whl wheelhouse/all/
+          cp wheelhouse/windows/*.whl wheelhouse/all/
 
-          - name: Publish to PyPI
-            uses: pypa/gh-action-pypi-publish@v1.8.8
-            with:
-                password: ${{ secrets.PYPI_API_TOKEN }}
-                packages-dir: wheelhouse/all
-                skip_existing: true
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.8.8
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: wheelhouse/all
+          skip_existing: true
