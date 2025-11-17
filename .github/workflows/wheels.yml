@@ -78,4 +78,5 @@ jobs:
             uses: pypa/gh-action-pypi-publish@v1.8.8
             with:
                 password: ${{ secrets.PYPI_API_TOKEN }}
-                packages_dir: wheelhouse/all
+                packages-dir: wheelhouse/all
+                skip_existing: true
