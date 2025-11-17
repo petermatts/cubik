@@ -37,19 +37,40 @@ jobs:
             - name: Artifact wheels
               uses: actions/upload-artifact@v4
               with:
-                name: wheels
-                path: wheelhouse/*.whl
+                  name: wheels-${{ matrix.os }}
+                  path: wheelhouse/*.whl
 
     publish:
         needs: build
         runs-on: ubuntu-latest
         steps:
+          # Download all OS artifacts into separate subfolders
           - uses: actions/download-artifact@v4
             with:
-                name: wheels
-                path: wheelhouse
+                name: wheels-ubuntu-latest
+                path: wheelhouse/ubuntu
 
+          - uses: actions/download-artifact@v4
+            with:
+                name: wheels-macos-latest
+                path: wheelhouse/macos
+
+          - uses: actions/download-artifact@v4
+            with:
+                name: wheels-windows-latest
+                path: wheelhouse/windows
+
+          # Gather all wheels into a single folder for PyPI upload
+          - name: Gather all wheels
+            run: |
+              mkdir -p wheelhouse/all
+              cp wheelhouse/ubuntu/*.whl wheelhouse/all/
+              cp wheelhouse/macos/*.whl wheelhouse/all/
+              cp wheelhouse/windows/*.whl wheelhouse/all/
+
+          # Publish all wheels to PyPI
           - name: Publish to PyPI
             uses: pypa/gh-action-pypi-publish@v1.8.8
             with:
                 password: ${{ secrets.PYPI_API_TOKEN }}
+                packages_dir: wheelhouse/all
