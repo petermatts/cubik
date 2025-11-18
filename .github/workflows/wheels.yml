@@ -3,8 +3,9 @@ name: Build Wheels and Release
 on:
   workflow_dispatch:
   push:
-    tags:
-      - "v*" # Only trigger PyPI upload on version tags
+    tags: #  Only trigger PyPI upload on version tags
+      - "v[0-9]*.[0-9]*.[0-9]*"
+      - "v[0-9]*.[0-9]*.[0-9]*-*"
 
 jobs:
   build:
