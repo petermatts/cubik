@@ -17,7 +17,7 @@ if(ENABLE_TESTING)
     FetchContent_MakeAvailable(googletest)
 endif()
 
-# toml++
+# ========== toml++ ==========
 FetchContent_Declare(
     tomlplusplus
     GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
@@ -45,13 +45,13 @@ add_library(cubik_core
 
 # Required for using cubik_core inside a shared library (SWIG module)
 set_property(TARGET cubik_core PROPERTY POSITION_INDEPENDENT_CODE ON)
-
 target_include_directories(cubik_core PUBLIC inc)
 
 # ========== SWIG Python Module ==========
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 set(CMAKE_SWIG_FLAGS "-w503")
+
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 
 set_source_files_properties(interface/cubik.i PROPERTIES CPLUSPLUS ON)
@@ -64,16 +64,22 @@ swig_add_library(cubik
 
 swig_link_libraries(cubik PRIVATE cubik_core Python3::Module)
 
-# Place generated module in Python package when installing wheels
+# ========== Install Python Extension + Wrapper ==========
+# Install compiled extension (_cubik.so / _cubik.pyd)
 install(TARGETS cubik
-    LIBRARY DESTINATION cubik
-    RUNTIME DESTINATION cubik   # Windows
+    LIBRARY DESTINATION cubik       # Linux / macOS
+    RUNTIME DESTINATION cubik       # Windows
+)
+
+# Install SWIG-generated Python wrapper (cubik.py)
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/cubik.py"
+    DESTINATION cubik
 )
 
 # ========== Optional CLI executable ==========
 add_executable(cubik_cli main.cpp)
 target_link_libraries(cubik_cli PRIVATE cubik_core)
-
 install(TARGETS cubik_cli DESTINATION bin)
 
 # ========== Tests ==========
