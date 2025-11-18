@@ -67,14 +67,14 @@ swig_link_libraries(cubik PRIVATE cubik_core Python3::Module)
 # ========== Install Python Extension + Wrapper ==========
 # Install compiled extension (_cubik.so / _cubik.pyd)
 install(TARGETS cubik
-    LIBRARY DESTINATION cubik       # Linux / macOS
-    RUNTIME DESTINATION cubik       # Windows
+    LIBRARY DESTINATION .       # Linux / macOS
+    RUNTIME DESTINATION .       # Windows
 )
 
 # Install SWIG-generated Python wrapper (cubik.py)
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/cubik.py"
-    DESTINATION cubik
+    DESTINATION .
 )
 
 # ========== Optional CLI executable ==========
