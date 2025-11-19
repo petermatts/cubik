@@ -18,3 +18,7 @@ cube = Cube()
 state = cube.state_array()
 print(state)
 print(type(state))
+
+checkered = cube.apply_moves(["M2", "E2", "S2"])
+print(cube)
+print(checkered)
