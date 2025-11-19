@@ -111,7 +111,7 @@ bool Cube::verify_orientation() const {
     return (poles == axes) && result;
 }
 
-bool Cube::isSolved() {
+bool Cube::is_solved() {
     return *this == Cube();
 }
 

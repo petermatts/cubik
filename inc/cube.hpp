@@ -83,7 +83,7 @@ class Cube {
 
     Cube apply_moves(const vector<string> &moves);
 
-    bool isSolved();
+    bool is_solved();
     string toString();
     
     vector<uint32_t> state_array() const;

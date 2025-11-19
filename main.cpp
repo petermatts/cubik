@@ -4,7 +4,7 @@
 using namespace std;
 
 void solvedMsg(Cube cube) {
-    if(cube.isSolved()) {
+    if(cube.is_solved()) {
         cout << "Cube is solved :)" << endl << endl;
     } else {
         cout << "Cube is not solved :(" << endl << endl;
