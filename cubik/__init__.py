@@ -17,7 +17,7 @@ class _MovesFiltered:
 
     def __dir__(self):
         # List everything except private names
-        return [name for name in dir(self._module) if not name.startswith("_")]
+        return [name for name in dir(self._module) if not name.startswith("_") and name != "cvar"]
 
 
 # Replace the original moves module with the filtered version
