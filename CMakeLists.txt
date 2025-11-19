@@ -54,6 +54,7 @@ set(CMAKE_SWIG_FLAGS "-w503")
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 
+# --- Main module: cubik ---
 set_source_files_properties(interface/cubik.i PROPERTIES CPLUSPLUS ON)
 
 swig_add_library(cubik
@@ -64,16 +65,37 @@ swig_add_library(cubik
 
 swig_link_libraries(cubik PRIVATE cubik_core Python3::Module)
 
-# ========== Install Python Extension + Wrapper ==========
-# Install compiled extension (_cubik.so / _cubik.pyd)
-install(TARGETS cubik
-    LIBRARY DESTINATION .       # Linux / macOS
-    RUNTIME DESTINATION .       # Windows
+# --- Submodule: cubik.moves ---
+set_source_files_properties(interface/moves.i PROPERTIES CPLUSPLUS ON)
+
+swig_add_library(cubik_moves
+    TYPE MODULE
+    LANGUAGE python
+    SOURCES interface/moves.i
 )
 
-# Install SWIG-generated Python wrapper (cubik.py)
+swig_link_libraries(cubik_moves PRIVATE cubik_core Python3::Module)
+
+# ========== Install Python Extension + Wrapper ==========
+# Install main SWIG extension
+install(TARGETS cubik
+    LIBRARY DESTINATION . # Linux / macOS
+    RUNTIME DESTINATION . # Windows
+)
+
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/cubik.py"
+    DESTINATION .
+)
+
+# Install moves submodule (_moves.so + moves.py)
+install(TARGETS cubik_moves
+    LIBRARY DESTINATION .       # goes inside the cubik package folder
+    RUNTIME DESTINATION .
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/moves.py"
     DESTINATION .
 )
 

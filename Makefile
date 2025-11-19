@@ -20,6 +20,9 @@ all:
 	cp $(BUILD_DIR)/_cubik.so ./cubik
 	cp $(BUILD_DIR)/cubik.py ./cubik
 
+	cp $(BUILD_DIR)/_cubik_moves.so ./cubik
+	cp $(BUILD_DIR)/moves.py ./cubik
+
 release:
 	mkdir -p $(RELEASE_DIR) && cd $(RELEASE_DIR) && \
 	cmake -DCMAKE_BUILD_TYPE=Release .. && \
