@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdint>
 #include <string>
-#include <array>
 #include <vector>
 #include "common.hpp"
 
@@ -84,10 +83,10 @@ class Cube {
 
     Cube apply_moves(const vector<string> &moves);
 
-    bool isSolved();
+    bool is_solved();
     string toString();
     
-    array<uint32_t, 6> state_array() const;
+    vector<uint32_t> state_array() const;
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
     friend bool operator!=(const Cube &cube1, const Cube &cube2);

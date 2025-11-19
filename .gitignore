@@ -8,6 +8,12 @@ build
 release
 _deps
 
+# Python
+__pycache__
+cubik/*.so
+cubik/cubik.py
+cubik/moves.py
+
 # Distribution code
 dist
 
