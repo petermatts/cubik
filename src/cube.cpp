@@ -2,7 +2,6 @@
 #include "cube.hpp"
 #include "moves.hpp"
 
-#include <array>
 #include <cassert>
 #include <cstdint>
 #include <vector>
@@ -32,7 +31,7 @@ Cube::Cube(const Cube &cube) {
 
 Cube::~Cube() = default;
 
-array<uint32_t, 6> Cube::state_array() const {
+vector<uint32_t> Cube::state_array() const {
     assert(verify_orientation());
     uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
     uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
@@ -42,7 +41,6 @@ array<uint32_t, 6> Cube::state_array() const {
     uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
 
     array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-    array<uint32_t, 6> state;
     vector<uint32_t> state_vector;
 
     for(uint8_t color : colors) {
@@ -61,8 +59,7 @@ array<uint32_t, 6> Cube::state_array() const {
         }
     }
 
-    copy(state_vector.begin(), state_vector.end(), state.begin());
-    return state;
+    return state_vector;
 }
 
 bool Cube::verify_orientation() const {

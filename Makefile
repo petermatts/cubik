@@ -17,16 +17,13 @@ all:
 	cmake -DENABLE_TESTING=ON .. && \
 	cmake --build . --parallel $(THREADS)
 
-# 	cp $(BUILD_DIR)/Debug/_cubik_python.pyd $(BUILD_DIR)/_cubik_python.pyd
-# 	cp -r $(BUILD_DIR)/tests/solutions $(BUILD_DIR)/tests/Debug
+	cp $(BUILD_DIR)/_cubik.so ./cubik
+	cp $(BUILD_DIR)/cubik.py ./cubik
 
 release:
 	mkdir -p $(RELEASE_DIR) && cd $(RELEASE_DIR) && \
 	cmake -DCMAKE_BUILD_TYPE=Release .. && \
 	cmake --build . --config Release --parallel $(THREADS)
-
-# 	cp $(RELEASE_DIR)/Release/_cubik_python.pyd $(RELEASE_DIR)/_cubik_python.pyd
-# 	cp -r $(RELEASE_DIR)/tests/solutions $(RELEASE_DIR)/tests/Release
 
 wheel:
 	./wheel.sh
@@ -46,6 +43,9 @@ clean:
 	mv _deps $(BUILD_DIR)/_deps
 
 	rm -rf $(RELEASE_DIR)
+
+	rm -f ./cubik/*.so
+	rm -f ./cubik/cubik.py
 
 clean-all:
 	rm -rf $(BUILD_DIR)
