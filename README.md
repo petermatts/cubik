@@ -22,7 +22,15 @@ print(cube)
 
 Outputs:
 ```
-TODO copy and pase a print out here
+      ⬜⬜⬜            
+      ⬜⬜⬜            
+      ⬜⬜⬜            
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+      🟨🟨🟨            
+      🟨🟨🟨            
+      🟨🟨🟨    
 ```
 
 ### Applying a Move
@@ -46,17 +54,30 @@ checker_moves = [moves.M2, moves.E2, moves.S2] # sequence of moves to build a ch
 checkered_cube = cube.apply_moves(checker_moves)
 ```
 
+Outputs:
+```
+      ⬜🟨⬜            
+      🟨⬜🟨            
+      ⬜🟨⬜            
+🟧🟥🟧🟩🟦🟩🟥🟧🟥🟦🟩🟦
+🟥🟧🟥🟦🟩🟦🟧🟥🟧🟩🟦🟩
+🟧🟥🟧🟩🟦🟩🟥🟧🟥🟦🟩🟦
+      🟨⬜🟨            
+      ⬜🟨⬜            
+      🟨⬜🟨   
+```
+
 ### A Few Other Handy Functions and Features
 
 ```python
-cube.is_solved() # returns true if the cube is in the solved state, false otherwise
+cube.is_solved() # returns true if the cube is solved, false otherwise
 cube.get_state() # returns a tuple of 6 elements 
 
 other_cube = cube()
-other_cube == cube # evaluates to true as both cubes are in equal states
+other_cube == cube # true as both cubes are in equal states
 other_cube.R() == cube.R() # ditto
 
-other_cube != cube.R() # evaluates to true because the other_cube is not in the same state as cube + R move
+other_cube != cube.R() # true because other_cube is not the as cube+R
 
 ```
 
