@@ -5,128 +5,103 @@
 
 C++ module for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
 
-## The Cube Model
+## Usage
+
+### Installation
+
+To install simply run: `pip install cubik`
+
+### Creating a Cube
+
+```python
+from cubik import Cube
+
+cube = Cube()
+print(cube)
+```
+
+Outputs:
+```
+      ⬜⬜⬜            
+      ⬜⬜⬜            
+      ⬜⬜⬜            
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+🟧🟧🟧🟩🟩🟩🟥🟥🟥🟦🟦🟦
+      🟨🟨🟨            
+      🟨🟨🟨            
+      🟨🟨🟨    
+```
+
+### Applying a Move
+
+```python
+cube_R = cube.R() # applys R move
+```
+
+Note: *all move methods return a new cube*
+This means that `cube` will be unchanged and `cube_R` is the result of applying a 'R' move to `cube`.
+
+### Applying a Sequence of Moves
+
+```python
+from cubik import Cube, moves
+
+cube = Cube()
+
+checker_moves = [moves.M2, moves.E2, moves.S2] # sequence of moves to build a checker pattern on the cube
+
+checkered_cube = cube.apply_moves(checker_moves)
+```
+
+Outputs:
+```
+      ⬜🟨⬜            
+      🟨⬜🟨            
+      ⬜🟨⬜            
+🟧🟥🟧🟩🟦🟩🟥🟧🟥🟦🟩🟦
+🟥🟧🟥🟦🟩🟦🟧🟥🟧🟩🟦🟩
+🟧🟥🟧🟩🟦🟩🟥🟧🟥🟦🟩🟦
+      🟨⬜🟨            
+      ⬜🟨⬜            
+      🟨⬜🟨   
+```
+
+### A Few Other Handy Functions and Features
+
+```python
+cube.is_solved() # returns true if the cube is solved, false otherwise
+cube.get_state() # returns a tuple of 6 elements 
+
+other_cube = cube()
+other_cube == cube # true as both cubes are in equal states
+other_cube.R() == cube.R() # ditto
+
+other_cube != cube.R() # true because other_cube is not the as cube+R
+
+```
+
+
+## Rubik's Cube Notation
 
 For cube notation please refer to [3x3 Rubik's Cube Move Notation](https://jperm.net/3x3/moves).
 
-### Memory Model
-In this cube model we attempt to be as memory efficient as possible so, in memory each face is stored as a uint32 such that:
+## Visualization
 
-<table>
-    <thead>
-    <tr>
-        <th colspan="5">Unused</th>
-        <th colspan="3">Bottom Right</th>
-        <th colspan="3">Bottom Middle</th>
-        <th colspan="3">Bottom Left</th>
-        <th colspan="3">Middle Right</th>
-        <th colspan="3">Center</th>
-        <th colspan="3">Middle Left</th>
-        <th colspan="3">Top Right</th>
-        <th colspan="3">Top Middle</th>
-        <th colspan="3">Top Left</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>b31</td>
-        <td>b30</td>
-        <td>b29</td>
-        <td>b28</td>
-        <td>b27</td>
-        <td>b26</td>
-        <td>b25</td>
-        <td>b24</td>
-        <td>b23</td>
-        <td>b22</td>
-        <td>b21</td>
-        <td>b20</td>
-        <td>b19</td>
-        <td>b18</td>
-        <td>b17</td>
-        <td>b16</td>
-        <td>b15</td>
-        <td>b14</td>
-        <td>b13</td>
-        <td>b12</td>
-        <td>b11</td>
-        <td>b10</td>
-        <td>b9</td>
-        <td>b8</td>
-        <td>b7</td>
-        <td>b6</td>
-        <td>b5</td>
-        <td>b4</td>
-        <td>b3</td>
-        <td>b2</td>
-        <td>b1</td>
-        <td>b0</td>
-    </tr>
-    </tbody>
-</table>
-
-
-### Visualized/Printed Model
+### Printed Model
 
 Cube Layout:
-```text
-          +---------+
-          |         |
-          |    U    |
-          |         |
-+---------+---------+---------+---------+
-|         |         |         |         |
-|    L    |    F    |    R    |    B    |
-|         |         |         |         |
-+---------+---------+---------+---------+
-          |         |
-          |    D    |
-          |         |
-          +---------+
-```
 
-| Letter | Face  |
-| ------ | ----- |
-| U      | Up    |
-| L      | Left  |
-| F      | Front |
-| R      | Right |
-| B      | Back  |
-| D      | Down  |
+![](./docs/images/cube.png)
 
-Face Layout:
-<table>
-    <tbody>
-    <tr>
-        <td>Top Left</td>
-        <td>Top Middle</td>
-        <td>Top Right</td>
-    </tr>
-    <tr>
-        <td>Middle Left</td>
-        <td>Center</td>
-        <td>Middle Right</td>
-    </tr>
-    <tr>
-        <td>Bottom Left</td>
-        <td>Bottom Middle</td>
-        <td>Bottom Right</td>
-    </tr>
-    </tbody>
-</table>
+*Coloring is based on the solved state and orientation*
 
+### Memory Model
+In this cube model we attempt to be as memory efficient as possible so, in memory each face is stored as a `uint32_t` such that:
 
-<!-- ### Moves Group
+![Face Layout](./docs/images/face.png)
 
-| Move | Composition |
-| ---- | ----------- |
-| I    |             |
-| U    |             |
-| D    |             |
-| L    |             |
-| R    |             |
-| F    |             |
-| B    |             |
-| M    |             |
-| E    |             |
-| S    |             | -->
+*Fuzzy display of uint32_t storage of a face*
+
+![Face uint32_t](./docs/images/uint32.png)
+
