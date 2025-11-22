@@ -3,7 +3,7 @@
 
 # Cubik
 
-C++ module for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
+Python module, backended by C++ via SWIG, for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
 
 ## Usage
 

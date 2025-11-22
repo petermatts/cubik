@@ -32,7 +32,7 @@ wheel:
 	./wheel.sh
 
 run:
-	cd $(BUILD_DIR)/Debug && ./cubik.exe
+	cd $(BUILD_DIR)/ && ./cubik_cli
 
 test:
 	cd build/tests && ./cubik_tests

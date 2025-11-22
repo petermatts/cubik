@@ -106,6 +106,12 @@ class Cube {
     uint32_t down;
     
     bool verify_orientation() const;
+
+    bool is_valid_state() const;
+    int get_corner_orientation(int corner_index) const;
+    int get_edge_orientation(int edge_index) const;
+    bool check_permutation_parity() const;
+    bool check_unique_pieces() const;
 };
 
 #endif // CUBE_HPP
