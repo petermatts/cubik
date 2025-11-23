@@ -36,7 +36,7 @@ Outputs:
 ### Applying a Move
 
 ```python
-cube_R = cube.R() # applys R move
+cube_R = cube.R() # applies R move
 ```
 
 Note: *all move methods return a new cube*

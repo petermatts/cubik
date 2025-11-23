@@ -1,147 +1,177 @@
+#include <array>
 #include <algorithm>
-#include <vector>
+#include <cstring>
 
+#include "common.hpp"
 #include "cube.hpp"
-
+#include "parity.hpp"
 
 bool Cube::is_valid_state() const {
-    // 1. Check Corner Orientation (mod 3)
-    int corner_orientation_sum = 0;
-    // Assuming state_array() gives the state in a specific order
-    // e.g. [up, front, left, right, back, down] and each face is represented by a uint32_t
-    // You should extract corner orientations from the state vector.
-    // This depends on how your cube is implemented and how the color positions map to corners.
-    // For simplicity, let's assume we have a function get_corner_orientation() which extracts
-    // corner orientations from the state array.
-    
-    for (int i = 0; i < 8; ++i) {
-        corner_orientation_sum += get_corner_orientation(i);  // Get orientation of corner i
-    }
-    
-    // Corner orientations must sum to 0 mod 3
-    if (corner_orientation_sum % 3 != 0) {
-        return false;
-    }
+    return check_piece_counts()
+        && check_corner_orientation()
+        && check_edge_orientation()
+        && check_parity();
+}
 
-    // 2. Check Edge Orientation (mod 2)
-    int edge_orientation_sum = 0;
-    for (int i = 0; i < 12; ++i) {
-        edge_orientation_sum += get_edge_orientation(i);  // Get orientation of edge i
-    }
-
-    // Edge orientations must sum to 0 mod 2
-    if (edge_orientation_sum % 2 != 0) {
-        return false;
-    }
-
-    // 3. Check Permutation Parity (even permutation)
-    // A valid cube has an even permutation parity (both corner and edge pieces).
-    if (!check_permutation_parity()) {
-        return false;
-    }
-
-    // 4. Check for Duplicate Pieces and Stickers
-    if (!check_unique_pieces()) {
-        return false;
-    }
-
-    // If all checks pass, the cube is in a valid state.
+bool Cube::check_piece_counts() const {
     return true;
 }
 
+bool Cube::check_corner_orientation() const {
+    int sum = 0;
 
-int Cube::get_corner_orientation(int corner_index) const {
-    // For example, if corner_index is 0 (top-left-front corner), we check its orientation
-    // relative to the solved cube. In the solved state, all corners are oriented "correctly".
-    
-    // Access corner piece's stickers and calculate the orientation.
-    // We will need to access the 3 adjacent faces of each corner.
-    
-    // Here's a rough idea for accessing corner orientation:
-    // Let's assume we have corner faces: up, front, left
-    
-    int orientation = 0;  // Orientation: 0 for solved, 1 for 120 degrees, 2 for 240 degrees
-    
-    // Example: If corner is on the "top-left-front" position, check the stickers of each adjacent face:
-    if (get(this->up, TOP_LEFT) == WHITE) {
-        if (get(this->front, BOTTOM_LEFT) == GREEN && get(this->left, BOTTOM_RIGHT) == ORANGE) {
-            orientation = 0;  // Solved orientation (just an example; you'd need a full check)
-        }
+    for (uint8_t i = 0; i < 8; i++) {
+        CornerCubie c = get_corner_cubie(i);
+        sum += c.orientation;
     }
-    
-    return orientation; // Return corner orientation: 0, 1, or 2 (mod 3)
+
+    return (sum % 3) == 0;
 }
 
+bool Cube::check_edge_orientation() const {
+    int sum = 0;
 
-int Cube::get_edge_orientation(int edge_index) const {
-    // For example, if edge_index is 0 (top-front edge), check its orientation relative to the solved state.
-    
-    int orientation = 0;  // Orientation: 0 for solved, 1 for 180-degree rotation
-    
-    // Example: Check edge orientation between front and up faces:
-    if (get(this->front, TOP_MIDDLE) == GREEN) {
-        if (get(this->up, BOTTOM_MIDDLE) == WHITE) {
-            orientation = 0;  // Solved orientation
-        } else if (get(this->up, BOTTOM_MIDDLE) == YELLOW) {
-            orientation = 1;  // 180-degree rotation
-        }
+    for (uint8_t i = 0; i < 12; i++) {
+        EdgeCubie e = get_edge_cubie(i);
+        sum += e.orientation;
     }
-    
-    return orientation; // Return edge orientation: 0 or 1
+
+    return (sum % 2) == 0;
 }
 
+std::array<int8_t, 8> Cube::corner_permutation() const {
+    std::array<int8_t, 8> perm;
 
-bool Cube::check_permutation_parity() const {
-    // Calculate corner parity
-    int corner_parity = 0;
-    for (int i = 0; i < 7; ++i) {  // Loop through 8 corners
-        for (int j = i + 1; j < 8; ++j) {
-            if (/* compare the positions of corners i and j */) {
-                ++corner_parity;
+    for (int8_t pos = 0; pos < 8; pos++) {
+        CornerCubie c = get_corner_cubie(pos);
+
+        // Normalize sticker colors (sort since order varies)
+        uint8_t col_sorted[3] = {c.colors[0], c.colors[1], c.colors[2]};
+        std::sort(col_sorted, col_sorted + 3);
+
+        // Match against solved cubies
+        bool found = false;
+        for (int8_t solved_idx = 0; solved_idx < 8; solved_idx++) {
+            uint8_t sol[3] = {
+                CORNERS[solved_idx][0],
+                CORNERS[solved_idx][1],
+                CORNERS[solved_idx][2]
+            };
+            std::sort(sol, sol + 3);
+
+            if (memcmp(sol, col_sorted, 3) == 0) {
+                perm[pos] = solved_idx;
+                found = true;
+                break;
             }
         }
+
+        if (!found)
+            perm[pos] = -1; // Impossible piece
     }
 
-    // Calculate edge parity
-    int edge_parity = 0;
-    for (int i = 0; i < 11; ++i) {  // Loop through 12 edges
-        for (int j = i + 1; j < 12; ++j) {
-            if (/* compare the positions of edges i and j */) {
-                ++edge_parity;
-            }
-        }
-    }
-
-    // The total number of swaps (corner_parity + edge_parity) should be even for a solvable state.
-    return ((corner_parity + edge_parity) % 2 == 0);
+    return perm;
 }
 
-bool Cube::check_unique_pieces() const {
-    // This function checks that there are no duplicates or missing pieces.
-    
-    // Check corners:
-    vector<int> corner_positions;  // Store positions of all corner pieces
-    for (int i = 0; i < 8; ++i) {
-        corner_positions.push_back(get_corner_position(i));
+std::array<int8_t, 12> Cube::edge_permutation() const {
+    std::array<int8_t, 12> perm;
+
+    for (int8_t pos = 0; pos < 12; pos++) {
+        EdgeCubie e = get_edge_cubie(pos);
+
+        uint8_t sorted_col[2] = {e.colors[0], e.colors[1]};
+        std::sort(sorted_col, sorted_col + 2);
+
+        bool found = false;
+        for (int8_t solved_idx = 0; solved_idx < 12; solved_idx++) {
+            uint8_t sol[2] = {
+                EDGES[solved_idx][0],
+                EDGES[solved_idx][1]
+            };
+            std::sort(sol, sol + 2);
+
+            if (sol[0] == sorted_col[0] &&
+                sol[1] == sorted_col[1]) {
+                perm[pos] = solved_idx;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+            perm[pos] = -1;
     }
 
-    // Check for duplicates in corner positions
-    std::sort(corner_positions.begin(), corner_positions.end());
-    if (std::adjacent_find(corner_positions.begin(), corner_positions.end()) != corner_positions.end()) {
-        return false;  // Found duplicate corner piece
+    return perm;
+}
+
+
+int Cube::corner_parity() const {
+    auto perm = corner_permutation();
+    return permutation_parity(perm);
+}
+
+int Cube::edge_parity() const {
+    auto perm = edge_permutation();
+    return permutation_parity(perm);
+}
+
+bool Cube::check_parity() const {
+    return corner_parity() == edge_parity();
+}
+
+
+CornerCubie Cube::get_corner_cubie(uint8_t idx) const {
+    CornerCubie c;
+
+    for (int i = 0; i < 3; i++) {
+        uint8_t face = CORNER_STICKERS[idx][i].face;
+        uint8_t pos  = CORNER_STICKERS[idx][i].pos;
+
+        const uint32_t &face_val =
+            (face == UP    ? up :
+            (face == DOWN  ? down :
+            (face == FRONT ? front :
+            (face == BACK  ? back :
+            (face == LEFT  ? left : right)))));
+
+        c.colors[i] = get(face_val, pos);
     }
 
-    // Check edges:
-    vector<int> edge_positions;  // Store positions of all edge pieces
-    for (int i = 0; i < 12; ++i) {
-        edge_positions.push_back(get_edge_position(i));
+    c.orientation = compute_corner_orientation(
+        c.colors,
+        get(up, CENTER),
+        get(down, CENTER)
+    );
+
+    return c;
+}
+
+
+EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
+    EdgeCubie e;
+
+    for (int i = 0; i < 2; i++) {
+        uint8_t face = EDGE_STICKERS[idx][i].face;
+        uint8_t pos  = EDGE_STICKERS[idx][i].pos;
+
+        const uint32_t &face_val =
+            (face == UP    ? up :
+            (face == DOWN  ? down :
+            (face == FRONT ? front :
+            (face == BACK  ? back :
+            (face == LEFT  ? left : right)))));
+
+        e.colors[i] = get(face_val, pos);
     }
 
-    // Check for duplicates in edge positions
-    std::sort(edge_positions.begin(), edge_positions.end());
-    if (std::adjacent_find(edge_positions.begin(), edge_positions.end()) != edge_positions.end()) {
-        return false;  // Found duplicate edge piece
-    }
+    e.orientation = compute_edge_orientation(
+        e.colors,
+        get(up,    CENTER),
+        get(down,  CENTER),
+        get(front, CENTER),
+        get(back,  CENTER)
+    );
 
-    return true;  // No duplicates, all pieces are unique
+    return e;
 }

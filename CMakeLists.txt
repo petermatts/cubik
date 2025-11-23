@@ -41,6 +41,7 @@ add_library(cubik_core
     src/moves/X.cpp
     src/moves/Y.cpp
     src/moves/Z.cpp
+    src/parity.cpp
 )
 
 # Required for using cubik_core inside a shared library (SWIG module)

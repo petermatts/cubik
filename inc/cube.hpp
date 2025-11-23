@@ -87,6 +87,7 @@ class Cube {
     string toString();
     
     vector<uint32_t> state_array() const;
+    // bool set_state(vector<uint32_t> state) const;
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
     friend bool operator!=(const Cube &cube1, const Cube &cube2);
@@ -96,6 +97,7 @@ class Cube {
     bool __eq__(const Cube &other);
     bool __ne__(const Cube &other);
 
+    bool is_valid_state() const;
 
     private:
     uint32_t up;
@@ -107,11 +109,18 @@ class Cube {
     
     bool verify_orientation() const;
 
-    bool is_valid_state() const;
-    int get_corner_orientation(int corner_index) const;
-    int get_edge_orientation(int edge_index) const;
-    bool check_permutation_parity() const;
-    bool check_unique_pieces() const;
+    bool check_corner_orientation() const;
+    bool check_edge_orientation() const;
+    bool check_piece_counts() const;
+    
+    std::array<int8_t, 8> corner_permutation() const;
+    std::array<int8_t, 12> edge_permutation() const;
+
+    int corner_parity() const;
+    int edge_parity() const;
+    bool check_parity() const;
+    CornerCubie get_corner_cubie(uint8_t idx) const;
+    EdgeCubie get_edge_cubie(uint8_t idx) const;
 };
 
 #endif // CUBE_HPP

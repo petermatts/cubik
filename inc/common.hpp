@@ -38,7 +38,15 @@
 
 #define CLEAR 29U
 
-// define faces
+// Face identifiers
+#define UP     0U
+#define DOWN   1U
+#define FRONT  2U
+#define BACK   3U
+#define LEFT   4U
+#define RIGHT  5U
+
+// define solved faces
 #define WHITE_FACE (WHITE << TOP_LEFT) + (WHITE << TOP_MIDDLE) + (WHITE << TOP_RIGHT) + (WHITE << MIDDLE_LEFT) + (WHITE << CENTER) + (WHITE << MIDDLE_RIGHT) + (WHITE << BOTTOM_LEFT) + (WHITE << BOTTOM_MIDDLE) + (WHITE << BOTTOM_RIGHT)
 #define YELLOW_FACE (YELLOW << TOP_LEFT) + (YELLOW << TOP_MIDDLE) + (YELLOW << TOP_RIGHT) + (YELLOW << MIDDLE_LEFT) + (YELLOW << CENTER) + (YELLOW << MIDDLE_RIGHT) + (YELLOW << BOTTOM_LEFT) + (YELLOW << BOTTOM_MIDDLE) + (YELLOW << BOTTOM_RIGHT)
 #define GREEN_FACE (GREEN << TOP_LEFT) + (GREEN << TOP_MIDDLE) + (GREEN << TOP_RIGHT) + (GREEN << MIDDLE_LEFT) + (GREEN << CENTER) + (GREEN << MIDDLE_RIGHT) + (GREEN << BOTTOM_LEFT) + (GREEN << BOTTOM_MIDDLE) + (GREEN << BOTTOM_RIGHT)
@@ -53,6 +61,81 @@
 // #define BLUE_FACE (7 << TOP_LEFT) + (7 << TOP_MIDDLE) + (BLUE << TOP_RIGHT) + (BLUE << MIDDLE_LEFT) + (BLUE << CENTER) + (BLUE << MIDDLE_RIGHT) + (BLUE << BOTTOM_LEFT) + (BLUE << BOTTOM_MIDDLE) + (BLUE << BOTTOM_RIGHT)
 // #define RED_FACE (7 << TOP_LEFT) + (7 << TOP_MIDDLE) + (RED << TOP_RIGHT) + (RED << MIDDLE_LEFT) + (RED << CENTER) + (RED << MIDDLE_RIGHT) + (RED << BOTTOM_LEFT) + (RED << BOTTOM_MIDDLE) + (RED << BOTTOM_RIGHT)
 // #define ORANGE_FACE (7 << TOP_LEFT) + (7 << TOP_MIDDLE) + (ORANGE << TOP_RIGHT) + (ORANGE << MIDDLE_LEFT) + (ORANGE << CENTER) + (ORANGE << MIDDLE_RIGHT) + (ORANGE << BOTTOM_LEFT) + (ORANGE << BOTTOM_MIDDLE) + (ORANGE << BOTTOM_RIGHT)
+
+struct StickerPos {
+    uint8_t face;
+    uint8_t pos;
+};
+
+// Corner cubies: index -> 3 sticker positions
+static const StickerPos CORNER_STICKERS[8][3] = {
+    { {UP, TOP_RIGHT}, {FRONT, TOP_RIGHT}, {RIGHT, TOP_LEFT} }, // 0: UFR
+    { {UP, TOP_MIDDLE}, {RIGHT, TOP_RIGHT}, {BACK, TOP_LEFT} }, // 1: URB
+    { {UP, TOP_LEFT}, {BACK, TOP_RIGHT}, {LEFT, TOP_LEFT} }, // 2: UBL
+    { {UP, TOP_MIDDLE}, {LEFT, TOP_RIGHT}, {FRONT, TOP_LEFT} }, // 3: ULF
+    { {DOWN, BOTTOM_RIGHT}, {FRONT, BOTTOM_RIGHT}, {RIGHT, BOTTOM_LEFT} }, // 4: DFR
+    { {DOWN, BOTTOM_MIDDLE}, {RIGHT, BOTTOM_RIGHT}, {BACK, BOTTOM_LEFT} }, // 5: DRB
+    { {DOWN, BOTTOM_LEFT}, {BACK, BOTTOM_RIGHT}, {LEFT, BOTTOM_LEFT} }, // 6: DBL
+    { {DOWN, BOTTOM_MIDDLE}, {LEFT, BOTTOM_RIGHT}, {FRONT, BOTTOM_LEFT} } // 7: DLF
+};
+
+// Edge cubies: index -> 2 sticker positions
+static const StickerPos EDGE_STICKERS[12][2] = {
+    { {UP, TOP_MIDDLE},    {FRONT, TOP_MIDDLE} },     // UF
+    { {UP, TOP_RIGHT},     {RIGHT, TOP_MIDDLE} },     // UR
+    { {UP, TOP_LEFT},      {BACK, TOP_MIDDLE} },      // UB
+    { {UP, TOP_MIDDLE},    {LEFT, TOP_MIDDLE} },      // UL
+
+    { {FRONT, MIDDLE_RIGHT}, {RIGHT, MIDDLE_LEFT} },  // FR
+    { {BACK,  MIDDLE_RIGHT}, {RIGHT, MIDDLE_RIGHT} }, // BR
+    { {BACK,  MIDDLE_LEFT},  {LEFT,  MIDDLE_RIGHT} }, // BL
+    { {FRONT, MIDDLE_LEFT},  {LEFT,  MIDDLE_LEFT} },  // FL
+
+    { {DOWN, BOTTOM_MIDDLE}, {FRONT, BOTTOM_MIDDLE} }, // DF
+    { {DOWN, BOTTOM_RIGHT},  {RIGHT, BOTTOM_MIDDLE} }, // DR
+    { {DOWN, BOTTOM_LEFT},   {BACK,  BOTTOM_MIDDLE} }, // DB
+    { {DOWN, BOTTOM_MIDDLE}, {LEFT,  BOTTOM_MIDDLE} }  // DL
+};
+
+static const uint8_t CORNERS[8][3] = {
+    {WHITE, GREEN,  RED},    // UFR
+    {WHITE, RED,    BLUE},   // URB
+    {WHITE, BLUE,   ORANGE}, // UBL
+    {WHITE, ORANGE, GREEN},  // ULF
+    {YELLOW, GREEN,  RED},   // DFR
+    {YELLOW, RED,    BLUE},  // DRB
+    {YELLOW, BLUE,   ORANGE},// DBL
+    {YELLOW, ORANGE, GREEN}  // DLF
+};
+
+static const uint8_t EDGES[12][2] = {
+    {WHITE, GREEN},   // UF
+    {WHITE, RED},     // UR
+    {WHITE, BLUE},    // UB
+    {WHITE, ORANGE},  // UL
+
+    {GREEN,  RED},    // FR
+    {BLUE,   RED},    // BR
+    {BLUE,   ORANGE}, // BL
+    {GREEN,  ORANGE}, // FL
+
+    {YELLOW, GREEN},  // DF
+    {YELLOW, RED},     // DR
+    {YELLOW, BLUE},    // DB
+    {YELLOW, ORANGE}  // DL
+};
+
+struct CornerCubie {
+    uint8_t colors[3];      // which solved-corner this corresponds to (0–7)
+    uint8_t orientation;    // orientation 0–2
+};
+
+struct EdgeCubie {
+    uint8_t colors[2];      // which solved-edge (0–11)
+    uint8_t orientation;    // 0 or 1
+};
+
+
 
 std::string getColor(uint32_t num);
 uint8_t get(uint32_t num, uint8_t from);
