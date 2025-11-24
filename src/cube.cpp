@@ -31,7 +31,7 @@ Cube::Cube(const Cube &cube) {
 
 Cube::~Cube() = default;
 
-vector<uint32_t> Cube::state_array() const {
+vector<uint32_t> Cube::get_state() const {
     assert(verify_orientation());
     uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
     uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
@@ -195,7 +195,7 @@ string Cube::toString() {
 }
 
 bool operator==(const Cube &cube1, const Cube &cube2) {
-    return cube1.state_array() == cube2.state_array();
+    return cube1.get_state() == cube2.get_state();
 }
 
 bool operator!=(const Cube &cube1, const Cube &cube2) {

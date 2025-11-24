@@ -15,7 +15,7 @@ from cubik import Cube
 # assert (cubeU == cube.U())
 
 cube = Cube()
-state = cube.state_array()
+state = cube.get_state()
 print(state)
 print(type(state))
 

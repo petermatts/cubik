@@ -123,7 +123,7 @@ protected:
 
 TEST_F(MoveTest, solved) {
     array<uint32_t, 6> sol = state("solutions/solved/solved.toml");
-    vector<uint32_t> sat = solved.state_array();
+    vector<uint32_t> sat = solved.get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -132,7 +132,7 @@ TEST_F(MoveTest, solved) {
 
 TEST_F(MoveTest, U) {
     array<uint32_t, 6> sol = state("solutions/faces/U.toml");
-    vector<uint32_t> sat = solved.U().state_array();
+    vector<uint32_t> sat = solved.U().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -141,7 +141,7 @@ TEST_F(MoveTest, U) {
 
 TEST_F(MoveTest, U_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/U_prime.toml");
-    vector<uint32_t> sat = solved.U_prime().state_array();
+    vector<uint32_t> sat = solved.U_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -150,7 +150,7 @@ TEST_F(MoveTest, U_prime) {
 
 TEST_F(MoveTest, U2) {
     array<uint32_t, 6> sol = state("solutions/faces/U2.toml");
-    vector<uint32_t> sat = solved.U2().state_array();
+    vector<uint32_t> sat = solved.U2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -159,7 +159,7 @@ TEST_F(MoveTest, U2) {
 
 TEST_F(MoveTest, D) {
     array<uint32_t, 6> sol = state("solutions/faces/D.toml");
-    vector<uint32_t> sat = solved.D().state_array();
+    vector<uint32_t> sat = solved.D().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -168,7 +168,7 @@ TEST_F(MoveTest, D) {
 
 TEST_F(MoveTest, D_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/D_prime.toml");
-    vector<uint32_t> sat = solved.D_prime().state_array();
+    vector<uint32_t> sat = solved.D_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -177,7 +177,7 @@ TEST_F(MoveTest, D_prime) {
 
 TEST_F(MoveTest, D2) {
     array<uint32_t, 6> sol = state("solutions/faces/D2.toml");
-    vector<uint32_t> sat = solved.D2().state_array();
+    vector<uint32_t> sat = solved.D2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -186,7 +186,7 @@ TEST_F(MoveTest, D2) {
 
 TEST_F(MoveTest, L) {
     array<uint32_t, 6> sol = state("solutions/faces/L.toml");
-    vector<uint32_t> sat = solved.L().state_array();
+    vector<uint32_t> sat = solved.L().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -195,7 +195,7 @@ TEST_F(MoveTest, L) {
 
 TEST_F(MoveTest, L_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/L_prime.toml");
-    vector<uint32_t> sat = solved.L_prime().state_array();
+    vector<uint32_t> sat = solved.L_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -204,7 +204,7 @@ TEST_F(MoveTest, L_prime) {
 
 TEST_F(MoveTest, L2) {
     array<uint32_t, 6> sol = state("solutions/faces/L2.toml");
-    vector<uint32_t> sat = solved.L2().state_array();
+    vector<uint32_t> sat = solved.L2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -213,7 +213,7 @@ TEST_F(MoveTest, L2) {
 
 TEST_F(MoveTest, R) {
     array<uint32_t, 6> sol = state("solutions/faces/R.toml");
-    vector<uint32_t> sat = solved.R().state_array();
+    vector<uint32_t> sat = solved.R().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -222,7 +222,7 @@ TEST_F(MoveTest, R) {
 
 TEST_F(MoveTest, R_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/R_prime.toml");
-    vector<uint32_t> sat = solved.R_prime().state_array();
+    vector<uint32_t> sat = solved.R_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -231,7 +231,7 @@ TEST_F(MoveTest, R_prime) {
 
 TEST_F(MoveTest, R2) {
     array<uint32_t, 6> sol = state("solutions/faces/R2.toml");
-    vector<uint32_t> sat = solved.R2().state_array();
+    vector<uint32_t> sat = solved.R2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -240,7 +240,7 @@ TEST_F(MoveTest, R2) {
 
 TEST_F(MoveTest, F) {
     array<uint32_t, 6> sol = state("solutions/faces/F.toml");
-    vector<uint32_t> sat = solved.F().state_array();
+    vector<uint32_t> sat = solved.F().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -249,7 +249,7 @@ TEST_F(MoveTest, F) {
 
 TEST_F(MoveTest, F_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/F_prime.toml");
-    vector<uint32_t> sat = solved.F_prime().state_array();
+    vector<uint32_t> sat = solved.F_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -258,7 +258,7 @@ TEST_F(MoveTest, F_prime) {
 
 TEST_F(MoveTest, F2) {
     array<uint32_t, 6> sol = state("solutions/faces/F2.toml");
-    vector<uint32_t> sat = solved.F2().state_array();
+    vector<uint32_t> sat = solved.F2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -267,7 +267,7 @@ TEST_F(MoveTest, F2) {
 
 TEST_F(MoveTest, B) {
     array<uint32_t, 6> sol = state("solutions/faces/B.toml");
-    vector<uint32_t> sat = solved.B().state_array();
+    vector<uint32_t> sat = solved.B().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -276,7 +276,7 @@ TEST_F(MoveTest, B) {
 
 TEST_F(MoveTest, B_prime) {
     array<uint32_t, 6> sol = state("solutions/faces/B_prime.toml");
-    vector<uint32_t> sat = solved.B_prime().state_array();
+    vector<uint32_t> sat = solved.B_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -285,7 +285,7 @@ TEST_F(MoveTest, B_prime) {
 
 TEST_F(MoveTest, B2) {
     array<uint32_t, 6> sol = state("solutions/faces/B2.toml");
-    vector<uint32_t> sat = solved.B2().state_array();
+    vector<uint32_t> sat = solved.B2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -294,7 +294,7 @@ TEST_F(MoveTest, B2) {
 
 TEST_F(MoveTest, M) {
     array<uint32_t, 6> sol = state("solutions/slices/M.toml");
-    vector<uint32_t> sat = solved.M().state_array();
+    vector<uint32_t> sat = solved.M().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -303,7 +303,7 @@ TEST_F(MoveTest, M) {
 
 TEST_F(MoveTest, M_prime) {
     array<uint32_t, 6> sol = state("solutions/slices/M_prime.toml");
-    vector<uint32_t> sat = solved.M_prime().state_array();
+    vector<uint32_t> sat = solved.M_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -312,7 +312,7 @@ TEST_F(MoveTest, M_prime) {
 
 TEST_F(MoveTest, M2) {
     array<uint32_t, 6> sol = state("solutions/slices/M2.toml");
-    vector<uint32_t> sat = solved.M2().state_array();
+    vector<uint32_t> sat = solved.M2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -321,7 +321,7 @@ TEST_F(MoveTest, M2) {
 
 TEST_F(MoveTest, E) {
     array<uint32_t, 6> sol = state("solutions/slices/E.toml");
-    vector<uint32_t> sat = solved.E().state_array();
+    vector<uint32_t> sat = solved.E().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -330,7 +330,7 @@ TEST_F(MoveTest, E) {
 
 TEST_F(MoveTest, E_prime) {
     array<uint32_t, 6> sol = state("solutions/slices/E_prime.toml");
-    vector<uint32_t> sat = solved.E_prime().state_array();
+    vector<uint32_t> sat = solved.E_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -339,7 +339,7 @@ TEST_F(MoveTest, E_prime) {
 
 TEST_F(MoveTest, E2) {
     array<uint32_t, 6> sol = state("solutions/slices/E2.toml");
-    vector<uint32_t> sat = solved.E2().state_array();
+    vector<uint32_t> sat = solved.E2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -348,7 +348,7 @@ TEST_F(MoveTest, E2) {
 
 TEST_F(MoveTest, S) {
     array<uint32_t, 6> sol = state("solutions/slices/S.toml");
-    vector<uint32_t> sat = solved.S().state_array();
+    vector<uint32_t> sat = solved.S().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -357,7 +357,7 @@ TEST_F(MoveTest, S) {
 
 TEST_F(MoveTest, S_prime) {
     array<uint32_t, 6> sol = state("solutions/slices/S_prime.toml");
-    vector<uint32_t> sat = solved.S_prime().state_array();
+    vector<uint32_t> sat = solved.S_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -366,7 +366,7 @@ TEST_F(MoveTest, S_prime) {
 
 TEST_F(MoveTest, S2) {
     array<uint32_t, 6> sol = state("solutions/slices/S2.toml");
-    vector<uint32_t> sat = solved.S2().state_array();
+    vector<uint32_t> sat = solved.S2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -375,7 +375,7 @@ TEST_F(MoveTest, S2) {
 
 TEST_F(MoveTest, X) {
     array<uint32_t, 6> sol = state("solutions/rotation/X.toml");
-    vector<uint32_t> sat = solved.X().state_array();
+    vector<uint32_t> sat = solved.X().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -384,7 +384,7 @@ TEST_F(MoveTest, X) {
 
 TEST_F(MoveTest, X_prime) {
     array<uint32_t, 6> sol = state("solutions/rotation/X_prime.toml");
-    vector<uint32_t> sat = solved.X_prime().state_array();
+    vector<uint32_t> sat = solved.X_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -393,7 +393,7 @@ TEST_F(MoveTest, X_prime) {
 
 TEST_F(MoveTest, X2) {
     array<uint32_t, 6> sol = state("solutions/rotation/X2.toml");
-    vector<uint32_t> sat = solved.X2().state_array();
+    vector<uint32_t> sat = solved.X2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -402,7 +402,7 @@ TEST_F(MoveTest, X2) {
 
 TEST_F(MoveTest, Y) {
     array<uint32_t, 6> sol = state("solutions/rotation/Y.toml");
-    vector<uint32_t> sat = solved.Y().state_array();
+    vector<uint32_t> sat = solved.Y().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -411,7 +411,7 @@ TEST_F(MoveTest, Y) {
 
 TEST_F(MoveTest, Y_prime) {
     array<uint32_t, 6> sol = state("solutions/rotation/Y_prime.toml");
-    vector<uint32_t> sat = solved.Y_prime().state_array();
+    vector<uint32_t> sat = solved.Y_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -420,7 +420,7 @@ TEST_F(MoveTest, Y_prime) {
 
 TEST_F(MoveTest, Y2) {
     array<uint32_t, 6> sol = state("solutions/rotation/Y2.toml");
-    vector<uint32_t> sat = solved.Y2().state_array();
+    vector<uint32_t> sat = solved.Y2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -429,7 +429,7 @@ TEST_F(MoveTest, Y2) {
 
 TEST_F(MoveTest, Z) {
     array<uint32_t, 6> sol = state("solutions/rotation/Z.toml");
-    vector<uint32_t> sat = solved.Z().state_array();
+    vector<uint32_t> sat = solved.Z().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -438,7 +438,7 @@ TEST_F(MoveTest, Z) {
 
 TEST_F(MoveTest, Z_prime) {
     array<uint32_t, 6> sol = state("solutions/rotation/Z_prime.toml");
-    vector<uint32_t> sat = solved.Z_prime().state_array();
+    vector<uint32_t> sat = solved.Z_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -447,7 +447,7 @@ TEST_F(MoveTest, Z_prime) {
 
 TEST_F(MoveTest, Z2) {
     array<uint32_t, 6> sol = state("solutions/rotation/Z2.toml");
-    vector<uint32_t> sat = solved.Z2().state_array();
+    vector<uint32_t> sat = solved.Z2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -456,7 +456,7 @@ TEST_F(MoveTest, Z2) {
 
 TEST_F(MoveTest, u) {
     array<uint32_t, 6> sol = state("solutions/wide/u.toml");
-    vector<uint32_t> sat = solved.u().state_array();
+    vector<uint32_t> sat = solved.u().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -465,7 +465,7 @@ TEST_F(MoveTest, u) {
 
 TEST_F(MoveTest, u_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/u_prime.toml");
-    vector<uint32_t> sat = solved.u_prime().state_array();
+    vector<uint32_t> sat = solved.u_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -474,7 +474,7 @@ TEST_F(MoveTest, u_prime) {
 
 TEST_F(MoveTest, u2) {
     array<uint32_t, 6> sol = state("solutions/wide/u2.toml");
-    vector<uint32_t> sat = solved.u2().state_array();
+    vector<uint32_t> sat = solved.u2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -483,7 +483,7 @@ TEST_F(MoveTest, u2) {
 
 TEST_F(MoveTest, d) {
     array<uint32_t, 6> sol = state("solutions/wide/d.toml");
-    vector<uint32_t> sat = solved.d().state_array();
+    vector<uint32_t> sat = solved.d().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -492,7 +492,7 @@ TEST_F(MoveTest, d) {
 
 TEST_F(MoveTest, d_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/d_prime.toml");
-    vector<uint32_t> sat = solved.d_prime().state_array();
+    vector<uint32_t> sat = solved.d_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -501,7 +501,7 @@ TEST_F(MoveTest, d_prime) {
 
 TEST_F(MoveTest, d2) {
     array<uint32_t, 6> sol = state("solutions/wide/d2.toml");
-    vector<uint32_t> sat = solved.d2().state_array();
+    vector<uint32_t> sat = solved.d2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -510,7 +510,7 @@ TEST_F(MoveTest, d2) {
 
 TEST_F(MoveTest, l) {
     array<uint32_t, 6> sol = state("solutions/wide/l.toml");
-    vector<uint32_t> sat = solved.l().state_array();
+    vector<uint32_t> sat = solved.l().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -519,7 +519,7 @@ TEST_F(MoveTest, l) {
 
 TEST_F(MoveTest, l_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/l_prime.toml");
-    vector<uint32_t> sat = solved.l_prime().state_array();
+    vector<uint32_t> sat = solved.l_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -528,7 +528,7 @@ TEST_F(MoveTest, l_prime) {
 
 TEST_F(MoveTest, l2) {
     array<uint32_t, 6> sol = state("solutions/wide/l2.toml");
-    vector<uint32_t> sat = solved.l2().state_array();
+    vector<uint32_t> sat = solved.l2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -537,7 +537,7 @@ TEST_F(MoveTest, l2) {
 
 TEST_F(MoveTest, r) {
     array<uint32_t, 6> sol = state("solutions/wide/r.toml");
-    vector<uint32_t> sat = solved.r().state_array();
+    vector<uint32_t> sat = solved.r().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -546,7 +546,7 @@ TEST_F(MoveTest, r) {
 
 TEST_F(MoveTest, r_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/r_prime.toml");
-    vector<uint32_t> sat = solved.r_prime().state_array();
+    vector<uint32_t> sat = solved.r_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -555,7 +555,7 @@ TEST_F(MoveTest, r_prime) {
 
 TEST_F(MoveTest, r2) {
     array<uint32_t, 6> sol = state("solutions/wide/r2.toml");
-    vector<uint32_t> sat = solved.r2().state_array();
+    vector<uint32_t> sat = solved.r2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -564,7 +564,7 @@ TEST_F(MoveTest, r2) {
 
 TEST_F(MoveTest, f) {
     array<uint32_t, 6> sol = state("solutions/wide/f.toml");
-    vector<uint32_t> sat = solved.f().state_array();
+    vector<uint32_t> sat = solved.f().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -573,7 +573,7 @@ TEST_F(MoveTest, f) {
 
 TEST_F(MoveTest, f_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/f_prime.toml");
-    vector<uint32_t> sat = solved.f_prime().state_array();
+    vector<uint32_t> sat = solved.f_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -582,7 +582,7 @@ TEST_F(MoveTest, f_prime) {
 
 TEST_F(MoveTest, f2) {
     array<uint32_t, 6> sol = state("solutions/wide/f2.toml");
-    vector<uint32_t> sat = solved.f2().state_array();
+    vector<uint32_t> sat = solved.f2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -591,7 +591,7 @@ TEST_F(MoveTest, f2) {
 
 TEST_F(MoveTest, b) {
     array<uint32_t, 6> sol = state("solutions/wide/b.toml");
-    vector<uint32_t> sat = solved.b().state_array();
+    vector<uint32_t> sat = solved.b().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -600,7 +600,7 @@ TEST_F(MoveTest, b) {
 
 TEST_F(MoveTest, b_prime) {
     array<uint32_t, 6> sol = state("solutions/wide/b_prime.toml");
-    vector<uint32_t> sat = solved.b_prime().state_array();
+    vector<uint32_t> sat = solved.b_prime().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -609,7 +609,7 @@ TEST_F(MoveTest, b_prime) {
 
 TEST_F(MoveTest, b2) {
     array<uint32_t, 6> sol = state("solutions/wide/b2.toml");
-    vector<uint32_t> sat = solved.b2().state_array();
+    vector<uint32_t> sat = solved.b2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -618,7 +618,7 @@ TEST_F(MoveTest, b2) {
 
 TEST_F(MoveTest, checkers1) {
     array<uint32_t, 6> sol = state("solutions/composite/checkers.toml");
-    vector<uint32_t> sat = solved.R2().L2().F2().B2().U2().D2().state_array();
+    vector<uint32_t> sat = solved.R2().L2().F2().B2().U2().D2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -627,7 +627,7 @@ TEST_F(MoveTest, checkers1) {
 
 TEST_F(MoveTest, checkers2) {
     array<uint32_t, 6> sol = state("solutions/composite/checkers.toml");
-    vector<uint32_t> sat = solved.M2().E2().S2().state_array();
+    vector<uint32_t> sat = solved.M2().E2().S2().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -636,7 +636,7 @@ TEST_F(MoveTest, checkers2) {
 
 TEST_F(MoveTest, scramble1) {
     array<uint32_t, 6> sol = state("solutions/composite/scramble.toml");
-    vector<uint32_t> sat = solved.U2().R2().D().F_prime().R2().B2().D().R_prime().D2().B_prime().R2().F2().D2().R2().L2().B().L2().U2().B().state_array();
+    vector<uint32_t> sat = solved.U2().R2().D().F_prime().R2().B2().D().R_prime().D2().B_prime().R2().F2().D2().R2().L2().B().L2().U2().B().get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);
@@ -646,7 +646,7 @@ TEST_F(MoveTest, scramble1) {
 TEST_F(MoveTest, scramble2) {
     array<uint32_t, 6> sol = state("solutions/composite/scramble.toml");
     vector<string> moves = {moves::U2, moves::R2, moves::D, moves::F_prime, moves::R2, moves::B2, moves::D, moves::R_prime, moves::D2, moves::B_prime, moves::R2, moves::F2, moves::D2, moves::R2, moves::L2, moves::B, moves::L2, moves::U2, moves::B};
-    vector<uint32_t> sat = solved.apply_moves(moves).state_array();
+    vector<uint32_t> sat = solved.apply_moves(moves).get_state();
 
     for (int i = 0; i < 6; i++) {
         EXPECT_TRUE(sol[i] == sat[i]);

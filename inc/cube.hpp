@@ -86,7 +86,8 @@ class Cube {
     bool is_solved();
     string toString();
     
-    vector<uint32_t> state_array() const;
+    bool is_valid_state() const;
+    vector<uint32_t> get_state() const;
     // bool set_state(vector<uint32_t> state) const;
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
@@ -96,8 +97,6 @@ class Cube {
     string __repr__(); //? add more special python support
     bool __eq__(const Cube &other);
     bool __ne__(const Cube &other);
-
-    bool is_valid_state() const;
 
     private:
     uint32_t up;

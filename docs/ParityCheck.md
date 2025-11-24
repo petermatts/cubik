@@ -5,7 +5,7 @@
 bool Cube::is_valid_state() const {
     // 1. Check Corner Orientation (mod 3)
     int corner_orientation_sum = 0;
-    // Assuming state_array() gives the state in a specific order
+    // Assuming get_state() gives the state in a specific order
     // e.g. [up, front, left, right, back, down] and each face is represented by a uint32_t
     // You should extract corner orientations from the state vector.
     // This depends on how your cube is implemented and how the color positions map to corners.
