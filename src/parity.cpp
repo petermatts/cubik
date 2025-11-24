@@ -13,9 +13,58 @@ bool Cube::is_valid_state() const {
         && check_parity();
 }
 
-bool Cube::check_piece_counts() const {
+#include <unordered_map>
+
+bool Cube::check_piece_counts() const
+{
+    // Colors: WHITE=1 .. ORANGE=6
+    static const uint8_t ALL_COLORS[6] = {
+        WHITE, YELLOW, GREEN, BLUE, RED, ORANGE
+    };
+
+    // All sticker offsets on a face
+    static const uint8_t OFFSETS[9] = {
+        TOP_LEFT, TOP_MIDDLE, TOP_RIGHT,
+        MIDDLE_LEFT, CENTER, MIDDLE_RIGHT,
+        BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT
+    };
+
+    // The six faces stored in Cube
+    const uint32_t faces[6] = {
+        up, down, left, right, front, back
+    };
+
+    std::unordered_map<uint8_t, int> count;
+
+    // Initialize counts to 0
+    for (uint8_t c : ALL_COLORS)
+        count[c] = 0;
+
+    // Count stickers
+    for (uint32_t f : faces)
+    {
+        for (uint8_t off : OFFSETS)
+        {
+            uint8_t sticker = get(f, off);
+
+            // If sticker is not a known color -> invalid cube
+            if (count.find(sticker) == count.end())
+                return false;
+
+            count[sticker]++;
+        }
+    }
+
+    // Validate that each color appears exactly 9 times
+    for (uint8_t c : ALL_COLORS)
+    {
+        if (count[c] != 9)
+            return false;
+    }
+
     return true;
 }
+
 
 bool Cube::check_corner_orientation() const {
     int sum = 0;
