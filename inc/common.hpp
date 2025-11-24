@@ -69,32 +69,32 @@ struct StickerPos {
 
 // Corner cubies: index -> 3 sticker positions
 static const StickerPos CORNER_STICKERS[8][3] = {
-    { {UP, TOP_RIGHT}, {FRONT, TOP_RIGHT}, {RIGHT, TOP_LEFT} }, // 0: UFR
-    { {UP, TOP_MIDDLE}, {RIGHT, TOP_RIGHT}, {BACK, TOP_LEFT} }, // 1: URB
+    { {UP, BOTTOM_RIGHT}, {FRONT, TOP_RIGHT}, {RIGHT, TOP_LEFT} }, // 0: UFR
+    { {UP, TOP_RIGHT}, {RIGHT, TOP_RIGHT}, {BACK, TOP_LEFT} }, // 1: URB
     { {UP, TOP_LEFT}, {BACK, TOP_RIGHT}, {LEFT, TOP_LEFT} }, // 2: UBL
-    { {UP, TOP_MIDDLE}, {LEFT, TOP_RIGHT}, {FRONT, TOP_LEFT} }, // 3: ULF
-    { {DOWN, BOTTOM_RIGHT}, {FRONT, BOTTOM_RIGHT}, {RIGHT, BOTTOM_LEFT} }, // 4: DFR
-    { {DOWN, BOTTOM_MIDDLE}, {RIGHT, BOTTOM_RIGHT}, {BACK, BOTTOM_LEFT} }, // 5: DRB
+    { {UP, BOTTOM_LEFT}, {LEFT, TOP_RIGHT}, {FRONT, TOP_LEFT} }, // 3: ULF
+    { {DOWN, TOP_RIGHT}, {FRONT, BOTTOM_RIGHT}, {RIGHT, BOTTOM_LEFT} }, // 4: DFR
+    { {DOWN, BOTTOM_RIGHT}, {RIGHT, BOTTOM_RIGHT}, {BACK, BOTTOM_LEFT} }, // 5: DRB
     { {DOWN, BOTTOM_LEFT}, {BACK, BOTTOM_RIGHT}, {LEFT, BOTTOM_LEFT} }, // 6: DBL
-    { {DOWN, BOTTOM_MIDDLE}, {LEFT, BOTTOM_RIGHT}, {FRONT, BOTTOM_LEFT} } // 7: DLF
+    { {DOWN, TOP_LEFT}, {LEFT, BOTTOM_RIGHT}, {FRONT, BOTTOM_LEFT} } // 7: DLF
 };
 
 // Edge cubies: index -> 2 sticker positions
 static const StickerPos EDGE_STICKERS[12][2] = {
-    { {UP, TOP_MIDDLE},    {FRONT, TOP_MIDDLE} },     // UF
-    { {UP, TOP_RIGHT},     {RIGHT, TOP_MIDDLE} },     // UR
-    { {UP, TOP_LEFT},      {BACK, TOP_MIDDLE} },      // UB
-    { {UP, TOP_MIDDLE},    {LEFT, TOP_MIDDLE} },      // UL
+    { {UP, BOTTOM_MIDDLE},    {FRONT, TOP_MIDDLE} },  // UF
+    { {UP, MIDDLE_RIGHT},     {RIGHT, TOP_MIDDLE} },     // UR
+    { {UP, TOP_MIDDLE},      {BACK, TOP_MIDDLE} },      // UB
+    { {UP, MIDDLE_LEFT},    {LEFT, TOP_MIDDLE} },      // UL
 
     { {FRONT, MIDDLE_RIGHT}, {RIGHT, MIDDLE_LEFT} },  // FR
-    { {BACK,  MIDDLE_RIGHT}, {RIGHT, MIDDLE_RIGHT} }, // BR
-    { {BACK,  MIDDLE_LEFT},  {LEFT,  MIDDLE_RIGHT} }, // BL
-    { {FRONT, MIDDLE_LEFT},  {LEFT,  MIDDLE_LEFT} },  // FL
+    { {BACK,  MIDDLE_LEFT}, {RIGHT, MIDDLE_RIGHT} }, // BR
+    { {BACK,  MIDDLE_RIGHT},  {LEFT,  MIDDLE_LEFT} }, // BL
+    { {FRONT, MIDDLE_LEFT},  {LEFT,  MIDDLE_RIGHT} },  // FL
 
-    { {DOWN, BOTTOM_MIDDLE}, {FRONT, BOTTOM_MIDDLE} }, // DF
-    { {DOWN, BOTTOM_RIGHT},  {RIGHT, BOTTOM_MIDDLE} }, // DR
-    { {DOWN, BOTTOM_LEFT},   {BACK,  BOTTOM_MIDDLE} }, // DB
-    { {DOWN, BOTTOM_MIDDLE}, {LEFT,  BOTTOM_MIDDLE} }  // DL
+    { {DOWN, TOP_MIDDLE}, {FRONT, BOTTOM_MIDDLE} }, // DF
+    { {DOWN, MIDDLE_RIGHT},  {RIGHT, BOTTOM_MIDDLE} }, // DR
+    { {DOWN, BOTTOM_MIDDLE},   {BACK,  BOTTOM_MIDDLE} }, // DB
+    { {DOWN, MIDDLE_LEFT}, {LEFT,  BOTTOM_MIDDLE} }  // DL
 };
 
 static const uint8_t CORNERS[8][3] = {

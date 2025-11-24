@@ -35,7 +35,7 @@ run:
 	cd $(BUILD_DIR)/ && ./cubik_cli
 
 test:
-	cd build/tests && ./cubik_tests
+	cd build/tests && ./cubik_tests --gtest_brief=0
 #	cd build/tests/Debug && ./cubik_tests.exe
 
 clean:

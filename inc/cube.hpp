@@ -87,8 +87,10 @@ class Cube {
     string toString();
     
     bool is_valid_state() const;
+    bool verify_orientation() const;
+
     vector<uint32_t> get_state() const;
-    // bool set_state(vector<uint32_t> state) const;
+    bool set_state(const vector<uint32_t> &state);
 
     friend bool operator==(const Cube &cube1, const Cube &cube2);
     friend bool operator!=(const Cube &cube1, const Cube &cube2);
@@ -106,8 +108,6 @@ class Cube {
     uint32_t back;
     uint32_t down;
     
-    bool verify_orientation() const;
-
     bool check_corner_orientation() const;
     bool check_edge_orientation() const;
     bool check_piece_counts() const;

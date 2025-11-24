@@ -86,22 +86,22 @@ other_cube != cube.R() # true because other_cube is not the as cube+R
 
 For cube notation please refer to [3x3 Rubik's Cube Move Notation](https://jperm.net/3x3/moves).
 
-## Visualization
+## The Backend
 
-### Printed Model
+Each face is represented as a `uint32_t` and each color is represented by a 3-bit section of the `uint32_t`. This means the entire represntation the cube only takes up $6*32=192$ bits or $24$ Bytes!!
 
-Cube Layout:
+Specifically:
+| Sticker       | Bits               |
+| ------------- | ----               |
+| Top Left      | $(b_0,b_1,b_2)$    |
+| Top Middle    | $(b_3,b_4,b_5)$    |
+| Top Right     | $(b_6,b_7,b_8)$    |
+| Middle Left   | $(b_9,b_10,b_11)$  |
+| Center        | $(b_12,b_13,b_14)$ |
+| Middle Right  | $(b_15,b_16,b_17)$ |
+| Bottom Left   | $(b_18,b_19,b_20)$ |
+| Bottom Middle | $(b_21,b_22,b_23)$ |
+| Bottom Right  | $(b_24,b_25,b_26)$ |
 
-![](./docs/images/cube.png)
 
-*Coloring is based on the solved state and orientation*
-
-### Memory Model
-In this cube model we attempt to be as memory efficient as possible so, in memory each face is stored as a `uint32_t` such that:
-
-![Face Layout](./docs/images/face.png)
-
-*Fuzzy display of uint32_t storage of a face*
-
-![Face uint32_t](./docs/images/uint32.png)
-
+\* where `b0` is the least significant bit.

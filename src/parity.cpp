@@ -7,10 +7,26 @@
 #include "parity.hpp"
 
 bool Cube::is_valid_state() const {
-    return check_piece_counts()
-        && check_corner_orientation()
-        && check_edge_orientation()
-        && check_parity();
+    // return check_piece_counts()
+    //     && check_corner_orientation()
+    //     && check_edge_orientation()
+    //     && check_parity();
+
+    std::cout << "CHECKING STATE...\n";
+
+    bool a = check_piece_counts();
+    std::cout << "piece counts: " << a << "\n";
+
+    bool b = check_corner_orientation();
+    std::cout << "corner orientation: " << b << "\n";
+
+    bool c = check_edge_orientation();
+    std::cout << "edge orientation: " << c << "\n";
+
+    bool d = check_parity();
+    std::cout << "parity: " << d << "\n";
+
+    return a && b && c && d;
 }
 
 #include <unordered_map>
@@ -157,16 +173,32 @@ std::array<int8_t, 12> Cube::edge_permutation() const {
 
 int Cube::corner_parity() const {
     auto perm = corner_permutation();
+
+    for (auto p : perm) {
+        if (p < 0) return -1;
+    }
+
     return permutation_parity(perm);
 }
 
 int Cube::edge_parity() const {
     auto perm = edge_permutation();
+
+    for (auto p : perm) {
+        if (p < 0) return -1;
+    }
+
     return permutation_parity(perm);
 }
 
 bool Cube::check_parity() const {
-    return corner_parity() == edge_parity();
+    int cp = corner_parity();
+    int ep = edge_parity();
+
+    // If either is -1, cube is invalid
+    if (cp < 0 || ep < 0) return false;
+
+    return cp == ep;
 }
 
 
@@ -223,4 +255,53 @@ EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
     );
 
     return e;
+}
+
+bool Cube::verify_orientation() const {
+    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
+    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
+
+    
+    // check for valid opposite centers
+    array<uint8_t, 3> poles = {
+        static_cast<uint8_t>(c_up + c_down),
+        static_cast<uint8_t>(c_front + c_back),
+        static_cast<uint8_t>(c_left + c_right)
+    };
+
+    array<uint8_t, 3> axes {
+        WHITE + YELLOW,
+        GREEN + BLUE,
+        RED + ORANGE
+    };
+
+    sort(poles.begin(), poles.end());
+    sort(axes.begin(), axes.end());
+
+    array<array<uint8_t, 3>, 8> cycles = {{
+        {{WHITE, BLUE, RED}},
+        {{WHITE, ORANGE, BLUE}},
+        {{WHITE, GREEN, ORANGE}},
+        {{WHITE, RED, GREEN}},
+        {{YELLOW, BLUE, ORANGE}},
+        {{YELLOW, RED, BLUE}},
+        {{YELLOW, GREEN, RED}},
+        {{YELLOW, ORANGE, GREEN}}
+    }};
+
+    array<uint8_t, 3> center_cycle = {c_up, c_right, c_front};
+
+    bool result = false;
+    for(auto c : cycles) {
+        if(array_circular_equal(c, center_cycle)) {
+            result = true;
+            break;
+        }
+    }
+
+    return (poles == axes) && result;
 }

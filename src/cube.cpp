@@ -62,53 +62,39 @@ vector<uint32_t> Cube::get_state() const {
     return state_vector;
 }
 
-bool Cube::verify_orientation() const {
-    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
+bool Cube::set_state(const vector<uint32_t> &state) {
+    if(state.size() != 6) return false;
 
-    
-    // check for valid opposite centers
-    array<uint8_t, 3> poles = {
-        static_cast<uint8_t>(c_up + c_down),
-        static_cast<uint8_t>(c_front + c_back),
-        static_cast<uint8_t>(c_left + c_right)
-    };
+    // Save current state in case the new one is invalid
+    uint32_t old_up    = up;
+    uint32_t old_down  = down;
+    uint32_t old_left  = left;
+    uint32_t old_right = right;
+    uint32_t old_front = front;
+    uint32_t old_back  = back;
 
-    array<uint8_t, 3> axes {
-        WHITE + YELLOW,
-        GREEN + BLUE,
-        RED + ORANGE
-    };
+    up    = state[0];
+    down  = state[1];
+    left  = state[2];
+    right = state[3];
+    front = state[4];
+    back  = state[5];
 
-    sort(poles.begin(), poles.end());
-    sort(axes.begin(), axes.end());
+    // Validate the cube
+    if (!is_valid_state())
+    {
+        // Restore old state if invalid
+        up    = old_up;
+        down  = old_down;
+        left  = old_left;
+        right = old_right;
+        front = old_front;
+        back  = old_back;
 
-    array<array<uint8_t, 3>, 8> cycles = {{
-        {{WHITE, BLUE, RED}},
-        {{WHITE, ORANGE, BLUE}},
-        {{WHITE, GREEN, ORANGE}},
-        {{WHITE, RED, GREEN}},
-        {{YELLOW, BLUE, ORANGE}},
-        {{YELLOW, RED, BLUE}},
-        {{YELLOW, GREEN, RED}},
-        {{YELLOW, ORANGE, GREEN}}
-    }};
-
-    array<uint8_t, 3> center_cycle = {c_up, c_right, c_front};
-
-    bool result = false;
-    for(auto c : cycles) {
-        if(array_circular_equal(c, center_cycle)) {
-            result = true;
-            break;
-        }
+        return false;
     }
 
-    return (poles == axes) && result;
+    return true;
 }
 
 bool Cube::is_solved() {
