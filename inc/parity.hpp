@@ -62,3 +62,43 @@ int permutation_parity(const std::array<int8_t, N> &perm)
 
     return parity; // still return int: 0 or 1
 }
+
+// Helper: return -1 if not found, else 0..7 and orientation by ref
+static int find_corner_id_and_orient(const uint8_t colors[3], uint8_t &out_orient) {
+    for (int id = 0; id < 8; ++id) {
+        const uint8_t* ref = CORNERS[id];
+        // try rotation 0: colors == {ref0, ref1, ref2}
+        if (colors[0] == ref[0] && colors[1] == ref[1] && colors[2] == ref[2]) {
+            out_orient = 0;
+            return id;
+        }
+        // rotation 1: colors == {ref1, ref2, ref0}
+        if (colors[0] == ref[1] && colors[1] == ref[2] && colors[2] == ref[0]) {
+            out_orient = 1;
+            return id;
+        }
+        // rotation 2
+        if (colors[0] == ref[2] && colors[1] == ref[0] && colors[2] == ref[1]) {
+            out_orient = 2;
+            return id;
+        }
+    }
+    return -1;
+}
+
+static int find_edge_id_and_orient(const uint8_t colors[2], uint8_t &out_orient) {
+    for (int id = 0; id < 12; ++id) {
+        const uint8_t* ref = EDGES[id];
+        // order 0
+        if (colors[0] == ref[0] && colors[1] == ref[1]) {
+            out_orient = 0;
+            return id;
+        }
+        // swapped
+        if (colors[0] == ref[1] && colors[1] == ref[0]) {
+            out_orient = 1;
+            return id;
+        }
+    }
+    return -1;
+}

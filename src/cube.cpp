@@ -74,11 +74,11 @@ bool Cube::set_state(const vector<uint32_t> &state) {
     uint32_t old_back  = back;
 
     up    = state[0];
-    down  = state[1];
-    left  = state[2];
-    right = state[3];
-    front = state[4];
-    back  = state[5];
+    front = state[1];
+    right = state[2];
+    back  = state[3];
+    left  = state[4];
+    down  = state[5];
 
     // Validate the cube
     if (!is_valid_state())

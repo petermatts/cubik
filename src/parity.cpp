@@ -106,70 +106,29 @@ bool Cube::check_edge_orientation() const {
 
 std::array<int8_t, 8> Cube::corner_permutation() const {
     std::array<int8_t, 8> perm;
-
-    for (int8_t pos = 0; pos < 8; pos++) {
+    for (int pos = 0; pos < 8; ++pos) {
         CornerCubie c = get_corner_cubie(pos);
-
-        // Normalize sticker colors (sort since order varies)
-        uint8_t col_sorted[3] = {c.colors[0], c.colors[1], c.colors[2]};
-        std::sort(col_sorted, col_sorted + 3);
-
-        // Match against solved cubies
-        bool found = false;
-        for (int8_t solved_idx = 0; solved_idx < 8; solved_idx++) {
-            uint8_t sol[3] = {
-                CORNERS[solved_idx][0],
-                CORNERS[solved_idx][1],
-                CORNERS[solved_idx][2]
-            };
-            std::sort(sol, sol + 3);
-
-            if (memcmp(sol, col_sorted, 3) == 0) {
-                perm[pos] = solved_idx;
-                found = true;
-                break;
-            }
+        if (c.id == 255) {
+            perm[pos] = -1; // invalid / non-cyclic match (including 2-cycle transpositions)
+        } else {
+            perm[pos] = static_cast<int8_t>(c.id);
         }
-
-        if (!found)
-            perm[pos] = -1; // Impossible piece
     }
-
     return perm;
 }
 
 std::array<int8_t, 12> Cube::edge_permutation() const {
     std::array<int8_t, 12> perm;
-
-    for (int8_t pos = 0; pos < 12; pos++) {
+    for (int pos = 0; pos < 12; ++pos) {
         EdgeCubie e = get_edge_cubie(pos);
-
-        uint8_t sorted_col[2] = {e.colors[0], e.colors[1]};
-        std::sort(sorted_col, sorted_col + 2);
-
-        bool found = false;
-        for (int8_t solved_idx = 0; solved_idx < 12; solved_idx++) {
-            uint8_t sol[2] = {
-                EDGES[solved_idx][0],
-                EDGES[solved_idx][1]
-            };
-            std::sort(sol, sol + 2);
-
-            if (sol[0] == sorted_col[0] &&
-                sol[1] == sorted_col[1]) {
-                perm[pos] = solved_idx;
-                found = true;
-                break;
-            }
-        }
-
-        if (!found)
+        if (e.id == 255) {
             perm[pos] = -1;
+        } else {
+            perm[pos] = static_cast<int8_t>(e.id);
+        }
     }
-
     return perm;
 }
-
 
 int Cube::corner_parity() const {
     auto perm = corner_permutation();
@@ -204,8 +163,8 @@ bool Cube::check_parity() const {
 
 CornerCubie Cube::get_corner_cubie(uint8_t idx) const {
     CornerCubie c;
-
-    for (int i = 0; i < 3; i++) {
+    // read the 3 stickers into the array in your current order
+    for (int i = 0; i < 3; ++i) {
         uint8_t face = CORNER_STICKERS[idx][i].face;
         uint8_t pos  = CORNER_STICKERS[idx][i].pos;
 
@@ -219,20 +178,26 @@ CornerCubie Cube::get_corner_cubie(uint8_t idx) const {
         c.colors[i] = get(face_val, pos);
     }
 
-    c.orientation = compute_corner_orientation(
-        c.colors,
-        get(up, CENTER),
-        get(down, CENTER)
-    );
+    // First try to identify cubie by exact cyclic color match (robust).
+    uint8_t orient = 0;
+    int id = find_corner_id_and_orient(c.colors, orient);
+    if (id >= 0) {
+        // we found the corner and its orientation (0..2)
+        c.id = static_cast<uint8_t>(id);
+        c.orientation = orient;
+        return c;
+    }
 
+    // Fallback: if we couldn't find an exact cyclic match, use center-based method
+    c.orientation = compute_corner_orientation(c.colors, get(up, CENTER), get(down, CENTER));
+    c.id = 255; // mark unknown id
     return c;
 }
 
 
 EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
     EdgeCubie e;
-
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; ++i) {
         uint8_t face = EDGE_STICKERS[idx][i].face;
         uint8_t pos  = EDGE_STICKERS[idx][i].pos;
 
@@ -246,14 +211,18 @@ EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
         e.colors[i] = get(face_val, pos);
     }
 
-    e.orientation = compute_edge_orientation(
-        e.colors,
-        get(up,    CENTER),
-        get(down,  CENTER),
-        get(front, CENTER),
-        get(back,  CENTER)
-    );
+    uint8_t orient = 0;
+    int id = find_edge_id_and_orient(e.colors, orient);
+    if (id >= 0) {
+        e.id = static_cast<uint8_t>(id);
+        e.orientation = orient;
+        return e;
+    }
 
+    // Fallback: center-based heuristic
+    e.orientation = compute_edge_orientation(e.colors,
+        get(up, CENTER), get(down, CENTER), get(front, CENTER), get(back, CENTER));
+    e.id = 255;
     return e;
 }
 

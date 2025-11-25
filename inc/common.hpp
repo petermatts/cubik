@@ -81,20 +81,20 @@ static const StickerPos CORNER_STICKERS[8][3] = {
 
 // Edge cubies: index -> 2 sticker positions
 static const StickerPos EDGE_STICKERS[12][2] = {
-    { {UP, BOTTOM_MIDDLE},    {FRONT, TOP_MIDDLE} },  // UF
+    { {UP, BOTTOM_MIDDLE},    {FRONT, TOP_MIDDLE} },     // UF
     { {UP, MIDDLE_RIGHT},     {RIGHT, TOP_MIDDLE} },     // UR
-    { {UP, TOP_MIDDLE},      {BACK, TOP_MIDDLE} },      // UB
-    { {UP, MIDDLE_LEFT},    {LEFT, TOP_MIDDLE} },      // UL
+    { {UP, TOP_MIDDLE},      {BACK, TOP_MIDDLE} },       // UB
+    { {UP, MIDDLE_LEFT},    {LEFT, TOP_MIDDLE} },        // UL
 
-    { {FRONT, MIDDLE_RIGHT}, {RIGHT, MIDDLE_LEFT} },  // FR
-    { {BACK,  MIDDLE_LEFT}, {RIGHT, MIDDLE_RIGHT} }, // BR
-    { {BACK,  MIDDLE_RIGHT},  {LEFT,  MIDDLE_LEFT} }, // BL
-    { {FRONT, MIDDLE_LEFT},  {LEFT,  MIDDLE_RIGHT} },  // FL
+    { {FRONT, MIDDLE_RIGHT}, {RIGHT, MIDDLE_LEFT} },     // FR
+    { {BACK,  MIDDLE_LEFT}, {RIGHT, MIDDLE_RIGHT} },     // BR
+    { {BACK,  MIDDLE_RIGHT},  {LEFT,  MIDDLE_LEFT} },    // BL
+    { {FRONT, MIDDLE_LEFT},  {LEFT,  MIDDLE_RIGHT} },    // FL
 
-    { {DOWN, TOP_MIDDLE}, {FRONT, BOTTOM_MIDDLE} }, // DF
-    { {DOWN, MIDDLE_RIGHT},  {RIGHT, BOTTOM_MIDDLE} }, // DR
+    { {DOWN, TOP_MIDDLE}, {FRONT, BOTTOM_MIDDLE} },      // DF
+    { {DOWN, MIDDLE_RIGHT},  {RIGHT, BOTTOM_MIDDLE} },   // DR
     { {DOWN, BOTTOM_MIDDLE},   {BACK,  BOTTOM_MIDDLE} }, // DB
-    { {DOWN, MIDDLE_LEFT}, {LEFT,  BOTTOM_MIDDLE} }  // DL
+    { {DOWN, MIDDLE_LEFT}, {LEFT,  BOTTOM_MIDDLE} }      // DL
 };
 
 static const uint8_t CORNERS[8][3] = {
@@ -120,19 +120,21 @@ static const uint8_t EDGES[12][2] = {
     {GREEN,  ORANGE}, // FL
 
     {YELLOW, GREEN},  // DF
-    {YELLOW, RED},     // DR
-    {YELLOW, BLUE},    // DB
+    {YELLOW, RED},    // DR
+    {YELLOW, BLUE},   // DB
     {YELLOW, ORANGE}  // DL
 };
 
 struct CornerCubie {
     uint8_t colors[3];      // which solved-corner this corresponds to (0–7)
     uint8_t orientation;    // orientation 0–2
+    int id;
 };
 
 struct EdgeCubie {
     uint8_t colors[2];      // which solved-edge (0–11)
     uint8_t orientation;    // 0 or 1
+    int id;
 };
 
 
