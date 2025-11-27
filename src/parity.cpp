@@ -7,26 +7,26 @@
 #include "parity.hpp"
 
 bool Cube::is_valid_state() const {
-    // return check_piece_counts()
-    //     && check_corner_orientation()
-    //     && check_edge_orientation()
-    //     && check_parity();
+    return check_piece_counts()
+        && check_corner_orientation()
+        && check_edge_orientation()
+        && check_parity();
 
-    std::cout << "CHECKING STATE...\n";
+    // std::cout << "CHECKING STATE...\n";
 
-    bool a = check_piece_counts();
-    std::cout << "piece counts: " << a << "\n";
+    // bool a = check_piece_counts();
+    // std::cout << "piece counts: " << a << "\n";
 
-    bool b = check_corner_orientation();
-    std::cout << "corner orientation: " << b << "\n";
+    // bool b = check_corner_orientation();
+    // std::cout << "corner orientation: " << b << "\n";
 
-    bool c = check_edge_orientation();
-    std::cout << "edge orientation: " << c << "\n";
+    // bool c = check_edge_orientation();
+    // std::cout << "edge orientation: " << c << "\n";
 
-    bool d = check_parity();
-    std::cout << "parity: " << d << "\n";
+    // bool d = check_parity();
+    // std::cout << "parity: " << d << "\n";
 
-    return a && b && c && d;
+    // return a && b && c && d;
 }
 
 #include <unordered_map>

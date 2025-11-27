@@ -61,8 +61,5 @@ TEST_F(ParityTest, ScrambleGood) {
 
 TEST_F(ParityTest, ScrambleBad) {
     vector<uint32_t> st = state("solutions/parity/ScrambleBad.toml"); 
-    for (auto s : st) {
-        cout << s << endl;
-    }
     EXPECT_FALSE(cube.set_state(st));
 }
