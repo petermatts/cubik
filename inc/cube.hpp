@@ -92,6 +92,7 @@ class Cube {
     vector<uint32_t> get_state() const;
     bool set_state(const vector<uint32_t> &state);
 
+    bool is_rotation_equal(Cube &other) const;
     friend bool operator==(const Cube &cube1, const Cube &cube2);
     friend bool operator!=(const Cube &cube1, const Cube &cube2);
 

@@ -7,26 +7,30 @@
 #include "parity.hpp"
 
 bool Cube::is_valid_state() const {
-    return check_piece_counts()
-        && check_corner_orientation()
-        && check_edge_orientation()
-        && check_parity();
+    // return check_piece_counts()
+    //     && check_corner_orientation()
+    //     && check_edge_orientation()
+    //     && check_parity()
+    //     && verify_orientation();
 
-    // std::cout << "CHECKING STATE...\n";
+    std::cout << "CHECKING STATE...\n";
 
-    // bool a = check_piece_counts();
-    // std::cout << "piece counts: " << a << "\n";
+    bool a = check_piece_counts();
+    std::cout << "piece counts: " << a << std::endl;
 
-    // bool b = check_corner_orientation();
-    // std::cout << "corner orientation: " << b << "\n";
+    bool b = check_corner_orientation();
+    std::cout << "corner orientation: " << b << std::endl;
 
-    // bool c = check_edge_orientation();
-    // std::cout << "edge orientation: " << c << "\n";
+    bool c = check_edge_orientation();
+    std::cout << "edge orientation: " << c << std::endl;
 
-    // bool d = check_parity();
-    // std::cout << "parity: " << d << "\n";
+    bool d = check_parity();
+    std::cout << "parity: " << d << std::endl;
 
-    // return a && b && c && d;
+    bool e = verify_orientation();
+    std::cout << "center orientation: " << e << std::endl;
+
+    return a && b && c && d && e;
 }
 
 #include <unordered_map>
@@ -220,20 +224,18 @@ EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
     }
 
     // Fallback: center-based heuristic
-    e.orientation = compute_edge_orientation(e.colors,
-        get(up, CENTER), get(down, CENTER), get(front, CENTER), get(back, CENTER));
+    e.orientation = compute_edge_orientation(e.colors, get(up, CENTER), get(down, CENTER), get(front, CENTER), get(back, CENTER));
     e.id = 255;
     return e;
 }
 
 bool Cube::verify_orientation() const {
-    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
-
+    uint8_t c_up = get(up, CENTER);
+    uint8_t c_down = get(down, CENTER);
+    uint8_t c_front = get(front, CENTER);
+    uint8_t c_back = get(back, CENTER);
+    uint8_t c_left = get(left, CENTER);
+    uint8_t c_right = get(right, CENTER);
     
     // check for valid opposite centers
     array<uint8_t, 3> poles = {
@@ -250,7 +252,7 @@ bool Cube::verify_orientation() const {
 
     sort(poles.begin(), poles.end());
     sort(axes.begin(), axes.end());
-
+    
     array<array<uint8_t, 3>, 8> cycles = {{
         {{WHITE, BLUE, RED}},
         {{WHITE, ORANGE, BLUE}},

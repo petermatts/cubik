@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <vector>
 #include "cube.hpp"
 
 class CubeTest : public ::testing::Test {
@@ -123,11 +124,42 @@ TEST_F(CubeTest, SequenceAndInverseRestoreCubeBD_) {
     EXPECT_TRUE(restored.is_solved());
 }
 
-TEST_F(CubeTest, WholeRotationIsSame) {
+TEST_F(CubeTest, WholeRotationEqualEqualNotSame) {
     Cube x = solved.X();
     Cube y = solved.Y();
     Cube z = solved.Z();
+    EXPECT_FALSE(solved == x);
+    EXPECT_FALSE(solved == y);
+    EXPECT_FALSE(solved == z);
+}
+
+TEST_F(CubeTest, WholeRotationIsRotationEqual) {
+    Cube x = solved.X();
+    Cube y = solved.Y();
+    Cube z = solved.Z();
+    EXPECT_TRUE(solved.is_rotation_equal(x));
+    EXPECT_TRUE(solved.is_rotation_equal(y));
+    EXPECT_TRUE(solved.is_rotation_equal(z));
+}
+
+TEST_F(CubeTest, LoadedIsSameAsOriginal) {
+    std::vector<uint32_t> solved_state = solved.get_state();
+    Cube x;
+    x.set_state(solved_state);
     EXPECT_TRUE(solved == x);
-    EXPECT_TRUE(solved == y);
-    EXPECT_TRUE(solved == z);
+
+    std::vector<uint32_t> r_state = solved.R().get_state();
+    bool result = x.set_state(r_state);
+    std::cout << "Set State RESULT: " << result << std::endl;
+    for(auto v : solved_state) {
+        std::cout << v << " ";
+    }
+    std::cout << std::endl;
+    std::vector<uint32_t> x_state = x.get_state();
+    for(auto v : x_state) {
+        std::cout << v << " ";
+    }
+    std::cout << std::endl;
+
+    EXPECT_TRUE(solved.R() == x);
 }

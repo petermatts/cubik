@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -33,31 +34,9 @@ Cube::~Cube() = default;
 
 vector<uint32_t> Cube::get_state() const {
     assert(verify_orientation());
-    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
 
     array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-    vector<uint32_t> state_vector;
-
-    for(uint8_t color : colors) {
-        if(c_up == color) {
-            state_vector.push_back(up);
-        } else if (c_down == color) {
-            state_vector.push_back(down);
-        } else if (c_front == color) {
-            state_vector.push_back(front);
-        } else if (c_back == color) {
-            state_vector.push_back(back);
-        } else if (c_left == color) {
-            state_vector.push_back(left);
-        } else if (c_right == color) {
-            state_vector.push_back(right);
-        }
-    }
+    vector<uint32_t> state_vector = {up, front, right, back, left, down};
 
     return state_vector;
 }
@@ -178,6 +157,56 @@ string Cube::toString() {
     msg += square_space + square_space + "\n";
 
     return msg;
+}
+
+bool Cube::is_rotation_equal(Cube &other) const {
+    vector<uint32_t> this_state = this->get_state();
+    array<vector<string>, 24> rotations = {{
+        // --- Identity ---
+        {},
+
+        // --- Rotations around X ---
+        { moves::X },
+        { moves::X2 },
+        { moves::X_prime },
+
+        // --- Rotations around Y ---
+        { moves::Y },
+        { moves::Y2 },
+        { moves::Y_prime },
+
+        // --- Rotations around Z ---
+        { moves::Z },
+        { moves::Z2 },
+        { moves::Z_prime},
+
+        // --- Tilt cube using X, then spin using Y ---
+        { moves::X, moves::Y },
+        { moves::X, moves::Y2 },
+        { moves::X, moves::Y_prime },
+
+        // --- Tilt cube using X twice, then spin using Y ---
+        { moves::X2, moves::Y },
+        { moves::X2, moves::Y2},
+        { moves::X2, moves::Y_prime },
+
+        // --- Tilt cube using X3, then spin using Y ---
+        { moves::X_prime, moves::Y },
+        { moves::X_prime, moves::Y2 },
+        { moves::X_prime, moves::Y_prime },
+
+        // --- Tilt cube using Y, then spin using Z ---
+        { moves::Y, moves::Z },
+        { moves::Y, moves::Z2 },
+        { moves::Y, moves::Z_prime},
+    }};
+    
+    for (auto rotation : rotations) {
+        vector<uint32_t> other_state = other.apply_moves(rotation).get_state();
+        if (this_state == other_state) return true;
+    }
+
+    return false;
 }
 
 bool operator==(const Cube &cube1, const Cube &cube2) {

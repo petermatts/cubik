@@ -60,7 +60,6 @@ inline vector<uint32_t> state(string toml_path) {
     array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
     vector<uint32_t> state_vector;
 
-    
     try {
         toml::table solution = toml::parse_file(toml_path);
         
@@ -74,28 +73,7 @@ inline vector<uint32_t> state(string toml_path) {
         if(auto node_view = solution["back"]) { set_face(node_view, back); }
         if(auto node_view = solution["down"]) { set_face(node_view, down); }
 
-        uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-        uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
-
-        for(uint8_t color : colors) {
-            if(c_up == color) {
-                state_vector.push_back(up);
-            } else if (c_down == color) {
-                state_vector.push_back(down);
-            } else if (c_front == color) {
-                state_vector.push_back(front);
-            } else if (c_back == color) {
-                state_vector.push_back(back);
-            } else if (c_left == color) {
-                state_vector.push_back(left);
-            } else if (c_right == color) {
-                state_vector.push_back(right);
-            }
-        }
+        state_vector = {up, front, right, back, left, down};
     } catch (const toml::parse_error& err) {
         cerr << "Error parsing TOML file: " << err << std::endl;
     }

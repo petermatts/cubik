@@ -14,9 +14,12 @@ protected:
 };
 
 TEST_F(ParityTest, solved) {
-    EXPECT_TRUE(cube.verify_orientation());
     EXPECT_TRUE(cube.is_valid_state());
     EXPECT_TRUE(cube.is_solved());
+}
+
+TEST_F(ParityTest, SimpleMove) {
+    EXPECT_TRUE(cube.R().is_valid_state());
 }
 
 TEST_F(ParityTest, EdgeFlip) {
@@ -54,6 +57,21 @@ TEST_F(ParityTest, TwistedCornersValid) {
     EXPECT_TRUE(cube.set_state(st));
 }
 
+TEST_F(ParityTest, CornerPermutationBad) {
+    vector<uint32_t> st = state("solutions/parity/CornerPermutationBad.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, CornerPermutationGood) {
+    vector<uint32_t> st = state("solutions/parity/CornerPermutationGood.toml"); 
+    EXPECT_TRUE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, CornerOrientationBad) {
+    vector<uint32_t> st = state("solutions/parity/CornerOrientationBad.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
 TEST_F(ParityTest, ScrambleGood) {
     vector<uint32_t> st = state("solutions/parity/ScrambleGood.toml"); 
     EXPECT_TRUE(cube.set_state(st));
@@ -61,5 +79,10 @@ TEST_F(ParityTest, ScrambleGood) {
 
 TEST_F(ParityTest, ScrambleBad) {
     vector<uint32_t> st = state("solutions/parity/ScrambleBad.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, BadCenters) {
+    vector<uint32_t> st = state("solutions/parity/BadCenters.toml"); 
     EXPECT_FALSE(cube.set_state(st));
 }
