@@ -35,33 +35,32 @@ uint8_t compute_edge_orientation(const uint8_t colors[2],
     return hasFB0 ? 0 : 1;
 }
 
+// Compute permutation parity of an array
 template <std::size_t N>
-int permutation_parity(const std::array<int8_t, N> &perm)
-{
+int permutation_parity(const std::array<int8_t, N>& perm) {
     std::array<bool, N> visited{};
-    int8_t parity = 0;
+    int parity = 0;
 
-    for (std::size_t i = 0; i < N; ++i)
-    {
-        if (!visited[i])
-        {
-            int8_t cycle_len = 0;
-            std::size_t j = i;
+    for (size_t i = 0; i < N; ++i) {
+        if (!visited[i]) {
+            int cycle_len = 0;
+            size_t j = i;
 
-            while (!visited[j])
-            {
+            while (!visited[j]) {
+                if (perm[j] < 0 || perm[j] >= static_cast<int8_t>(N)) {
+                    // Invalid cubie detected → cannot compute parity
+                    return -1;
+                }
                 visited[j] = true;
-                j = static_cast<std::size_t>(perm[j]);
+                j = static_cast<size_t>(perm[j]);
                 cycle_len++;
             }
-
-            // This is always 0 or 1
             parity ^= ((cycle_len - 1) & 1);
         }
     }
-
-    return parity; // still return int: 0 or 1
+    return parity;
 }
+
 
 // Helper: return -1 if not found, else 0..7 and orientation by ref
 static int find_corner_id_and_orient(const uint8_t colors[3], uint8_t &out_orient) {

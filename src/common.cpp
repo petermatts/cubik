@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdint>
 #include <string>
+#include <iostream>
 
 #include "common.hpp"
 
@@ -53,7 +54,9 @@ string getColor(uint32_t num) {
 }
 
 uint8_t get(uint32_t num, uint8_t from) {
-    return static_cast<uint8_t>((num << (32-from-3)) >> CLEAR); 
+    uint8_t sticker = static_cast<uint8_t>((num << (32-from-3)) >> CLEAR);
+    // std::cerr << "[get] face=" << int(num) << " offset=" << int(from) << " -> " << int(sticker) << "\n";
+    return sticker; 
 }
 
 void set(uint32_t &num, int to, uint8_t set_val) {

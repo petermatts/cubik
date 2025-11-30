@@ -7,12 +7,12 @@
 #include <string>
 
 // define colors
-#define WHITE 1U
-#define YELLOW 2U
-#define GREEN 3U
-#define BLUE 4U
-#define RED 5U
-#define ORANGE 6U
+#define WHITE 0U
+#define YELLOW 1U
+#define GREEN 2U
+#define BLUE 3U
+#define RED 4U
+#define ORANGE 5U
 
 // define positions (within face)
 #define TOP_LEFT 0U
@@ -40,11 +40,11 @@
 
 // Face identifiers
 #define UP     0U
-#define DOWN   1U
-#define FRONT  2U
-#define BACK   3U
-#define LEFT   4U
-#define RIGHT  5U
+#define FRONT  1U
+#define RIGHT  2U
+#define LEFT   3U
+#define BACK   4U
+#define DOWN   5U
 
 // define solved faces
 #define WHITE_FACE (WHITE << TOP_LEFT) + (WHITE << TOP_MIDDLE) + (WHITE << TOP_RIGHT) + (WHITE << MIDDLE_LEFT) + (WHITE << CENTER) + (WHITE << MIDDLE_RIGHT) + (WHITE << BOTTOM_LEFT) + (WHITE << BOTTOM_MIDDLE) + (WHITE << BOTTOM_RIGHT)

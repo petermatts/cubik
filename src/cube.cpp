@@ -80,7 +80,7 @@ bool Cube::is_solved() {
     return *this == Cube();
 }
 
-string Cube::toString() {
+string Cube::toString() const {
     const string square_space = "      ";
     const char* space = __USE_EMOJI ? "" : " ";
     string msg = "\n";

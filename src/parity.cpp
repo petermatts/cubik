@@ -14,6 +14,7 @@ bool Cube::is_valid_state() const {
     //     && verify_orientation();
 
     std::cout << "CHECKING STATE...\n";
+    std::cerr << "Cube state:\n" << this->toString() << "\n";
 
     bool a = check_piece_counts();
     std::cout << "piece counts: " << a << std::endl;
@@ -65,7 +66,7 @@ bool Cube::check_piece_counts() const
     {
         for (uint8_t off : OFFSETS)
         {
-            uint8_t sticker = get(f, off);
+            uint8_t sticker = get(f, off); // if you are seeing, enjoy these funny param names
 
             // If sticker is not a known color -> invalid cube
             if (count.find(sticker) == count.end())
@@ -108,124 +109,132 @@ bool Cube::check_edge_orientation() const {
     return (sum % 2) == 0;
 }
 
+// ---- Corner permutation ----
 std::array<int8_t, 8> Cube::corner_permutation() const {
     std::array<int8_t, 8> perm;
-    for (int pos = 0; pos < 8; ++pos) {
-        CornerCubie c = get_corner_cubie(pos);
-        if (c.id == 255) {
-            perm[pos] = -1; // invalid / non-cyclic match (including 2-cycle transpositions)
-        } else {
-            perm[pos] = static_cast<int8_t>(c.id);
-        }
+    for (int i = 0; i < 8; ++i) {
+        int id = get_corner_cubie(i).id;
+        perm[i] = (id < 8 ? static_cast<int8_t>(id) : -1);
     }
     return perm;
 }
 
+// ---- Edge permutation ----
 std::array<int8_t, 12> Cube::edge_permutation() const {
     std::array<int8_t, 12> perm;
-    for (int pos = 0; pos < 12; ++pos) {
-        EdgeCubie e = get_edge_cubie(pos);
-        if (e.id == 255) {
-            perm[pos] = -1;
-        } else {
-            perm[pos] = static_cast<int8_t>(e.id);
-        }
+    for (int i = 0; i < 12; ++i) {
+        int id = get_edge_cubie(i).id;
+        perm[i] = (id < 12 ? static_cast<int8_t>(id) : -1);
     }
     return perm;
 }
 
+
+// ---- Corner parity ----
 int Cube::corner_parity() const {
-    auto perm = corner_permutation();
-
-    for (auto p : perm) {
-        if (p < 0) return -1;
-    }
-
-    return permutation_parity(perm);
+    return permutation_parity(corner_permutation());
 }
 
+// ---- Edge parity ----
 int Cube::edge_parity() const {
-    auto perm = edge_permutation();
-
-    for (auto p : perm) {
-        if (p < 0) return -1;
-    }
-
-    return permutation_parity(perm);
+    return permutation_parity(edge_permutation());
 }
 
+// ---- Check parity ----
 bool Cube::check_parity() const {
+    std::cout << "=== CORNER CUBIES ===\n";
+    for (int pos = 0; pos < 8; ++pos) {
+        CornerCubie c = get_corner_cubie(pos);
+        std::cout << "pos=" << pos
+                << "  id=" << (int)c.id
+                << "  ori=" << (int)c.orientation
+                << "  colors=("
+                << (int)c.colors[0] << ","
+                << (int)c.colors[1] << ","
+                << (int)c.colors[2] << ")\n";
+    }
+
+    std::cout << "\n=== EDGE CUBIES ===\n";
+    for (int pos = 0; pos < 12; ++pos) {
+        EdgeCubie e = get_edge_cubie(pos);
+        std::cout << "pos=" << pos
+                << "  id=" << (int)e.id
+                << "  ori=" << (int)e.orientation
+                << "  colors=("
+                << (int)e.colors[0] << ","
+                << (int)e.colors[1] << ")\n";
+}
+
     int cp = corner_parity();
     int ep = edge_parity();
-
-    // If either is -1, cube is invalid
     if (cp < 0 || ep < 0) return false;
-
     return cp == ep;
 }
 
+CornerCubie Cube::get_corner_cubie(int pos) const {
+    CornerCubie c{};
+    // Map face index -> the uint32_t face value stored in this Cube
+    const uint32_t faces_arr[6] = { up, front, right, back, left, down };
 
-CornerCubie Cube::get_corner_cubie(uint8_t idx) const {
-    CornerCubie c;
-    // read the 3 stickers into the array in your current order
+    uint8_t cols[3];
     for (int i = 0; i < 3; ++i) {
-        uint8_t face = CORNER_STICKERS[idx][i].face;
-        uint8_t pos  = CORNER_STICKERS[idx][i].pos;
-
-        const uint32_t &face_val =
-            (face == UP    ? up :
-            (face == DOWN  ? down :
-            (face == FRONT ? front :
-            (face == BACK  ? back :
-            (face == LEFT  ? left : right)))));
-
-        c.colors[i] = get(face_val, pos);
+        uint8_t face_idx = CORNER_STICKERS[pos][i].face; // 0..5
+        uint8_t offset   = CORNER_STICKERS[pos][i].pos;
+        cols[i] = get(faces_arr[face_idx], offset);
     }
 
-    // First try to identify cubie by exact cyclic color match (robust).
+    // Try to identify id + orientation by color-cycle matching
     uint8_t orient = 0;
-    int id = find_corner_id_and_orient(c.colors, orient);
+    int id = find_corner_id_and_orient(cols, orient);
     if (id >= 0) {
-        // we found the corner and its orientation (0..2)
-        c.id = static_cast<uint8_t>(id);
+        c.id = static_cast<int>(id);
         c.orientation = orient;
+        c.colors[0] = cols[0];
+        c.colors[1] = cols[1];
+        c.colors[2] = cols[2];
         return c;
     }
 
-    // Fallback: if we couldn't find an exact cyclic match, use center-based method
-    c.orientation = compute_corner_orientation(c.colors, get(up, CENTER), get(down, CENTER));
-    c.id = 255; // mark unknown id
+    // fallback: set colors, mark unknown id and compute orientation by UD-centers
+    c.colors[0] = cols[0];
+    c.colors[1] = cols[1];
+    c.colors[2] = cols[2];
+    c.id = 255;
+    c.orientation = compute_corner_orientation(cols, get(up, CENTER), get(down, CENTER));
     return c;
 }
 
+EdgeCubie Cube::get_edge_cubie(int pos) const {
+    EdgeCubie e{};
+    // Map face index -> the uint32_t face value stored in this Cube
+    const uint32_t faces_arr[6] = { up, front, right, back, left, down };
 
-EdgeCubie Cube::get_edge_cubie(uint8_t idx) const {
-    EdgeCubie e;
+    uint8_t cols[2];
     for (int i = 0; i < 2; ++i) {
-        uint8_t face = EDGE_STICKERS[idx][i].face;
-        uint8_t pos  = EDGE_STICKERS[idx][i].pos;
-
-        const uint32_t &face_val =
-            (face == UP    ? up :
-            (face == DOWN  ? down :
-            (face == FRONT ? front :
-            (face == BACK  ? back :
-            (face == LEFT  ? left : right)))));
-
-        e.colors[i] = get(face_val, pos);
+        uint8_t face_idx = EDGE_STICKERS[pos][i].face; // 0..5
+        uint8_t offset   = EDGE_STICKERS[pos][i].pos;
+        cols[i] = get(faces_arr[face_idx], offset);
     }
 
     uint8_t orient = 0;
-    int id = find_edge_id_and_orient(e.colors, orient);
+    int id = find_edge_id_and_orient(cols, orient);
     if (id >= 0) {
-        e.id = static_cast<uint8_t>(id);
+        e.id = static_cast<int>(id);
         e.orientation = orient;
+        e.colors[0] = cols[0];
+        e.colors[1] = cols[1];
         return e;
     }
 
-    // Fallback: center-based heuristic
-    e.orientation = compute_edge_orientation(e.colors, get(up, CENTER), get(down, CENTER), get(front, CENTER), get(back, CENTER));
+    // fallback: set colors, mark unknown id and compute orientation by centers
+    e.colors[0] = cols[0];
+    e.colors[1] = cols[1];
     e.id = 255;
+    e.orientation = compute_edge_orientation(cols,
+                                            get(up,    CENTER),
+                                            get(down,  CENTER),
+                                            get(front, CENTER),
+                                            get(back,  CENTER));
     return e;
 }
 

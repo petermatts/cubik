@@ -84,7 +84,7 @@ class Cube {
     Cube apply_moves(const vector<string> &moves);
 
     bool is_solved();
-    string toString();
+    string toString() const; // todo switch to snake case
     
     bool is_valid_state() const;
     bool verify_orientation() const;
@@ -119,8 +119,8 @@ class Cube {
     int corner_parity() const;
     int edge_parity() const;
     bool check_parity() const;
-    CornerCubie get_corner_cubie(uint8_t idx) const;
-    EdgeCubie get_edge_cubie(uint8_t idx) const;
+    CornerCubie get_corner_cubie(int pos) const;
+    EdgeCubie get_edge_cubie(int pos) const;
 };
 
 #endif // CUBE_HPP
