@@ -84,7 +84,7 @@ class Cube {
     Cube apply_moves(const vector<string> &moves);
 
     bool is_solved();
-    string toString() const; // todo switch to snake case
+    string toString() const;
     
     bool is_valid_state() const;
     bool verify_orientation() const;

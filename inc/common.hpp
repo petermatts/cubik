@@ -67,6 +67,7 @@ struct StickerPos {
     uint8_t pos;
 };
 
+// todo assert that the ordering of each of these and CORNERS is cw
 // Corner cubies: index -> 3 sticker positions
 static const StickerPos CORNER_STICKERS[8][3] = {
     { {UP, BOTTOM_RIGHT}, {FRONT, TOP_RIGHT}, {RIGHT, TOP_LEFT} }, // 0: UFR
@@ -77,6 +78,17 @@ static const StickerPos CORNER_STICKERS[8][3] = {
     { {DOWN, BOTTOM_RIGHT}, {RIGHT, BOTTOM_RIGHT}, {BACK, BOTTOM_LEFT} }, // 5: DRB
     { {DOWN, BOTTOM_LEFT}, {BACK, BOTTOM_RIGHT}, {LEFT, BOTTOM_LEFT} }, // 6: DBL
     { {DOWN, TOP_LEFT}, {LEFT, BOTTOM_RIGHT}, {FRONT, BOTTOM_LEFT} } // 7: DLF
+};
+
+static const uint8_t CORNERS[8][3] = {
+    {WHITE, GREEN,  RED},    // UFR
+    {WHITE, RED,    BLUE},   // URB
+    {WHITE, BLUE,   ORANGE}, // UBL
+    {WHITE, ORANGE, GREEN},  // ULF
+    {YELLOW, GREEN,  RED},   // DFR
+    {YELLOW, RED,    BLUE},  // DRB
+    {YELLOW, BLUE,   ORANGE},// DBL
+    {YELLOW, ORANGE, GREEN}  // DLF
 };
 
 // Edge cubies: index -> 2 sticker positions
@@ -95,17 +107,6 @@ static const StickerPos EDGE_STICKERS[12][2] = {
     { {DOWN, MIDDLE_RIGHT},  {RIGHT, BOTTOM_MIDDLE} },   // DR
     { {DOWN, BOTTOM_MIDDLE},   {BACK,  BOTTOM_MIDDLE} }, // DB
     { {DOWN, MIDDLE_LEFT}, {LEFT,  BOTTOM_MIDDLE} }      // DL
-};
-
-static const uint8_t CORNERS[8][3] = {
-    {WHITE, GREEN,  RED},    // UFR
-    {WHITE, RED,    BLUE},   // URB
-    {WHITE, BLUE,   ORANGE}, // UBL
-    {WHITE, ORANGE, GREEN},  // ULF
-    {YELLOW, GREEN,  RED},   // DFR
-    {YELLOW, RED,    BLUE},  // DRB
-    {YELLOW, BLUE,   ORANGE},// DBL
-    {YELLOW, ORANGE, GREEN}  // DLF
 };
 
 static const uint8_t EDGES[12][2] = {
@@ -136,7 +137,6 @@ struct EdgeCubie {
     uint8_t orientation;    // 0 or 1
     int id;
 };
-
 
 
 std::string getColor(uint32_t num);

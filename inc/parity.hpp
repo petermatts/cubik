@@ -64,22 +64,20 @@ int permutation_parity(const std::array<int8_t, N>& perm) {
 
 // Helper: return -1 if not found, else 0..7 and orientation by ref
 static int find_corner_id_and_orient(const uint8_t colors[3], uint8_t &out_orient) {
+    std::array<uint8_t, 3> arr_colors = {colors[0], colors[1], colors[2]};
+
     for (int id = 0; id < 8; ++id) {
-        const uint8_t* ref = CORNERS[id];
-        // try rotation 0: colors == {ref0, ref1, ref2}
-        if (colors[0] == ref[0] && colors[1] == ref[1] && colors[2] == ref[2]) {
-            out_orient = 0;
-            return id;
-        }
-        // rotation 1: colors == {ref1, ref2, ref0}
-        if (colors[0] == ref[1] && colors[1] == ref[2] && colors[2] == ref[0]) {
-            out_orient = 1;
-            return id;
-        }
-        // rotation 2
-        if (colors[0] == ref[2] && colors[1] == ref[0] && colors[2] == ref[1]) {
-            out_orient = 2;
-            return id;
+        std::array<uint8_t, 3> ref = {CORNERS[id][0], CORNERS[id][1], CORNERS[id][2]};
+        
+        if (array_circular_equal(arr_colors, ref)) {
+            for (uint8_t shift = 0; shift < 3; ++shift) {
+                // todo determine what direction rotated, rotates in
+                std::array<uint8_t, 3> rotated = { ref[shift % 3], ref[(shift + 1) % 3], ref[(shift + 2) % 3] };
+                if (arr_colors == rotated) {
+                    out_orient = shift;
+                    return id;
+                }
+            }
         }
     }
     return -1;

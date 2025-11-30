@@ -7,6 +7,68 @@
 #include "parity.hpp"
 
 bool Cube::is_valid_state() const {
+    // Paste this where you can run it when the cube is the "moved" cube
+    auto dump_faces_and_cubies = [&]() {
+        const uint32_t faces_arr[6] = { up, front, right, back, left, down };
+        const char *face_names[6] = { "UP", "FRONT", "RIGHT", "BACK", "LEFT", "DOWN" };
+        const uint8_t OFFSETS[9] = {
+            TOP_LEFT, TOP_MIDDLE, TOP_RIGHT,
+            MIDDLE_LEFT, CENTER, MIDDLE_RIGHT,
+            BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT
+        };
+
+        std::cerr << "=== RAW FACE VALUES ===\n";
+        for (int f = 0; f < 6; ++f) {
+            std::cerr << face_names[f] << " uint32 = " << faces_arr[f] << "\n";
+        }
+
+        std::cerr << "=== FACE STICKERS (face, offset -> color) ===\n";
+        for (int f = 0; f < 6; ++f) {
+            std::cerr << face_names[f] << ": ";
+            for (int o = 0; o < 9; ++o) {
+                uint8_t c = get(faces_arr[f], OFFSETS[o]);
+                std::cerr << int(c) << (o==8 ? "" : " ");
+            }
+            std::cerr << "\n";
+        }
+
+        std::cerr << "=== CORNERS (using CORNER_STICKERS mapping) ===\n";
+        for (int pos = 0; pos < 8; ++pos) {
+            uint8_t cols[3];
+            for (int i = 0; i < 3; ++i) {
+                uint8_t face_idx = CORNER_STICKERS[pos][i].face;
+                uint8_t offset   = CORNER_STICKERS[pos][i].pos;
+                cols[i] = get(faces_arr[face_idx], offset);
+                std::cerr << "[corner " << pos << "] i=" << i
+                        << " face=" << int(face_idx)
+                        << " offset=" << int(offset)
+                        << " -> color=" << int(cols[i]) << "\n";
+            }
+            // quick validation
+            bool distinct = (cols[0] != cols[1]) && (cols[1] != cols[2]) && (cols[0] != cols[2]);
+            std::cerr << "corner " << pos << " colors=("
+                    << int(cols[0]) << "," << int(cols[1]) << "," << int(cols[2])
+                    << ") distinct? " << distinct << "\n";
+        }
+
+        std::cerr << "=== EDGES (using EDGE_STICKERS mapping) ===\n";
+        for (int pos = 0; pos < 12; ++pos) {
+            uint8_t cols[2];
+            for (int i = 0; i < 2; ++i) {
+                uint8_t face_idx = EDGE_STICKERS[pos][i].face;
+                uint8_t offset   = EDGE_STICKERS[pos][i].pos;
+                cols[i] = get(faces_arr[face_idx], offset);
+                std::cerr << "[edge " << pos << "] i=" << i
+                        << " face=" << int(face_idx)
+                        << " offset=" << int(offset)
+                        << " -> color=" << int(cols[i]) << "\n";
+            }
+            std::cerr << "edge " << pos << " colors=(" << int(cols[0]) << "," << int(cols[1]) << ")\n";
+        }
+    };
+
+    dump_faces_and_cubies();
+
     // return check_piece_counts()
     //     && check_corner_orientation()
     //     && check_edge_orientation()

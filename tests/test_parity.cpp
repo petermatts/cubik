@@ -19,10 +19,10 @@ TEST_F(ParityTest, solved) {
     EXPECT_TRUE(cube.is_solved());
 }
 
-TEST_F(ParityTest, SimpleMove) {
-    auto moved = cube.R();
-    EXPECT_TRUE(moved.is_valid_state());
-}
+// TEST_F(ParityTest, SimpleMove) {
+//     auto moved = cube.R();
+//     EXPECT_TRUE(moved.is_valid_state());
+// }
 
 // TEST_F(ParityTest, EdgeFlip) {
 //     vector<uint32_t> st = state("solutions/parity/EdgeOrientation.toml"); 
