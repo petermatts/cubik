@@ -150,16 +150,5 @@ TEST_F(CubeTest, LoadedIsSameAsOriginal) {
 
     std::vector<uint32_t> r_state = solved.R().get_state();
     bool result = x.set_state(r_state);
-    std::cout << "Set State RESULT: " << result << std::endl;
-    for(auto v : solved_state) {
-        std::cout << v << " ";
-    }
-    std::cout << std::endl;
-    std::vector<uint32_t> x_state = x.get_state();
-    for(auto v : x_state) {
-        std::cout << v << " ";
-    }
-    std::cout << std::endl;
-
     EXPECT_TRUE(solved.R() == x);
 }

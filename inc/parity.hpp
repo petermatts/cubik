@@ -71,7 +71,6 @@ static int find_corner_id_and_orient(const uint8_t colors[3], uint8_t &out_orien
         
         if (array_circular_equal(arr_colors, ref)) {
             for (uint8_t shift = 0; shift < 3; ++shift) {
-                // todo determine what direction rotated, rotates in
                 std::array<uint8_t, 3> rotated = { ref[shift % 3], ref[(shift + 1) % 3], ref[(shift + 2) % 3] };
                 if (arr_colors == rotated) {
                     out_orient = shift;

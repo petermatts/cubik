@@ -67,7 +67,7 @@ bool Cube::is_valid_state() const {
         }
     };
 
-    dump_faces_and_cubies();
+    // dump_faces_and_cubies();
 
     // return check_piece_counts()
     //     && check_corner_orientation()
@@ -204,6 +204,13 @@ int Cube::edge_parity() const {
 
 // ---- Check parity ----
 bool Cube::check_parity() const {
+    std::cout << "=== CENTERS ===\n";
+    std::cout << "UP   : " << getColor(get(up, CENTER)) << "raw: " << (int)get(up, CENTER) << std::endl;
+    std::cout << "FRONT: " << getColor(get(front, CENTER)) << "raw: " << (int)get(front, CENTER) << std::endl;
+    std::cout << "RIGHT: " << getColor(get(right, CENTER)) << "raw: " << (int)get(right, CENTER) << std::endl;
+    std::cout << "BACK : " << getColor(get(back, CENTER)) << "raw: " << (int)get(back, CENTER) << std::endl;
+    std::cout << "LEFT : " << getColor(get(left, CENTER)) << "raw: " << (int)get(left, CENTER) << std::endl;
+    std::cout << "DOWN : " << getColor(get(down, CENTER)) << "raw: " << (int)get(down, CENTER) << std::endl << std::endl;
     std::cout << "=== CORNER CUBIES ===\n";
     for (int pos = 0; pos < 8; ++pos) {
         CornerCubie c = get_corner_cubie(pos);
@@ -225,7 +232,7 @@ bool Cube::check_parity() const {
                 << "  colors=("
                 << (int)e.colors[0] << ","
                 << (int)e.colors[1] << ")\n";
-}
+    }
 
     int cp = corner_parity();
     int ep = edge_parity();

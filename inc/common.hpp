@@ -42,8 +42,8 @@
 #define UP     0U
 #define FRONT  1U
 #define RIGHT  2U
-#define LEFT   3U
-#define BACK   4U
+#define BACK   3U
+#define LEFT   4U
 #define DOWN   5U
 
 // define solved faces
@@ -67,13 +67,12 @@ struct StickerPos {
     uint8_t pos;
 };
 
-// todo assert that the ordering of each of these and CORNERS is cw
 // Corner cubies: index -> 3 sticker positions
 static const StickerPos CORNER_STICKERS[8][3] = {
-    { {UP, BOTTOM_RIGHT}, {FRONT, TOP_RIGHT}, {RIGHT, TOP_LEFT} }, // 0: UFR
-    { {UP, TOP_RIGHT}, {RIGHT, TOP_RIGHT}, {BACK, TOP_LEFT} }, // 1: URB
-    { {UP, TOP_LEFT}, {BACK, TOP_RIGHT}, {LEFT, TOP_LEFT} }, // 2: UBL
-    { {UP, BOTTOM_LEFT}, {LEFT, TOP_RIGHT}, {FRONT, TOP_LEFT} }, // 3: ULF
+    { {UP, BOTTOM_RIGHT}, {RIGHT, TOP_LEFT}, {FRONT, TOP_RIGHT} }, // 0: UFR
+    { {UP, TOP_RIGHT}, {BACK, TOP_LEFT}, {RIGHT, TOP_RIGHT} }, // 1: URB
+    { {UP, TOP_LEFT}, {LEFT, TOP_LEFT}, {BACK, TOP_RIGHT} }, // 2: UBL
+    { {UP, BOTTOM_LEFT}, {FRONT, TOP_LEFT}, {LEFT, TOP_RIGHT} }, // 3: ULF
     { {DOWN, TOP_RIGHT}, {FRONT, BOTTOM_RIGHT}, {RIGHT, BOTTOM_LEFT} }, // 4: DFR
     { {DOWN, BOTTOM_RIGHT}, {RIGHT, BOTTOM_RIGHT}, {BACK, BOTTOM_LEFT} }, // 5: DRB
     { {DOWN, BOTTOM_LEFT}, {BACK, BOTTOM_RIGHT}, {LEFT, BOTTOM_LEFT} }, // 6: DBL
@@ -81,10 +80,10 @@ static const StickerPos CORNER_STICKERS[8][3] = {
 };
 
 static const uint8_t CORNERS[8][3] = {
-    {WHITE, GREEN,  RED},    // UFR
-    {WHITE, RED,    BLUE},   // URB
-    {WHITE, BLUE,   ORANGE}, // UBL
-    {WHITE, ORANGE, GREEN},  // ULF
+    {WHITE, RED, GREEN},    // UFR
+    {WHITE, BLUE, RED},   // URB
+    {WHITE, ORANGE, BLUE}, // UBL
+    {WHITE, GREEN, ORANGE},  // ULF
     {YELLOW, GREEN,  RED},   // DFR
     {YELLOW, RED,    BLUE},  // DRB
     {YELLOW, BLUE,   ORANGE},// DBL
@@ -139,7 +138,7 @@ struct EdgeCubie {
 };
 
 
-std::string getColor(uint32_t num);
+std::string getColor(uint8_t num);
 uint8_t get(uint32_t num, uint8_t from);
 void set(uint32_t &num, int to, uint8_t set_val);
 

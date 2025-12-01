@@ -13,7 +13,7 @@ using namespace std;
 
 bool __USE_EMOJI = true;
 
-string getColor(uint32_t num) {
+string getColor(uint8_t num) {
     if (__USE_EMOJI) {
         #ifdef _WIN32
         SetConsoleOutputCP(CP_UTF8);
