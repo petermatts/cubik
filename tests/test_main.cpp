@@ -152,3 +152,25 @@ TEST_F(CubeTest, LoadedIsSameAsOriginal) {
     bool result = x.set_state(r_state);
     EXPECT_TRUE(solved.R() == x);
 }
+
+TEST_F(CubeTest, CanonicalIsSame) {
+    Cube canon = solved.canonical();
+    EXPECT_TRUE(solved == canon);
+}
+
+TEST_F(CubeTest, CanonicalMoved) {
+    Cube R = solved.R();
+    EXPECT_TRUE(R == R.canonical());
+
+    Cube RX = R.X();
+    EXPECT_FALSE(RX == RX.canonical());
+    EXPECT_TRUE(RX.canonical() == R);
+
+    Cube RY = R.Y();
+    EXPECT_FALSE(RY == RY.canonical());
+    EXPECT_TRUE(RY.canonical() == R);
+
+    Cube RZ = R.Z();
+    EXPECT_FALSE(RZ == RZ.canonical());
+    EXPECT_TRUE(RZ.canonical() == R);
+}

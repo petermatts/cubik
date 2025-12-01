@@ -14,6 +14,11 @@
 #define RED 4U
 #define ORANGE 5U
 
+// Colors: WHITE=1 .. ORANGE=6
+static const uint8_t COLORS[6] = {
+    WHITE, YELLOW, GREEN, BLUE, RED, ORANGE
+};
+
 // define positions (within face)
 #define TOP_LEFT 0U
 #define TOP_MIDDLE 3U
@@ -24,6 +29,14 @@
 #define BOTTOM_LEFT 18U
 #define BOTTOM_MIDDLE 21U
 #define BOTTOM_RIGHT 24U
+
+// All sticker offsets on a face
+static const uint8_t OFFSETS[9] = {
+    TOP_LEFT, TOP_MIDDLE, TOP_RIGHT,
+    MIDDLE_LEFT, CENTER, MIDDLE_RIGHT,
+    BOTTOM_LEFT, BOTTOM_MIDDLE, BOTTOM_RIGHT
+};
+
 
 // clears, equivalent to 32 - position - 3
 #define CLEAR_TOP_LEFT 29U

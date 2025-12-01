@@ -2,15 +2,55 @@
 #include "cube.hpp"
 #include "moves.hpp"
 
-#include <cassert>
 #include <cstdint>
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
+#include <stdexcept>
 
 using namespace std;
+
+static const array<vector<string>, 24> rotations = {{
+    // --- Identity ---
+    {},
+
+    // --- Rotations around X ---
+    { moves::X },
+    { moves::X2 },
+    { moves::X_prime },
+
+    // --- Rotations around Y ---
+    { moves::Y },
+    { moves::Y2 },
+    { moves::Y_prime },
+
+    // --- Rotations around Z ---
+    { moves::Z },
+    { moves::Z2 },
+    { moves::Z_prime},
+
+    // --- Tilt cube using X, then spin using Y ---
+    { moves::X, moves::Y },
+    { moves::X, moves::Y2 },
+    { moves::X, moves::Y_prime },
+
+    // --- Tilt cube using X twice, then spin using Y ---
+    { moves::X2, moves::Y },
+    { moves::X2, moves::Y2},
+    { moves::X2, moves::Y_prime },
+
+    // --- Tilt cube using X3, then spin using Y ---
+    { moves::X_prime, moves::Y },
+    { moves::X_prime, moves::Y2 },
+    { moves::X_prime, moves::Y_prime },
+
+    // --- Tilt cube using Y, then spin using Z ---
+    { moves::Y, moves::Z },
+    { moves::Y, moves::Z2 },
+    { moves::Y, moves::Z_prime},
+}};
 
 Cube::Cube() {
     up = WHITE_FACE; // 19173961
@@ -33,9 +73,6 @@ Cube::Cube(const Cube &cube) {
 Cube::~Cube() = default;
 
 vector<uint32_t> Cube::get_state() const {
-    assert(verify_orientation());
-
-    array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
     vector<uint32_t> state_vector = {up, front, right, back, left, down};
 
     return state_vector;
@@ -161,45 +198,6 @@ string Cube::toString() const {
 
 bool Cube::is_rotation_equal(Cube &other) const {
     vector<uint32_t> this_state = this->get_state();
-    array<vector<string>, 24> rotations = {{
-        // --- Identity ---
-        {},
-
-        // --- Rotations around X ---
-        { moves::X },
-        { moves::X2 },
-        { moves::X_prime },
-
-        // --- Rotations around Y ---
-        { moves::Y },
-        { moves::Y2 },
-        { moves::Y_prime },
-
-        // --- Rotations around Z ---
-        { moves::Z },
-        { moves::Z2 },
-        { moves::Z_prime},
-
-        // --- Tilt cube using X, then spin using Y ---
-        { moves::X, moves::Y },
-        { moves::X, moves::Y2 },
-        { moves::X, moves::Y_prime },
-
-        // --- Tilt cube using X twice, then spin using Y ---
-        { moves::X2, moves::Y },
-        { moves::X2, moves::Y2},
-        { moves::X2, moves::Y_prime },
-
-        // --- Tilt cube using X3, then spin using Y ---
-        { moves::X_prime, moves::Y },
-        { moves::X_prime, moves::Y2 },
-        { moves::X_prime, moves::Y_prime },
-
-        // --- Tilt cube using Y, then spin using Z ---
-        { moves::Y, moves::Z },
-        { moves::Y, moves::Z2 },
-        { moves::Y, moves::Z_prime},
-    }};
     
     for (auto rotation : rotations) {
         vector<uint32_t> other_state = other.apply_moves(rotation).get_state();
@@ -298,4 +296,26 @@ Cube Cube::apply_moves(const vector<string> &moves) {
     }
 
     return newCube;
+}
+
+Cube Cube::canonical() const {
+    Cube tempCube = *this;
+
+    auto faces = get_state();
+
+    if (!verify_centers()) {
+        throw logic_error("Cube orientation/centers are bad, cannot canonicalize.");
+    }
+
+    for (auto rotation : rotations) {
+        Cube rotated = tempCube.apply_moves(rotation);
+        if (get(rotated.up, CENTER) == WHITE &&
+            get(rotated.front, CENTER) == GREEN &&
+            get(rotated.right, CENTER) == RED &&
+            get(rotated.back, CENTER) == BLUE &&
+            get(rotated.left, CENTER) == ORANGE &&
+            get(rotated.down, CENTER) == YELLOW) {return rotated; }
+    }
+
+    throw logic_error("This should never happen");
 }

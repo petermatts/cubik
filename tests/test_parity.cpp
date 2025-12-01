@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include <iostream>
+#include <stdexcept>
 #include "toml_helper.hpp"
 #include "cube.hpp"
 
@@ -36,7 +37,7 @@ TEST_F(ParityTest, EdgePermutation) {
 
 TEST_F(ParityTest, TooManyOfAColor) {
     vector<uint32_t> st = state("solutions/parity/OverColor.toml"); 
-    EXPECT_FALSE(cube.set_state(st));
+    EXPECT_THROW(cube.set_state(st), std::logic_error);
 }
 
 TEST_F(ParityTest, TwistedCorner) {
@@ -86,5 +87,45 @@ TEST_F(ParityTest, ScrambleBad) {
 
 TEST_F(ParityTest, BadCenters) {
     vector<uint32_t> st = state("solutions/parity/BadCenters.toml"); 
+    EXPECT_THROW(cube.set_state(st), std::logic_error);
+}
+
+TEST_F(ParityTest, BadCornerAndEdge) {
+    vector<uint32_t> st = state("solutions/parity/BadCornerAndEdge.toml"); 
     EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, ScrambleBadCorner) {
+    vector<uint32_t> st = state("solutions/parity/ScrambleBadCorner.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, ScrambleBadEdge) {
+    vector<uint32_t> st = state("solutions/parity/ScrambleBadEdge.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, ScrambleBadEdgeAndCorner) {
+    vector<uint32_t> st = state("solutions/parity/ScrambleBadEdgeAndCorner.toml"); 
+    EXPECT_FALSE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, DoubleEdgeFlip) {
+    vector<uint32_t> st = state("solutions/parity/DoubleEdgeFlip.toml"); 
+    EXPECT_TRUE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, SolvedRotatedX) {
+    vector<uint32_t> st = state("solutions/rotation/X.toml"); 
+    EXPECT_TRUE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, SolvedRotatedY) {
+    vector<uint32_t> st = state("solutions/rotation/Y.toml"); 
+    EXPECT_TRUE(cube.set_state(st));
+}
+
+TEST_F(ParityTest, SolvedRotatedZ) {
+    vector<uint32_t> st = state("solutions/rotation/Z.toml"); 
+    EXPECT_TRUE(cube.set_state(st));
 }

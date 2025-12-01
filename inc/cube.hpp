@@ -83,11 +83,13 @@ class Cube {
 
     Cube apply_moves(const vector<string> &moves);
 
+    Cube canonical() const;
+
     bool is_solved();
     string toString() const;
     
     bool is_valid_state() const;
-    bool verify_orientation() const;
+    bool verify_centers() const;
 
     vector<uint32_t> get_state() const;
     bool set_state(const vector<uint32_t> &state);
@@ -108,7 +110,7 @@ class Cube {
     uint32_t right;
     uint32_t back;
     uint32_t down;
-    
+
     bool check_corner_orientation() const;
     bool check_edge_orientation() const;
     bool check_piece_counts() const;

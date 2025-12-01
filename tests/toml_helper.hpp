@@ -18,23 +18,12 @@ inline uint32_t string2colornum(string str) {
 
 inline void set_face(toml::v3::node_view<toml::v3::node> node_view, uint32_t &face) {
     uint8_t i = 0;
-    array<uint8_t, 9> shifts = {
-        TOP_LEFT,
-        TOP_MIDDLE,
-        TOP_RIGHT,
-        MIDDLE_LEFT,
-        CENTER,
-        MIDDLE_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_MIDDLE,
-        BOTTOM_RIGHT
-    };
     
     if(node_view.is_array()) {
         toml::array *toml_arr = node_view.as_array();
         for(auto&& elem : *toml_arr) {
             if(elem.is_string()) {
-                face |= (string2colornum(*elem.value<std::string>()) << shifts[i++]);
+                face |= (string2colornum(*elem.value<std::string>()) << OFFSETS[i++]);
             } else {
                 cerr << "Non string element found when string element expected!" << endl;
             }
@@ -45,19 +34,6 @@ inline void set_face(toml::v3::node_view<toml::v3::node> node_view, uint32_t &fa
 }
 
 inline vector<uint32_t> state(string toml_path) {
-    array<uint8_t, 9> shifts = {
-        TOP_LEFT,
-        TOP_MIDDLE,
-        TOP_RIGHT,
-        MIDDLE_LEFT,
-        CENTER,
-        MIDDLE_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_MIDDLE,
-        BOTTOM_RIGHT
-    };
-
-    array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
     vector<uint32_t> state_vector;
 
     try {
