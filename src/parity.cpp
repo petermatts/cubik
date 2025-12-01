@@ -1,6 +1,7 @@
 #include <array>
 #include <algorithm>
 #include <cstring>
+#include <unordered_map>
 
 #include "common.hpp"
 #include "cube.hpp"
@@ -14,29 +15,7 @@ bool Cube::is_valid_state() const {
         && canon.check_edge_orientation()
         && canon.check_parity()
         && canon.verify_centers();
-
-    // std::cout << "CHECKING STATE...\n";
-    // std::cerr << "Cube state:\n" << this->toString() << "\n";
-
-    // bool a = check_piece_counts();
-    // std::cout << "piece counts: " << a << std::endl;
-
-    // bool b = check_corner_orientation();
-    // std::cout << "corner orientation: " << b << std::endl;
-
-    // bool c = check_edge_orientation();
-    // std::cout << "edge orientation: " << c << std::endl;
-
-    // bool d = check_parity();
-    // std::cout << "parity: " << d << std::endl;
-
-    // bool e = verify_centers();
-    // std::cout << "center orientation: " << e << std::endl;
-
-    // return a && b && c && d && e;
 }
-
-#include <unordered_map>
 
 bool Cube::check_piece_counts() const
 {
@@ -97,7 +76,6 @@ bool Cube::check_edge_orientation() const {
     return (sum % 2) == 0;
 }
 
-// ---- Corner permutation ----
 std::array<int8_t, 8> Cube::corner_permutation() const {
     std::array<int8_t, 8> perm;
     for (int i = 0; i < 8; ++i) {
@@ -107,7 +85,6 @@ std::array<int8_t, 8> Cube::corner_permutation() const {
     return perm;
 }
 
-// ---- Edge permutation ----
 std::array<int8_t, 12> Cube::edge_permutation() const {
     std::array<int8_t, 12> perm;
     for (int i = 0; i < 12; ++i) {
@@ -117,49 +94,15 @@ std::array<int8_t, 12> Cube::edge_permutation() const {
     return perm;
 }
 
-
-// ---- Corner parity ----
 int Cube::corner_parity() const {
     return permutation_parity(corner_permutation());
 }
 
-// ---- Edge parity ----
 int Cube::edge_parity() const {
     return permutation_parity(edge_permutation());
 }
 
-// ---- Check parity ----
 bool Cube::check_parity() const {
-    // std::cout << "=== CENTERS ===\n";
-    // std::cout << "UP   : " << getColor(get(up, CENTER)) << "raw: " << (int)get(up, CENTER) << std::endl;
-    // std::cout << "FRONT: " << getColor(get(front, CENTER)) << "raw: " << (int)get(front, CENTER) << std::endl;
-    // std::cout << "RIGHT: " << getColor(get(right, CENTER)) << "raw: " << (int)get(right, CENTER) << std::endl;
-    // std::cout << "BACK : " << getColor(get(back, CENTER)) << "raw: " << (int)get(back, CENTER) << std::endl;
-    // std::cout << "LEFT : " << getColor(get(left, CENTER)) << "raw: " << (int)get(left, CENTER) << std::endl;
-    // std::cout << "DOWN : " << getColor(get(down, CENTER)) << "raw: " << (int)get(down, CENTER) << std::endl << std::endl;
-    // std::cout << "=== CORNER CUBIES ===\n";
-    // for (int pos = 0; pos < 8; ++pos) {
-    //     CornerCubie c = get_corner_cubie(pos);
-    //     std::cout << "pos=" << pos
-    //             << "  id=" << (int)c.id
-    //             << "  ori=" << (int)c.orientation
-    //             << "  colors=("
-    //             << (int)c.colors[0] << ","
-    //             << (int)c.colors[1] << ","
-    //             << (int)c.colors[2] << ")\n";
-    // }
-
-    // std::cout << "\n=== EDGE CUBIES ===\n";
-    // for (int pos = 0; pos < 12; ++pos) {
-    //     EdgeCubie e = get_edge_cubie(pos);
-    //     std::cout << "pos=" << pos
-    //             << "  id=" << (int)e.id
-    //             << "  ori=" << (int)e.orientation
-    //             << "  colors=("
-    //             << (int)e.colors[0] << ","
-    //             << (int)e.colors[1] << ")\n";
-    // }
-
     int cp = corner_parity();
     int ep = edge_parity();
     if (cp < 0 || ep < 0) return false;
