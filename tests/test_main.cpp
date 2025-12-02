@@ -174,3 +174,11 @@ TEST_F(CubeTest, CanonicalMoved) {
     EXPECT_FALSE(RZ == RZ.canonical());
     EXPECT_TRUE(RZ.canonical() == R);
 }
+
+TEST_F(CubeTest, SingleMoveIsAlsoWideMove) {
+    Cube l2 = solved.l2();
+    Cube R2 = solved.R2();
+
+    EXPECT_TRUE(l2.is_rotation_equal(R2));
+    EXPECT_FALSE(l2 == R2);
+}
