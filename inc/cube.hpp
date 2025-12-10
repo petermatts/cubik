@@ -9,6 +9,8 @@
 
 using namespace std;
 
+inline void PRINT_EMOJIS(bool value) { __USE_EMOJI = value; }
+
 class Cube {
     public:
     Cube();
