@@ -17,7 +17,7 @@ int main() {
     cout << cube.toString() << endl;
     solvedMsg(cube);
     cout << "Cube is " << sizeof(cube) << "B" << endl;
-    auto state = cube.state_array();
+    auto state = cube.get_state();
 
     // PRINT_EMOJIS(false);
     // cout << cube.toString() << endl;

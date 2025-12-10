@@ -2,14 +2,55 @@
 #include "cube.hpp"
 #include "moves.hpp"
 
-#include <cassert>
 #include <cstdint>
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <functional>
 #include <unordered_map>
+#include <stdexcept>
 
 using namespace std;
+
+static const array<vector<string>, 24> rotations = {{
+    // --- Identity ---
+    {},
+
+    // --- Rotations around X ---
+    { moves::X },
+    { moves::X2 },
+    { moves::X_prime },
+
+    // --- Rotations around Y ---
+    { moves::Y },
+    { moves::Y2 },
+    { moves::Y_prime },
+
+    // --- Rotations around Z ---
+    { moves::Z },
+    { moves::Z2 },
+    { moves::Z_prime},
+
+    // --- Tilt cube using X, then spin using Y ---
+    { moves::X, moves::Y },
+    { moves::X, moves::Y2 },
+    { moves::X, moves::Y_prime },
+
+    // --- Tilt cube using X twice, then spin using Y ---
+    { moves::X2, moves::Y },
+    { moves::X2, moves::Y2},
+    { moves::X2, moves::Y_prime },
+
+    // --- Tilt cube using X3, then spin using Y ---
+    { moves::X_prime, moves::Y },
+    { moves::X_prime, moves::Y2 },
+    { moves::X_prime, moves::Y_prime },
+
+    // --- Tilt cube using Y, then spin using Z ---
+    { moves::Y, moves::Z },
+    { moves::Y, moves::Z2 },
+    { moves::Y, moves::Z_prime},
+}};
 
 Cube::Cube() {
     up = WHITE_FACE; // 19173961
@@ -31,91 +72,52 @@ Cube::Cube(const Cube &cube) {
 
 Cube::~Cube() = default;
 
-vector<uint32_t> Cube::state_array() const {
-    assert(verify_orientation());
-    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
-
-    array<uint8_t, 6> colors = {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
-    vector<uint32_t> state_vector;
-
-    for(uint8_t color : colors) {
-        if(c_up == color) {
-            state_vector.push_back(up);
-        } else if (c_down == color) {
-            state_vector.push_back(down);
-        } else if (c_front == color) {
-            state_vector.push_back(front);
-        } else if (c_back == color) {
-            state_vector.push_back(back);
-        } else if (c_left == color) {
-            state_vector.push_back(left);
-        } else if (c_right == color) {
-            state_vector.push_back(right);
-        }
-    }
+vector<uint32_t> Cube::get_state() const {
+    vector<uint32_t> state_vector = {up, front, right, back, left, down};
 
     return state_vector;
 }
 
-bool Cube::verify_orientation() const {
-    uint8_t c_up = static_cast<uint8_t>((up << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_down = static_cast<uint8_t>((down << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_front = static_cast<uint8_t>((front << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_back = static_cast<uint8_t>((back << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_left = static_cast<uint8_t>((left << CLEAR_CENTER) >> CLEAR);
-    uint8_t c_right = static_cast<uint8_t>((right << CLEAR_CENTER) >> CLEAR);
+bool Cube::set_state(const vector<uint32_t> &state) {
+    if(state.size() != 6) return false;
 
-    
-    // check for valid opposite centers
-    array<uint8_t, 3> poles = {
-        static_cast<uint8_t>(c_up + c_down),
-        static_cast<uint8_t>(c_front + c_back),
-        static_cast<uint8_t>(c_left + c_right)
-    };
+    // Save current state in case the new one is invalid
+    uint32_t old_up    = up;
+    uint32_t old_down  = down;
+    uint32_t old_left  = left;
+    uint32_t old_right = right;
+    uint32_t old_front = front;
+    uint32_t old_back  = back;
 
-    array<uint8_t, 3> axes {
-        WHITE + YELLOW,
-        GREEN + BLUE,
-        RED + ORANGE
-    };
+    up    = state[0];
+    front = state[1];
+    right = state[2];
+    back  = state[3];
+    left  = state[4];
+    down  = state[5];
 
-    sort(poles.begin(), poles.end());
-    sort(axes.begin(), axes.end());
+    // Validate the cube
+    if (!is_valid_state())
+    {
+        // Restore old state if invalid
+        up    = old_up;
+        down  = old_down;
+        left  = old_left;
+        right = old_right;
+        front = old_front;
+        back  = old_back;
 
-    array<array<uint8_t, 3>, 8> cycles = {{
-        {{WHITE, BLUE, RED}},
-        {{WHITE, ORANGE, BLUE}},
-        {{WHITE, GREEN, ORANGE}},
-        {{WHITE, RED, GREEN}},
-        {{YELLOW, BLUE, ORANGE}},
-        {{YELLOW, RED, BLUE}},
-        {{YELLOW, GREEN, RED}},
-        {{YELLOW, ORANGE, GREEN}}
-    }};
-
-    array<uint8_t, 3> center_cycle = {c_up, c_right, c_front};
-
-    bool result = false;
-    for(auto c : cycles) {
-        if(array_circular_equal(c, center_cycle)) {
-            result = true;
-            break;
-        }
+        return false;
     }
 
-    return (poles == axes) && result;
+    return true;
 }
 
 bool Cube::is_solved() {
     return *this == Cube();
 }
 
-string Cube::toString() {
+string Cube::toString() const {
     const string square_space = "      ";
     const char* space = __USE_EMOJI ? "" : " ";
     string msg = "\n";
@@ -194,8 +196,19 @@ string Cube::toString() {
     return msg;
 }
 
+bool Cube::is_rotation_equal(Cube &other) const {
+    vector<uint32_t> this_state = this->get_state();
+    
+    for (auto rotation : rotations) {
+        vector<uint32_t> other_state = other.apply_moves(rotation).get_state();
+        if (this_state == other_state) return true;
+    }
+
+    return false;
+}
+
 bool operator==(const Cube &cube1, const Cube &cube2) {
-    return cube1.state_array() == cube2.state_array();
+    return cube1.get_state() == cube2.get_state();
 }
 
 bool operator!=(const Cube &cube1, const Cube &cube2) {
@@ -283,4 +296,26 @@ Cube Cube::apply_moves(const vector<string> &moves) {
     }
 
     return newCube;
+}
+
+Cube Cube::canonical() const {
+    Cube tempCube = *this;
+
+    auto faces = get_state();
+
+    if (!verify_centers()) {
+        throw logic_error("Cube orientation/centers are bad, cannot canonicalize.");
+    }
+
+    for (auto rotation : rotations) {
+        Cube rotated = tempCube.apply_moves(rotation);
+        if (get(rotated.up, CENTER) == WHITE &&
+            get(rotated.front, CENTER) == GREEN &&
+            get(rotated.right, CENTER) == RED &&
+            get(rotated.back, CENTER) == BLUE &&
+            get(rotated.left, CENTER) == ORANGE &&
+            get(rotated.down, CENTER) == YELLOW) {return rotated; }
+    }
+
+    throw logic_error("This should never happen");
 }

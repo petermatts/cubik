@@ -3,7 +3,7 @@
 
 # Cubik
 
-C++ module for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
+Python module, backended by C++ via SWIG, for emulating a Rubik's cube and its behaviors for implementing solving algorithms, search algorithms, and more.
 
 ## Usage
 
@@ -36,7 +36,7 @@ Outputs:
 ### Applying a Move
 
 ```python
-cube_R = cube.R() # applys R move
+cube_R = cube.R() # applies R move
 ```
 
 Note: *all move methods return a new cube*
@@ -86,22 +86,22 @@ other_cube != cube.R() # true because other_cube is not the as cube+R
 
 For cube notation please refer to [3x3 Rubik's Cube Move Notation](https://jperm.net/3x3/moves).
 
-## Visualization
+## The Backend
 
-### Printed Model
+Each face is represented as a `uint32_t` and each color is represented by a 3-bit section of the `uint32_t`. This means the entire represntation the cube only takes up $6*32=192$ bits or $24$ Bytes!!
 
-Cube Layout:
+Specifically:
+| Sticker       | Bits                     |
+| ------------- | ------------------------ |
+| Top Left      | $(b_0,b_1,b_2)$          |
+| Top Middle    | $(b_3,b_4,b_5)$          |
+| Top Right     | $(b_6,b_7,b_8)$          |
+| Middle Left   | $(b_9,b_{10},b_{11})$    |
+| Center        | $(b_{12},b_{13},b_{14})$ |
+| Middle Right  | $(b_{15},b_{16},b_{17})$ |
+| Bottom Left   | $(b_{18},b_{19},b_{20})$ |
+| Bottom Middle | $(b_{21},b_{22},b_{23})$ |
+| Bottom Right  | $(b_{24},b_{25},b_{26})$ |
 
-![](./docs/images/cube.png)
 
-*Coloring is based on the solved state and orientation*
-
-### Memory Model
-In this cube model we attempt to be as memory efficient as possible so, in memory each face is stored as a `uint32_t` such that:
-
-![Face Layout](./docs/images/face.png)
-
-*Fuzzy display of uint32_t storage of a face*
-
-![Face uint32_t](./docs/images/uint32.png)
-
+\* where `b0` is the least significant bit.

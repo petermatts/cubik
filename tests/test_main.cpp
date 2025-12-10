@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <vector>
 #include "cube.hpp"
 
 class CubeTest : public ::testing::Test {
@@ -123,11 +124,61 @@ TEST_F(CubeTest, SequenceAndInverseRestoreCubeBD_) {
     EXPECT_TRUE(restored.is_solved());
 }
 
-TEST_F(CubeTest, WholeRotationIsSame) {
+TEST_F(CubeTest, WholeRotationEqualEqualNotSame) {
     Cube x = solved.X();
     Cube y = solved.Y();
     Cube z = solved.Z();
+    EXPECT_FALSE(solved == x);
+    EXPECT_FALSE(solved == y);
+    EXPECT_FALSE(solved == z);
+}
+
+TEST_F(CubeTest, WholeRotationIsRotationEqual) {
+    Cube x = solved.X();
+    Cube y = solved.Y();
+    Cube z = solved.Z();
+    EXPECT_TRUE(solved.is_rotation_equal(x));
+    EXPECT_TRUE(solved.is_rotation_equal(y));
+    EXPECT_TRUE(solved.is_rotation_equal(z));
+}
+
+TEST_F(CubeTest, LoadedIsSameAsOriginal) {
+    std::vector<uint32_t> solved_state = solved.get_state();
+    Cube x;
+    x.set_state(solved_state);
     EXPECT_TRUE(solved == x);
-    EXPECT_TRUE(solved == y);
-    EXPECT_TRUE(solved == z);
+
+    std::vector<uint32_t> r_state = solved.R().get_state();
+    bool result = x.set_state(r_state);
+    EXPECT_TRUE(solved.R() == x);
+}
+
+TEST_F(CubeTest, CanonicalIsSame) {
+    Cube canon = solved.canonical();
+    EXPECT_TRUE(solved == canon);
+}
+
+TEST_F(CubeTest, CanonicalMoved) {
+    Cube R = solved.R();
+    EXPECT_TRUE(R == R.canonical());
+
+    Cube RX = R.X();
+    EXPECT_FALSE(RX == RX.canonical());
+    EXPECT_TRUE(RX.canonical() == R);
+
+    Cube RY = R.Y();
+    EXPECT_FALSE(RY == RY.canonical());
+    EXPECT_TRUE(RY.canonical() == R);
+
+    Cube RZ = R.Z();
+    EXPECT_FALSE(RZ == RZ.canonical());
+    EXPECT_TRUE(RZ.canonical() == R);
+}
+
+TEST_F(CubeTest, SingleMoveIsAlsoWideMove) {
+    Cube l2 = solved.l2();
+    Cube R2 = solved.R2();
+
+    EXPECT_TRUE(l2.is_rotation_equal(R2));
+    EXPECT_FALSE(l2 == R2);
 }
