@@ -91,17 +91,17 @@ For cube notation please refer to [3x3 Rubik's Cube Move Notation](https://jperm
 Each face is represented as a `uint32_t` and each color is represented by a 3-bit section of the `uint32_t`. This means the entire represntation the cube only takes up $6*32=192$ bits or $24$ Bytes!!
 
 Specifically:
-| Sticker       | Bits               |
-| ------------- | ----               |
-| Top Left      | $(b_0,b_1,b_2)$    |
-| Top Middle    | $(b_3,b_4,b_5)$    |
-| Top Right     | $(b_6,b_7,b_8)$    |
-| Middle Left   | $(b_9,b_10,b_11)$  |
-| Center        | $(b_12,b_13,b_14)$ |
-| Middle Right  | $(b_15,b_16,b_17)$ |
-| Bottom Left   | $(b_18,b_19,b_20)$ |
-| Bottom Middle | $(b_21,b_22,b_23)$ |
-| Bottom Right  | $(b_24,b_25,b_26)$ |
+| Sticker       | Bits                     |
+| ------------- | ------------------------ |
+| Top Left      | $(b_0,b_1,b_2)$          |
+| Top Middle    | $(b_3,b_4,b_5)$          |
+| Top Right     | $(b_6,b_7,b_8)$          |
+| Middle Left   | $(b_9,b_{10},b_{11})$    |
+| Center        | $(b_{12},b_{13},b_{14})$ |
+| Middle Right  | $(b_{15},b_{16},b_{17})$ |
+| Bottom Left   | $(b_{18},b_{19},b_{20})$ |
+| Bottom Middle | $(b_{21},b_{22},b_{23})$ |
+| Bottom Right  | $(b_{24},b_{25},b_{26})$ |
 
 
 \* where `b0` is the least significant bit.
