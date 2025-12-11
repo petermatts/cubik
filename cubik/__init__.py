@@ -21,5 +21,17 @@ class _MovesFiltered:
 
 
 # Replace the original moves module with the filtered version
-moves = _MovesFiltered(_moves_module)
+Moves = _MovesFiltered(_moves_module)
 del _moves_module
+
+for elem in ['StringVector', 'SwigPyIterator', 'Uint32Vector', '_MovesFiltered', '_cubik', '_cubik_moves']:
+    if elem in globals():
+        del globals()[elem]
+del elem
+del globals()['cubik']
+del globals()['moves']
+
+
+__doc__ = """Cubik Package.
+
+A lightweight Python package for manipulating and solving Rubik's Cubes. Created using C++, CMake, and SWIG for performance and ease of use."""
