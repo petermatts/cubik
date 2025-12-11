@@ -49,6 +49,7 @@ clean:
 
 	rm -f ./cubik/*.so
 	rm -f ./cubik/cubik.py
+	rm -f ./cubik/moves.py
 
 clean-all:
 	rm -rf $(BUILD_DIR)

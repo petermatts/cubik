@@ -175,6 +175,4 @@ bool array_circular_equal(const std::array<T, N> &a, const std::array<T, N> &b) 
 #pragma once
 extern bool __USE_EMOJI;
 
-inline void PRINT_EMOJIS(bool value) { __USE_EMOJI = value; }
-
 #endif // COMMON_H
