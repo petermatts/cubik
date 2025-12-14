@@ -45,11 +45,11 @@ This means that `cube` will be unchanged and `cube_R` is the result of applying 
 ### Applying a Sequence of Moves
 
 ```python
-from cubik import Cube, moves
+from cubik import Cube, Moves
 
 cube = Cube()
 
-checker_moves = [moves.M2, moves.E2, moves.S2] # sequence of moves to build a checker pattern on the cube
+checker_moves = [Moves.M2, Moves.E2, Moves.S2] # sequence of moves to build a checker pattern on the cube
 
 checkered_cube = cube.apply_moves(checker_moves)
 ```
@@ -79,8 +79,11 @@ other_cube.R() == cube.R() # ditto
 
 other_cube != cube.R() # true because other_cube is not the as cube+R
 
-```
+canon = cube.cannonical() # returns a cube in canonical orientation*
 
+cube.is_valid_state() # returns true if cube is in a solvable state
+```
+\* cannonical orientation is green in front, white on top, red on right, etc.
 
 ## Rubik's Cube Notation
 
