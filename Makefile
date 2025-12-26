@@ -9,8 +9,11 @@ RELEASE_DIR := release
 
 THREADS := 1
 
-.PHONY: clean clean-all all run test release wheel
-.SILENT: clean clean-all all run test release wheel
+.PHONY: clean clean-all all run test release wheel doxygen
+.SILENT: clean clean-all all run test release wheel doxygen
+
+doxygen:
+	doxygen Doxyfile
 
 all:
 	mkdir -p $(BUILD_DIR) && cd $(BUILD_DIR) && \

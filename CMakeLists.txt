@@ -51,7 +51,7 @@ target_include_directories(cubik_core PUBLIC inc)
 # ========== SWIG Python Module ==========
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
-set(CMAKE_SWIG_FLAGS "-w503")
+set(CMAKE_SWIG_FLAGS "-w503;-doxygen")
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 
