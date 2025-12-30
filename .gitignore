@@ -1,5 +1,6 @@
 # Manual Additions
 docs/notes
+docs/doxygen/*
 .vscode
 .clang-format
 
