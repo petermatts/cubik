@@ -529,6 +529,15 @@ class Cube {
     friend bool operator!=(const Cube &cube1, const Cube &cube2);
 
     /**
+     * @brief Output stream operator for printing the cube.
+     * 
+     * @param os Output stream.
+     * @param obj Cube object to print.
+     * @return Reference to the output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Cube& obj);
+
+    /**
      * @brief Returns a string representation of the cube.
      * 
      * @details If emojis are enabled (default), uses colored emojis to represent stickers. Otherwise, uses letters. example 'W' for white.
