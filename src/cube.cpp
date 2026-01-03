@@ -215,6 +215,11 @@ bool operator!=(const Cube &cube1, const Cube &cube2) {
     return !(cube1 == cube2);
 }
 
+std::ostream& operator<<(std::ostream& os, const Cube& obj) {
+    os << obj.toString();
+    return os;
+}
+
 string Cube::__str__() {
     return toString();
 }
