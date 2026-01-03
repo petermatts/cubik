@@ -40,8 +40,28 @@ public:
 
 class Solver {
 public:
+    /**
+     * @brief Solver constructor.
+     * 
+     * @param config[in] Solver configuration
+     * @param heuristic[in] Heuristic to use. Must be a Cubik.Heuristic subclass.
+     * @return * Solver 
+     */
     Solver(const SolverConfig& config, Heuristic& heuristic);
 
+    /**
+     * @brief Search for a soltion from the starting cube state and the solver configuration.
+     * 
+     * @param start[in] Starting cube state
+     * @return SolveResult 
+     */
     SolveResult solve(const Cube& start);
+
+    string toString() const;
+    string __str__() const { return toString(); }
+
+// private:
+//     SolverConfig config_;
+//     Heuristic& heuristic_;
 };
 

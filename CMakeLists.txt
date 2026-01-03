@@ -29,6 +29,7 @@ FetchContent_MakeAvailable(tomlplusplus)
 add_library(cubik_core
     src/cube.cpp
     src/common.cpp
+    src/solver.cpp
     src/moves/B.cpp
     src/moves/D.cpp
     src/moves/E.cpp
