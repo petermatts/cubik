@@ -56,12 +56,16 @@ public:
      * @return SolveResult 
      */
     SolveResult solve(const Cube& start);
-
+    
     string toString() const;
     string __str__() const { return toString(); }
+    friend std::ostream& operator<<(std::ostream& os, const Solver& obj) {
+        os << obj.toString();
+        return os;
+    };
 
-// private:
-//     SolverConfig config_;
-//     Heuristic& heuristic_;
+private:
+    SolverConfig config_;
+    Heuristic& heuristic_;
 };
 
