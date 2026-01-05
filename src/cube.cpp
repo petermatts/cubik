@@ -236,7 +236,7 @@ bool Cube::__ne__(const Cube &other) {
     return *this != other;
 }
 
-Cube Cube::apply_moves(const vector<string> &moves) {
+Cube Cube::apply(const string &move) {
     Cube newCube = *this;
 
     static const std::unordered_map<std::string, std::function<Cube(const Cube&)>> move_options = {
@@ -296,8 +296,14 @@ Cube Cube::apply_moves(const vector<string> &moves) {
         {moves::Z2, [](const Cube &c) { return c.Z2(); }}
     };
 
+    return move_options.at(move)(newCube);
+}
+
+Cube Cube::apply_moves(const vector<string> &moves) {
+    Cube newCube = *this;
+
     for(const string &m : moves) {
-        newCube = move_options.at(m)(newCube);
+        newCube = newCube.apply(m);
     }
 
     return newCube;

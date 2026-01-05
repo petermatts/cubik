@@ -29,7 +29,6 @@ FetchContent_MakeAvailable(tomlplusplus)
 add_library(cubik_core
     src/cube.cpp
     src/common.cpp
-    src/solver.cpp
     src/moves/B.cpp
     src/moves/D.cpp
     src/moves/E.cpp
@@ -43,6 +42,8 @@ add_library(cubik_core
     src/moves/Y.cpp
     src/moves/Z.cpp
     src/parity.cpp
+    src/solver.cpp
+    src/searches/ida_star.cpp
 )
 
 # Required for using cubik_core inside a shared library (SWIG module)
