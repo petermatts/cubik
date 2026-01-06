@@ -20,18 +20,17 @@ public:
 TEST(IDAStarSolver, SolvedCube) {
     Cube cube;  // solved by default
 
-    SolverConfig config{
-        SearchAlgorithm::IDA_STAR, // algorithm
-        20,                        // max_depth
-        1000,                      // node_limit
-        false,                     // use_transposition
-        false,                     // verbose
-        {                           // allowed_moves
-            moves::U, moves::U_prime,
-            moves::R, moves::R_prime
-        }
+    SolverConfig config{};
+    config.algorithm = SearchAlgorithm::IDA_STAR; // algorithm
+    config.max_depth = 20;                        // max_depth
+    config.node_limit = 1000;                     // node_limit
+    config.use_transposition = false;             // use_transposition
+    config.verbose = false;                       // verbose
+    config.allowed_moves = {                      // allowed_moves
+        moves::U, moves::U_prime,
+        moves::R, moves::R_prime
     };
-
+    
     auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(config, heuristic);
 
@@ -46,15 +45,14 @@ TEST(IDAStarSolver, OneMoveScramble) {
     Cube cube;
     cube = cube.apply(moves::R);
 
-    SolverConfig config{
-        SearchAlgorithm::IDA_STAR, // algorithm
-        5,                         // max_depth
-        100,                       // node_limit
-        false,                     // use_transposition
-        false,                     // verbose
-        {                           // allowed_moves
-            moves::R, moves::R_prime
-        }
+    SolverConfig config{};
+    config.algorithm = SearchAlgorithm::IDA_STAR; // algorithm
+    config.max_depth = 5;                         // max_depth
+    config.node_limit = 100;                      // node_limit
+    config.use_transposition = false;             // use_transposition
+    config.verbose = false;                       // verbose
+    config.allowed_moves = {                      // allowed_moves
+        moves::R, moves::R_prime
     };
 
     auto heuristic = std::make_shared<ZeroHeuristic>();
@@ -77,16 +75,15 @@ TEST(IDAStarSolver, NodeLimitStopsSearch) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    SolverConfig config{
-        SearchAlgorithm::IDA_STAR, // algorithm
-        20,                        // max_depth
-        1,                         // node_limit (intentionally tiny)
-        false,                     // use_transposition
-        false,                     // verbose
-        {                           // allowed_moves
-            moves::U, moves::U_prime,
-            moves::R, moves::R_prime
-        }
+    SolverConfig config{};
+    config.algorithm = SearchAlgorithm::IDA_STAR; // algorithm
+    config.max_depth = 20;                        // max_depth
+    config.node_limit = 1;                        // node_limit (intentionally tiny)
+    config.use_transposition = false;             // use_transposition
+    config.verbose = false;                       // verbose
+    config.allowed_moves = {                      // allowed_moves
+        moves::U, moves::U_prime,
+        moves::R, moves::R_prime
     };
 
     auto heuristic = std::make_shared<ZeroHeuristic>();
@@ -103,16 +100,15 @@ TEST(IDAStarSolver, DepthLimitStopsSearch) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    SolverConfig config{
-        SearchAlgorithm::IDA_STAR, // algorithm
-        1,                         // max_depth (too shallow)
-        1000,                      // node_limit
-        false,                     // use_transposition
-        false,                     // verbose
-        {                           // allowed_moves
-            moves::U, moves::U_prime,
-            moves::R, moves::R_prime
-        }
+    SolverConfig config{};
+    config.algorithm = SearchAlgorithm::IDA_STAR; // algorithm
+    config.max_depth = 1;                         // max_depth (too shallow)
+    config.node_limit = 1000;                     // node_limit
+    config.use_transposition = false;             // use_transposition
+    config.verbose = false;                       // verbose
+    config.allowed_moves = {                      // allowed_moves
+        moves::U, moves::U_prime,
+        moves::R, moves::R_prime
     };
 
     auto heuristic = std::make_shared<ZeroHeuristic>();

@@ -21,8 +21,8 @@ Solution Solver::solve_a_star(const Cube& start) {
     return a_star_search(start, 1.0f);
 }
 
-Solution Solver::solve_weighted_a_star(const Cube& start, float heuristic_weight) {
-    return a_star_search(start, heuristic_weight);
+Solution Solver::solve_weighted_a_star(const Cube& start) {
+    return a_star_search(start, config_.heuristic_weight);
 }
 
 Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {

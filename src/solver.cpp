@@ -31,7 +31,7 @@ Solution Solver::solve(const Cube& start) {
             result = solve_a_star(start);
             break;
         case SearchAlgorithm::WEIGHTED_A_STAR:
-            result = solve_weighted_a_star(start, 1.0); // todo make this configurable
+            result = solve_weighted_a_star(start);
             break;
         // case SearchAlgorithm::PUCT:
         //     result = solve_puct(start);
@@ -41,8 +41,9 @@ Solution Solver::solve(const Cube& start) {
     return result;
 };
 
-string Solver::toString() const {
+std::string Solver::toString() const {
     return "Solver instance"; // todo Placeholder implementation
+    // Detailed string representation (include config details)
 };
 
 // Map a move to its logical face for redundancy checks
@@ -58,10 +59,7 @@ inline char move_face(Move move) {
 }
 
 // Check if next_move is redundant given the history and allowed moves
-bool Solver::is_redundant(
-    const MoveSequence& history,
-    Move next_move
-) const {
+bool Solver::is_redundant(const MoveSequence& history, Move next_move) const {
     if (history.empty()) return false;
 
     char next_face = move_face(next_move);

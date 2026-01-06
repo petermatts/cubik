@@ -26,11 +26,11 @@ enum class SearchAlgorithm {
 
 struct SolverConfig {
     SearchAlgorithm algorithm;
-    int max_depth;
-    double node_limit;
-    // float heuristic_weight;     // for WA*
-    bool use_transposition;
-    bool verbose;
+    int max_depth = 20; // God's number is O(20)
+    double node_limit = 1000000;
+    float heuristic_weight = 1.0;     // for WA*
+    bool use_transposition = true;
+    bool verbose = false;
     MoveSequence allowed_moves;
 };
 
@@ -118,8 +118,8 @@ private:
     /* Algorithm Entry Points  */
     Solution solve_ida_star(const Cube& start);
     Solution solve_a_star(const Cube& start);
-    Solution solve_weighted_a_star(const Cube& start, float heuristic_weight);
-    Solution solve_puct(const Cube& start);
+    Solution solve_weighted_a_star(const Cube& start);
+    // Solution solve_puct(const Cube& start);
 
     /* IDA* Internals */
     float ida_star_dfs(
@@ -139,7 +139,7 @@ private:
 
     /* Helpers */
     void generate_moves(const std::vector<Move>& history, std::vector<Move>& out_moves) const;
-    bool is_redundant(const std::vector<Move>& history, Move next_move) const;
+    bool is_redundant(const MoveSequence& history, Move next_move) const;
     StateKey state_key(const Cube& cube) const {
         const auto state = cube.get_state();  // expected size == 6
         return StateKey{
