@@ -21,12 +21,12 @@ TEST(IDAStarSolver, SolvedCube) {
     Cube cube;  // solved by default
 
     SolverConfig config{
-        .algorithm = SearchAlgorithm::IDA_STAR,
-        .max_depth = 20,
-        .node_limit = 1000,
-        .use_transposition = false,
-        .verbose = false,
-        .allowed_moves = {
+        SearchAlgorithm::IDA_STAR, // algorithm
+        20,                        // max_depth
+        1000,                      // node_limit
+        false,                     // use_transposition
+        false,                     // verbose
+        {                           // allowed_moves
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         }
@@ -47,12 +47,12 @@ TEST(IDAStarSolver, OneMoveScramble) {
     cube = cube.apply(moves::R);
 
     SolverConfig config{
-        .algorithm = SearchAlgorithm::IDA_STAR,
-        .max_depth = 5,
-        .node_limit = 100,
-        .use_transposition = false,
-        .verbose = false,
-        .allowed_moves = {
+        SearchAlgorithm::IDA_STAR, // algorithm
+        5,                         // max_depth
+        100,                       // node_limit
+        false,                     // use_transposition
+        false,                     // verbose
+        {                           // allowed_moves
             moves::R, moves::R_prime
         }
     };
@@ -63,7 +63,6 @@ TEST(IDAStarSolver, OneMoveScramble) {
     Solution result = solver.solve(cube);
 
     ASSERT_TRUE(result.solved);
-    // ASSERT_EQ(result.solution_moves.size(), 1);
 
     // Robust correctness check
     Cube check = cube;
@@ -79,12 +78,12 @@ TEST(IDAStarSolver, NodeLimitStopsSearch) {
     cube = cube.apply(moves::U);
 
     SolverConfig config{
-        .algorithm = SearchAlgorithm::IDA_STAR,
-        .max_depth = 20,
-        .node_limit = 1,   // Must be below theoretical minimum
-        .use_transposition = false,
-        .verbose = false,
-        .allowed_moves = {
+        SearchAlgorithm::IDA_STAR, // algorithm
+        20,                        // max_depth
+        1,                         // node_limit (intentionally tiny)
+        false,                     // use_transposition
+        false,                     // verbose
+        {                           // allowed_moves
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         }
@@ -105,12 +104,12 @@ TEST(IDAStarSolver, DepthLimitStopsSearch) {
     cube = cube.apply(moves::U);
 
     SolverConfig config{
-        .algorithm = SearchAlgorithm::IDA_STAR,
-        .max_depth = 1,  // too shallow
-        .node_limit = 1000,
-        .use_transposition = false,
-        .verbose = false,
-        .allowed_moves = {
+        SearchAlgorithm::IDA_STAR, // algorithm
+        1,                         // max_depth (too shallow)
+        1000,                      // node_limit
+        false,                     // use_transposition
+        false,                     // verbose
+        {                           // allowed_moves
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         }
