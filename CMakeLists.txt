@@ -44,6 +44,7 @@ add_library(cubik_core
     src/parity.cpp
     src/solver.cpp
     src/searches/ida_star.cpp
+    src/searches/a_star.cpp
 )
 
 # Required for using cubik_core inside a shared library (SWIG module)

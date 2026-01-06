@@ -27,12 +27,12 @@ Solution Solver::solve(const Cube& start) {
         case SearchAlgorithm::IDA_STAR:
             result = solve_ida_star(start);
             break;
-        // case SearchAlgorithm::A_STAR:
-        //     result = solve_a_star(start);
-        //     break;
-        // case SearchAlgorithm::WEIGHTED_A_STAR:
-        //     result = solve_weighted_a_star(start);
-        //     break;
+        case SearchAlgorithm::A_STAR:
+            result = solve_a_star(start);
+            break;
+        case SearchAlgorithm::WEIGHTED_A_STAR:
+            result = solve_weighted_a_star(start, 1.0); // todo make this configurable
+            break;
         // case SearchAlgorithm::PUCT:
         //     result = solve_puct(start);
         //     break;

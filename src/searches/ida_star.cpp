@@ -7,7 +7,7 @@ Solution Solver::solve_ida_star(const Cube& start) {
     reset_search_state();
 
     Solution result{};
-    // auto t_start = std::chrono::steady_clock::now();
+    auto t_start = std::chrono::steady_clock::now();
 
     // Initial heuristic
     std::vector<Cube> init_states{start};
@@ -78,13 +78,12 @@ Solution Solver::solve_ida_star(const Cube& start) {
         }
     }
 
-    // auto t_end = std::chrono::steady_clock::now();
+    auto t_end = std::chrono::steady_clock::now();
     result.nodes_expanded = static_cast<int>(nodes_expanded_);
     result.max_depth_reached = max_depth_reached_;
 
 
-    // result.time_taken =
-    //     std::chrono::duration<double>(t_end - t_start).count();
+    result.time_taken = std::chrono::duration<double>(t_end - t_start).count();
 
     return result;
 }

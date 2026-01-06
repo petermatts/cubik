@@ -118,7 +118,7 @@ private:
     /* Algorithm Entry Points  */
     Solution solve_ida_star(const Cube& start);
     Solution solve_a_star(const Cube& start);
-    Solution solve_weighted_a_star(const Cube& start);
+    Solution solve_weighted_a_star(const Cube& start, float heuristic_weight);
     Solution solve_puct(const Cube& start);
 
     /* IDA* Internals */
@@ -132,7 +132,7 @@ private:
     );
 
     /* A* / WA* Internals */
-    bool a_star_search(const Cube& start, float heuristic_weight);
+    Solution a_star_search(const Cube& start, float heuristic_weight);
 
     /* PUCT / MCTS Internals */
     void puct_simulate(const Cube& root, int simulations);
