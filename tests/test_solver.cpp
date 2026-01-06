@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include "cube.hpp"
 #include "solver.hpp"
 #include "moves.hpp"
