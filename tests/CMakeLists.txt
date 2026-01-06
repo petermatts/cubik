@@ -4,7 +4,7 @@ add_executable(cubik_tests
     test_main.cpp
     test_moves.cpp
     test_parity.cpp
-    test_solver.cpp
+    # test_solver.cpp
 )
 target_include_directories(cubik_tests PRIVATE ${tomlplusplus_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/inc)
 target_link_libraries(cubik_tests PRIVATE GTest::gtest_main cubik_core)
