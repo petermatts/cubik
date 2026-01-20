@@ -79,11 +79,11 @@ other_cube.R() == cube.R() # ditto
 
 other_cube != cube.R() # true because other_cube is not the as cube+R
 
-canon = cube.cannonical() # returns a cube in canonical orientation*
+canon = cube.canonical() # returns a cube in canonical orientation*
 
 cube.is_valid_state() # returns true if cube is in a solvable state
 ```
-\* cannonical orientation is green in front, white on top, red on right, etc.
+\* canonical orientation is green in front, white on top, red on right, etc.
 
 ## Rubik's Cube Notation
 
