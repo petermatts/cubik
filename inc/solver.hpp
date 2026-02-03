@@ -17,7 +17,7 @@ static constexpr float INF = std::numeric_limits<float>::infinity();
 using Move = const char*;
 using MoveSequence = std::vector<Move>;
 
-enum class SearchAlgorithm {
+enum SearchAlgorithm {
     IDA_STAR,
     A_STAR,
     WEIGHTED_A_STAR,

@@ -81,10 +81,10 @@ bool Solver::is_redundant(const MoveSequence& history, Move next_move) const {
         }
 
         if (has_alternative) {
-            // There is an alternative (R' or R2) → current repetition is redundant
+            // There is an alternative (R' or R2) -> current repetition is redundant
             return false; // inverses/half-turns allowed
         } else {
-            // No alternatives allowed → consecutive moves needed to reach solution
+            // No alternatives allowed -> consecutive moves needed to reach solution
             return false;
         }
     }

@@ -48,7 +48,7 @@ int permutation_parity(const std::array<int8_t, N>& perm) {
 
             while (!visited[j]) {
                 if (perm[j] < 0 || perm[j] >= static_cast<int8_t>(N)) {
-                    // Invalid cubie detected → cannot compute parity
+                    // Invalid cubie detected -> cannot compute parity
                     return -1;
                 }
                 visited[j] = true;

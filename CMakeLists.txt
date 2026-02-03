@@ -80,6 +80,17 @@ swig_add_library(cubik_moves
 
 swig_link_libraries(cubik_moves PRIVATE cubik_core Python3::Module)
 
+# --- Submodule: cubik.Solver ---
+set_source_files_properties(interface/solver.i PROPERTIES CPLUSPLUS ON)
+
+swig_add_library(cubik_solver
+    TYPE MODULE
+    LANGUAGE python
+    SOURCES interface/solver.i
+)
+
+swig_link_libraries(cubik_solver PRIVATE cubik_core Python3::Module)
+
 # ========== Install Python Extension + Wrapper ==========
 # Install main SWIG extension
 install(TARGETS cubik
