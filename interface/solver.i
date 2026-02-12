@@ -5,3 +5,8 @@
 %}
 
 %include "../inc/solver.hpp"
+
+%typemap(in) SearchAlgorithm {
+    $1 = static_cast<SearchAlgorithm>($input);
+}
+

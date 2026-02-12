@@ -3,6 +3,9 @@
 #include "cube.hpp"
 #include "solver.hpp"
 
+static constexpr float FOUND = -1.0f;
+static constexpr float INF = std::numeric_limits<float>::infinity();
+
 Solution Solver::solve_ida_star(const Cube& start) {
     reset_search_state();
 

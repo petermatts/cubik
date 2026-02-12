@@ -67,14 +67,14 @@ bool Solver::is_redundant(const MoveSequence& history, Move next_move) const {
     char last_face = move_face(last_move);
 
     // Exact repetition of same move is always redundant
-    if (std::strcmp(last_move, next_move) == 0) return true;
+    if (last_move == next_move) return true;
 
     // Consecutive moves on the same face
     if (next_face == last_face) {
         // Check if allowed moves include an alternative on this face (inverse or 2-turn)
         bool has_alternative = false;
         for (auto m : config_.allowed_moves) {
-            if (move_face(m) == next_face && std::strcmp(m, last_move) != 0) {
+            if (move_face(m) == next_face && (m != last_move)) {
                 has_alternative = true;
                 break;
             }

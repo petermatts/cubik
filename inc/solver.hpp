@@ -11,27 +11,66 @@
 #include <limits>
 #include "cube.hpp"
 
-static constexpr float FOUND = -1.0f;
-static constexpr float INF = std::numeric_limits<float>::infinity();
-
-using Move = const char*;
+using Move = std::string;
 using MoveSequence = std::vector<Move>;
 
 enum SearchAlgorithm {
     IDA_STAR,
     A_STAR,
     WEIGHTED_A_STAR,
-    PUCT,
+    // PUCT,
 };
 
 struct SolverConfig {
     SearchAlgorithm algorithm;
-    int max_depth = 20; // God's number is O(20)
-    double node_limit = 1000000;
-    float heuristic_weight = 1.0;     // for WA*
-    bool use_transposition = true;
-    bool verbose = false;
+    int max_depth;
+    double node_limit;
+    double heuristic_weight;   // for WA*
+    bool use_transposition;
+    bool verbose;
     MoveSequence allowed_moves;
+
+    // Full constructor (WA*)
+    SolverConfig(
+        SearchAlgorithm algorithm_,
+        int max_depth_,
+        double node_limit_,
+        double heuristic_weight_,
+        bool use_transposition_,
+        bool verbose_,
+        MoveSequence allowed_moves_
+    )
+        : algorithm(algorithm_),
+          max_depth(max_depth_),
+          node_limit(node_limit_),
+          heuristic_weight(heuristic_weight_),
+          use_transposition(use_transposition_),
+          verbose(verbose_),
+          allowed_moves(allowed_moves_) {
+            if (algorithm_ == SearchAlgorithm::WEIGHTED_A_STAR &&
+                heuristic_weight_ <= 0.0) {
+                throw std::invalid_argument("heuristic_weight must be > 0");
+            }
+          }
+
+    // Default-weight constructor (IDA* / A*)
+    SolverConfig(
+        SearchAlgorithm algorithm_,
+        int max_depth_,
+        double node_limit_,
+        bool use_transposition_,
+        bool verbose_,
+        MoveSequence allowed_moves_
+    )
+        : SolverConfig(
+              algorithm_,
+              max_depth_,
+              node_limit_,
+              /* heuristic_weight = */ 1.0,
+              use_transposition_,
+              verbose_,
+              allowed_moves_
+          ) {}
 };
 
 struct Solution {

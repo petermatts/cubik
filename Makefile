@@ -29,6 +29,8 @@ all:
 	cp $(BUILD_DIR)/_cubik_solver.so ./cubik
 	cp $(BUILD_DIR)/solver.py ./cubik
 
+	cp -r cubik python
+
 release:
 	mkdir -p $(RELEASE_DIR) && cd $(RELEASE_DIR) && \
 	cmake -DCMAKE_BUILD_TYPE=Release .. && \
@@ -58,6 +60,9 @@ clean:
 	rm -f ./cubik/moves.py
 	rm -f ./cubik/solver.py
 
+	rm -rf ./python/cubik
+
 clean-all:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(RELEASE_DIR)
+	rm -rf ./python/cubik

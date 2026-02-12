@@ -15,6 +15,7 @@ cubik/*.so
 cubik/cubik.py
 cubik/moves.py
 cubik/solver.py
+python/cubik
 
 # Distribution code
 dist
