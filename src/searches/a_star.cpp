@@ -48,7 +48,7 @@ Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
     // Initial heuristic
     std::vector<Cube> init{start};
     std::vector<float> h_vals(1);
-    heuristic_->evaluate(init, h_vals);
+    h_vals = heuristic_->evaluate(init);
 
     open.push(Node{
         start,
@@ -102,7 +102,7 @@ Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
 
         // Batch heuristic evaluation
         std::vector<float> child_h_vals(children.size());
-        heuristic_->evaluate(children, child_h_vals);
+        child_h_vals = heuristic_->evaluate(children);
 
         for (size_t i = 0; i < children.size(); ++i) {
             MoveSequence next_path = current.path;

@@ -14,63 +14,20 @@
 using Move = std::string;
 using MoveSequence = std::vector<Move>;
 
-enum SearchAlgorithm {
-    IDA_STAR,
-    A_STAR,
-    WEIGHTED_A_STAR,
-    // PUCT,
-};
+namespace SearchAlgorithm {
+    constexpr const char *IDA_STAR = "IDA_STAR";
+    constexpr const char *A_STAR = "A_STAR";
+    constexpr const char *WEIGHTED_A_STAR = "WEIGHTED_A_STAR";
+}
 
-struct SolverConfig {
-    SearchAlgorithm algorithm;
+struct _SolverConfig {
+    std::string algorithm;
     int max_depth;
     double node_limit;
     double heuristic_weight;   // for WA*
     bool use_transposition;
     bool verbose;
     MoveSequence allowed_moves;
-
-    // Full constructor (WA*)
-    SolverConfig(
-        SearchAlgorithm algorithm_,
-        int max_depth_,
-        double node_limit_,
-        double heuristic_weight_,
-        bool use_transposition_,
-        bool verbose_,
-        MoveSequence allowed_moves_
-    )
-        : algorithm(algorithm_),
-          max_depth(max_depth_),
-          node_limit(node_limit_),
-          heuristic_weight(heuristic_weight_),
-          use_transposition(use_transposition_),
-          verbose(verbose_),
-          allowed_moves(allowed_moves_) {
-            if (algorithm_ == SearchAlgorithm::WEIGHTED_A_STAR &&
-                heuristic_weight_ <= 0.0) {
-                throw std::invalid_argument("heuristic_weight must be > 0");
-            }
-          }
-
-    // Default-weight constructor (IDA* / A*)
-    SolverConfig(
-        SearchAlgorithm algorithm_,
-        int max_depth_,
-        double node_limit_,
-        bool use_transposition_,
-        bool verbose_,
-        MoveSequence allowed_moves_
-    )
-        : SolverConfig(
-              algorithm_,
-              max_depth_,
-              node_limit_,
-              /* heuristic_weight = */ 1.0,
-              use_transposition_,
-              verbose_,
-              allowed_moves_
-          ) {}
 };
 
 struct Solution {
@@ -90,21 +47,45 @@ class Heuristic {
 public:
     virtual ~Heuristic() = default;
 
-    virtual void evaluate(
-        const std::vector<Cube>& states,
-        std::vector<float>& out_values
+    virtual std::vector<float> evaluate(
+        const std::vector<Cube>& states
     ) = 0;
 };
 
 class Solver {
 public:
+    // /**
+    //  * @brief Construct a solver with a configuration and heuristic.
+    //  *
+    //  * @param config Solver configuration
+    //  * @param heuristic Heuristic implementation (shared ownership)
+    //  */
+    // Solver(const SolverConfig& config, std::shared_ptr<Heuristic> heuristic);
+
     /**
-     * @brief Construct a solver with a configuration and heuristic.
-     *
-     * @param config Solver configuration
-     * @param heuristic Heuristic implementation (shared ownership)
+     * @brief Construct a new Solver object
+     * 
+     * @param algorithm 
+     * @param max_depth 
+     * @param node_limit 
+     * @param use_transposition 
+     * @param verbose 
+     * @param allowed_moves 
+     * @param heuristic 
+     * @param heuristic_weight 
      */
-    Solver(const SolverConfig& config, std::shared_ptr<Heuristic> heuristic);
+    Solver(
+        std::string algorithm,
+        int max_depth,
+        double node_limit,
+        bool use_transposition,
+        bool verbose,
+        MoveSequence allowed_moves,
+        Heuristic* heuristic,
+        double heuristic_weight = 1.0
+    );
+
+    virtual ~Solver() = default;
 
     /**
      * @brief Solve from a starting cube state.
@@ -145,7 +126,7 @@ private:
     using TranspositionTable = std::unordered_map<StateKey, float, StateKeyHash>;
 
     /* Solver Configuration */
-    SolverConfig config_;
+    _SolverConfig config_;
     std::shared_ptr<Heuristic> heuristic_;
 
     /* Search State */

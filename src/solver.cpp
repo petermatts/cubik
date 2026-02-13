@@ -15,28 +15,50 @@ struct Node {
     float h;   // heuristic
 };
 
-Solver::Solver(const SolverConfig& config, std::shared_ptr<Heuristic> heuristic) :
-    config_(config),
-    heuristic_(heuristic)
-{ /* todo verify config */ };
+// Solver::Solver(const SolverConfig& config, std::shared_ptr<Heuristic> heuristic) :
+//     config_(config),
+//     heuristic_(heuristic)
+// { /* todo verify config */ };
+
+Solver::Solver(
+    std::string algorithm,
+    int max_depth,
+    double node_limit,
+    bool use_transposition,
+    bool verbose,
+    MoveSequence allowed_moves,
+    Heuristic* heuristic,
+    double heuristic_weight
+) : config_{
+        algorithm,
+        max_depth,
+        node_limit,
+        heuristic_weight,
+        use_transposition,
+        verbose,
+        allowed_moves
+    }
+{
+    /* todo verify config */
+    this->heuristic_ = std::shared_ptr<Heuristic>(
+        heuristic,
+        [](Heuristic*) {}
+    );
+}
 
 Solution Solver::solve(const Cube& start) {
     // Solve method implementation
     Solution result;
-    switch (config_.algorithm) {
-        case SearchAlgorithm::IDA_STAR:
-            result = solve_ida_star(start);
-            break;
-        case SearchAlgorithm::A_STAR:
-            result = solve_a_star(start);
-            break;
-        case SearchAlgorithm::WEIGHTED_A_STAR:
-            result = solve_weighted_a_star(start);
-            break;
-        // case SearchAlgorithm::PUCT:
-        //     result = solve_puct(start);
-        //     break;
-    }
+
+    if (config_.algorithm == SearchAlgorithm::IDA_STAR) {
+        result = solve_ida_star(start);
+    } else if (config_.algorithm == SearchAlgorithm::A_STAR) {
+        result = solve_a_star(start);
+    } else if (config_.algorithm == SearchAlgorithm::WEIGHTED_A_STAR) {
+        result = solve_weighted_a_star(start);
+    } // else if (config_.algorithm == SearchAlgorithm::PUCT) {
+    //     result = solve_puct(start);
+    // }
 
     return result;
 };

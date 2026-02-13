@@ -1,26 +1,26 @@
 from cubik import Cube, Moves
-from cubik.solver import Solver, SolverConfig, Heuristic, IDA_STAR
+from cubik.solver import Solver, Heuristic, IDA_STAR
 
 
 class ZeroHeuristic(Heuristic):
     def evaluate(self, states):
+        print("hola")
         return [0.0] * len(states)
 
 
 cube = Cube()
 cube = cube.apply(Moves.R)
-print(type(IDA_STAR))
-config = SolverConfig(
+
+solver = Solver(
     IDA_STAR,
     5,
-    1000,
-    1.0,
+    1000.0,
     False,
     True,
-    [Moves.R, Moves.R_prime]
+    [Moves.R, Moves.R_prime],
+    ZeroHeuristic()
 )
 
-solver = Solver(config, ZeroHeuristic())
 solution = solver.solve(cube)
 
 print(solution.solved)

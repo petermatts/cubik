@@ -15,7 +15,7 @@ Solution Solver::solve_ida_star(const Cube& start) {
     // Initial heuristic
     std::vector<Cube> init_states{start};
     std::vector<float> h_vals(1);
-    heuristic_->evaluate(init_states, h_vals);
+    h_vals = heuristic_->evaluate(init_states);
 
     float threshold = h_vals[0];
 
@@ -36,7 +36,7 @@ Solution Solver::solve_ida_star(const Cube& start) {
 
         std::vector<Cube> root_state{root};
         std::vector<float> root_h(1);
-        heuristic_->evaluate(root_state, root_h);
+        root_h = heuristic_->evaluate(root_state);
 
         float f_root = root_h[0];
         if (f_root > threshold) {
@@ -130,7 +130,7 @@ float Solver::ida_star_dfs(
 
     // Batch heuristic evaluation
     std::vector<float> h_vals(children.size());
-    heuristic_->evaluate(children, h_vals);
+    h_vals = heuristic_->evaluate(children);
 
     float min_excess = INF;
 
