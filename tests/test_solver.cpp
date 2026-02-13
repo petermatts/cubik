@@ -8,9 +8,7 @@
 
 class ZeroHeuristic : public Heuristic {
 public:
-    std::vector<float> evaluate(
-        const std::vector<Cube>& states
-    ) override {
+    std::vector<float> evaluate(const std::vector<Cube>& states) override {
         std::vector<float> out_values(states.size());
         std::fill(out_values.begin(), out_values.end(), 0.0f);
         return out_values;
@@ -20,8 +18,8 @@ public:
 TEST(IDAStarSolver, SolvedCube) {
     Cube cube;  // solved by default
     
-    ZeroHeuristic heuristic;
-;
+    auto heuristic = std::make_shared<ZeroHeuristic>();
+    // Solver solver(config, heuristic);
     Solver solver(
         SearchAlgorithm::IDA_STAR, // algorithm
         20,                       // max_depth
@@ -32,7 +30,7 @@ TEST(IDAStarSolver, SolvedCube) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -46,8 +44,7 @@ TEST(IDAStarSolver, OneMoveScramble) {
     Cube cube;
     cube = cube.apply(moves::R);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::IDA_STAR, // algorithm
         20,                        // max_depth
@@ -57,7 +54,7 @@ TEST(IDAStarSolver, OneMoveScramble) {
         {
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -77,8 +74,7 @@ TEST(IDAStarSolver, NodeLimitStopsSearch) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::IDA_STAR, // algorithm
         20,                        // max_depth
@@ -89,7 +85,7 @@ TEST(IDAStarSolver, NodeLimitStopsSearch) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -103,8 +99,7 @@ TEST(IDAStarSolver, DepthLimitStopsSearch) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::IDA_STAR, // algorithm
         1,                        // max_depth
@@ -115,7 +110,7 @@ TEST(IDAStarSolver, DepthLimitStopsSearch) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -125,9 +120,8 @@ TEST(IDAStarSolver, DepthLimitStopsSearch) {
 
 TEST(AStarSolver, SolvedCube) {
     Cube cube;
-    
-    ZeroHeuristic heuristic;
 
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::A_STAR, // algorithm
         20,                        // max_depth
@@ -138,7 +132,7 @@ TEST(AStarSolver, SolvedCube) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -152,8 +146,7 @@ TEST(AStarSolver, OneMoveScramble) {
     Cube cube;
     cube = cube.apply(moves::R);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::A_STAR, // algorithm
         20,                        // max_depth
@@ -164,7 +157,7 @@ TEST(AStarSolver, OneMoveScramble) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -184,8 +177,7 @@ TEST(AStarSolver, TwoMoveScramble) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::A_STAR, // algorithm
         20,                        // max_depth
@@ -196,7 +188,7 @@ TEST(AStarSolver, TwoMoveScramble) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -216,8 +208,7 @@ TEST(AStarSolver, NodeLimitStopsSearch) {
     cube = cube.apply(moves::R);
     cube = cube.apply(moves::U);
 
-    ZeroHeuristic heuristic;
-
+    auto heuristic = std::make_shared<ZeroHeuristic>();
     Solver solver(
         SearchAlgorithm::A_STAR, // algorithm
         20,                        // max_depth
@@ -228,7 +219,7 @@ TEST(AStarSolver, NodeLimitStopsSearch) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution result = solver.solve(cube);
@@ -244,7 +235,7 @@ TEST(AStarSolver, TranspositionReducesExpansion) {
     cube = cube.apply(moves::R_prime);
     cube = cube.apply(moves::U_prime);
 
-    ZeroHeuristic heuristic;
+    auto heuristic = std::make_shared<ZeroHeuristic>();
 
     Solver solver_tt(
         SearchAlgorithm::A_STAR, // algorithm
@@ -256,7 +247,7 @@ TEST(AStarSolver, TranspositionReducesExpansion) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
     Solver solver_no_tt(
         SearchAlgorithm::A_STAR, // algorithm
@@ -268,7 +259,7 @@ TEST(AStarSolver, TranspositionReducesExpansion) {
             moves::U, moves::U_prime,
             moves::R, moves::R_prime
         },
-        &heuristic
+        heuristic
     );
 
     Solution r1 = solver_tt.solve(cube);

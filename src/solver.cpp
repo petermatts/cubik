@@ -27,7 +27,7 @@ Solver::Solver(
     bool use_transposition,
     bool verbose,
     MoveSequence allowed_moves,
-    Heuristic* heuristic,
+    std::shared_ptr<Heuristic> heuristic,
     double heuristic_weight
 ) : config_{
         algorithm,
@@ -37,14 +37,9 @@ Solver::Solver(
         use_transposition,
         verbose,
         allowed_moves
-    }
-{
-    /* todo verify config */
-    this->heuristic_ = std::shared_ptr<Heuristic>(
-        heuristic,
-        [](Heuristic*) {}
-    );
-}
+    },
+    heuristic_(heuristic)
+{ /* todo verify config */ }
 
 Solution Solver::solve(const Cube& start) {
     // Solve method implementation

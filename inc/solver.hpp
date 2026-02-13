@@ -81,7 +81,7 @@ public:
         bool use_transposition,
         bool verbose,
         MoveSequence allowed_moves,
-        Heuristic* heuristic,
+        std::shared_ptr<Heuristic> heuristic,
         double heuristic_weight = 1.0
     );
 

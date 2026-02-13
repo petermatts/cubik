@@ -3,14 +3,27 @@ from cubik.solver import Solver, Heuristic, IDA_STAR
 
 
 class ZeroHeuristic(Heuristic):
+    def __init__(self):
+        super().__init__()
+
     def evaluate(self, states):
-        print("hola")
+        print(states)
         return [0.0] * len(states)
 
 
 cube = Cube()
 cube = cube.apply(Moves.R)
 
+h = ZeroHeuristic()
+"""
+! do not call ZeroHeuristic() in the constructor of Solver
+
+ otherwise it will cause a segmentation fault when the solver tries
+ to use the heuristic after it has been destroyed.
+
+ Instead, create an instance of ZeroHeuristic and pass it to the
+ Solver constructor.
+"""
 solver = Solver(
     IDA_STAR,
     5,
@@ -18,7 +31,7 @@ solver = Solver(
     False,
     True,
     [Moves.R, Moves.R_prime],
-    ZeroHeuristic()
+    h
 )
 
 solution = solver.solve(cube)
