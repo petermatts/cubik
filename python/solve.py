@@ -1,5 +1,5 @@
 from cubik import Cube, Moves
-from cubik.solver import Solver, Heuristic, IDA_STAR
+from cubik.solver import Solver, Heuristic, algorithms
 
 
 class ZeroHeuristic(Heuristic):
@@ -24,7 +24,7 @@ h = ZeroHeuristic()
  Solver constructor.
 """
 solver = Solver(
-    IDA_STAR,
+    algorithms.IDA_STAR,
     5,
     1000.0,
     False,

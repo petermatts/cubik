@@ -30,14 +30,6 @@ struct _SolverConfig {
     MoveSequence allowed_moves;
 };
 
-// struct Solution {
-//     bool solved = false;
-//     int nodes_expanded = 0;
-//     int max_depth_reached = 0;
-//     double time_taken = 0.0;    // seconds
-//     MoveSequence solution_moves;
-// };
-
 class Solution {
 public:
     bool solved = false;
@@ -68,8 +60,6 @@ public:
         std::string __repr__() const { return toString(); }
 
     MoveSequence solution_moves() const { return _solution_moves; }
-
-
 };
 
 /**
@@ -160,7 +150,7 @@ private:
     using TranspositionTable = std::unordered_map<StateKey, float, StateKeyHash>;
 
     /* Solver Configuration */
-    _SolverConfig config_;
+    _SolverConfig config_; // ? remove the config struct and just have these as individual members of Solver
     std::shared_ptr<Heuristic> heuristic_;
 
     /* Search State */
