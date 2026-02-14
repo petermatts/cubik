@@ -36,7 +36,7 @@ TEST(IDAStarSolver, SolvedCube) {
     Solution result = solver.solve(cube);
 
     EXPECT_TRUE(result.solved);
-    EXPECT_EQ(result.solution_moves.size(), 0);
+    EXPECT_EQ(result.solution_moves().size(), 0);
     EXPECT_GE(result.nodes_expanded, 1);
 }
 
@@ -63,7 +63,7 @@ TEST(IDAStarSolver, OneMoveScramble) {
 
     // Robust correctness check
     Cube check = cube;
-    for (auto m : result.solution_moves) {
+    for (auto m : result.solution_moves()) {
         check = check.apply(m);
     }
     EXPECT_TRUE(check.is_solved());
@@ -138,7 +138,7 @@ TEST(AStarSolver, SolvedCube) {
     Solution result = solver.solve(cube);
 
     EXPECT_TRUE(result.solved);
-    EXPECT_TRUE(result.solution_moves.empty());
+    EXPECT_TRUE(result.solution_moves().empty());
     EXPECT_GE(result.nodes_expanded, 1u);
 }
 
@@ -163,10 +163,10 @@ TEST(AStarSolver, OneMoveScramble) {
     Solution result = solver.solve(cube);
 
     ASSERT_TRUE(result.solved);
-    ASSERT_EQ(result.solution_moves.size(), 1u);
+    ASSERT_EQ(result.solution_moves().size(), 1u);
 
     Cube check = cube;
-    for (auto m : result.solution_moves) {
+    for (auto m : result.solution_moves()) {
         check = check.apply(m);
     }
     EXPECT_TRUE(check.is_solved());
@@ -194,10 +194,10 @@ TEST(AStarSolver, TwoMoveScramble) {
     Solution result = solver.solve(cube);
 
     ASSERT_TRUE(result.solved);
-    ASSERT_EQ(result.solution_moves.size(), 2u);
+    ASSERT_EQ(result.solution_moves().size(), 2u);
 
     Cube check = cube;
-    for (auto m : result.solution_moves) {
+    for (auto m : result.solution_moves()) {
         check = check.apply(m);
     }
     EXPECT_TRUE(check.is_solved());

@@ -61,7 +61,7 @@ Solution Solver::solve_ida_star(const Cube& start) {
                         << " nodes." << std::endl;
             }
             result.solved = true;
-            result.solution_moves = solution_;
+            result._solution_moves = solution_;
             break;
         }
 

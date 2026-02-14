@@ -120,7 +120,7 @@ Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
     auto t_end = std::chrono::steady_clock::now();
     result.nodes_expanded = nodes_expanded_;
     result.max_depth_reached = max_depth_reached_;
-    result.solution_moves = solution_;
+    result._solution_moves = solution_;
 
     result.time_taken = std::chrono::duration<double>(t_end - t_start).count();
 

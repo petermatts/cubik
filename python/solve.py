@@ -7,12 +7,11 @@ class ZeroHeuristic(Heuristic):
         super().__init__()
 
     def evaluate(self, states):
-        print(states)
         return [0.0] * len(states)
 
 
 cube = Cube()
-cube = cube.apply(Moves.R)
+cube = cube.apply(Moves.R).apply(Moves.U)
 
 h = ZeroHeuristic()
 """
@@ -29,12 +28,14 @@ solver = Solver(
     5,
     1000.0,
     False,
-    True,
-    [Moves.R, Moves.R_prime],
+    False,
+    [Moves.R, Moves.R_prime, Moves.U, Moves.U_prime],
     h
 )
 
 solution = solver.solve(cube)
 
-print(solution.solved)
-print(solution.solution_moves)
+print(solution)
+
+# print(solution.solved)
+# print(" ".join(solution.solution_moves()))

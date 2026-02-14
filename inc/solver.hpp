@@ -30,12 +30,46 @@ struct _SolverConfig {
     MoveSequence allowed_moves;
 };
 
-struct Solution {
+// struct Solution {
+//     bool solved = false;
+//     int nodes_expanded = 0;
+//     int max_depth_reached = 0;
+//     double time_taken = 0.0;    // seconds
+//     MoveSequence solution_moves;
+// };
+
+class Solution {
+public:
     bool solved = false;
     int nodes_expanded = 0;
     int max_depth_reached = 0;
     double time_taken = 0.0;    // seconds
-    MoveSequence solution_moves;
+    MoveSequence _solution_moves;
+
+    virtual ~Solution() = default;
+
+        std::string toString() const {
+            std::string msg = "Solution:\n";
+            msg += "  Solved: " + std::string(solved ? "Yes" : "No") + "\n";
+            msg += "  Nodes Expanded: " + std::to_string(nodes_expanded) + "\n";
+            msg += "  Max Depth Reached: " + std::to_string(max_depth_reached) + "\n";
+            msg += "  Time Taken: " + std::to_string(time_taken) + " seconds\n";
+            if (solved) {
+                msg += "  Solution Moves: ";
+                for (const auto& move : _solution_moves) {
+                    msg += move + " ";
+                }
+                msg += "\n";
+            }
+            return msg;
+        }
+    
+        std::string __str__() const { return toString(); }
+        std::string __repr__() const { return toString(); }
+
+    MoveSequence solution_moves() const { return _solution_moves; }
+
+
 };
 
 /**
