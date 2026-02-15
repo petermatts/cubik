@@ -429,6 +429,15 @@ class Cube {
     Cube Z2() const;
 
     /**
+     * @brief Apply a singular move and return the resulting cube state.
+     * 
+     * @param moves string/Move to apply.
+     * 
+     * @return Cube 
+     */
+    Cube apply(const string &move);
+
+    /**
      * @brief Apply a sequence of moves and return the resulting cube state.
      * 
      * @param moves Vector/List of moves (strings/Moves).
