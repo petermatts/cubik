@@ -66,3 +66,4 @@ clean-all:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(RELEASE_DIR)
 	rm -rf ./python/cubik
+	rm -rf docs/doxygen
