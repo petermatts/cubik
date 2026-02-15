@@ -1,8 +1,8 @@
 #include <string>
 #include <memory>
+#include "moves.hpp"
 #include "cube.hpp"
 #include "solver.hpp"
-#include <cstring>
 
 struct SearchStats {
     int nodes_expanded = 0;
@@ -14,11 +14,6 @@ struct Node {
     float g;   // cost so far
     float h;   // heuristic
 };
-
-// Solver::Solver(const SolverConfig& config, std::shared_ptr<Heuristic> heuristic) :
-//     config_(config),
-//     heuristic_(heuristic)
-// { /* todo verify config */ };
 
 Solver::Solver(
     std::string algorithm,
@@ -59,8 +54,19 @@ Solution Solver::solve(const Cube& start) {
 };
 
 std::string Solver::toString() const {
-    return "Solver instance"; // todo Placeholder implementation
-    // Detailed string representation (include config details)
+    std::string msg = "Solver:\n";
+    msg += "  Algorithm: " + config_.algorithm + "\n";
+    msg += "  Max Depth: " + std::to_string(config_.max_depth) + "\n";
+    msg += "  Node Limit: " + std::to_string(config_.node_limit) + "\n";
+    msg += "  Heuristic Weight: " + std::to_string(config_.heuristic_weight) + "\n";
+    msg += "  Use Transposition Table: " + std::string(config_.use_transposition ? "Yes" : "No") + "\n";
+    msg += "  Verbose: " + std::string(config_.verbose ? "Yes" : "No") + "\n";
+    msg += "  Allowed Moves: { ";
+    for (const auto& move : config_.allowed_moves) {
+        msg += move + " ";
+    }
+    msg += "}\n";
+    return msg; 
 };
 
 // Map a move to its logical face for redundancy checks
