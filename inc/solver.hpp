@@ -179,7 +179,7 @@ private:
     Solution a_star_search(const Cube& start, float heuristic_weight);
 
     /* PUCT / MCTS Internals */
-    void puct_simulate(const Cube& root, int simulations);
+    // void puct_simulate(const Cube& root, int simulations);
 
     /* Helpers */
     void generate_moves(const std::vector<Move>& history, std::vector<Move>& out_moves) const;
