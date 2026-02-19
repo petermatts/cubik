@@ -43,10 +43,8 @@ Solution Solver::solve(const Cube& start) {
     if (config_.algorithm == SearchAlgorithm::IDA_STAR) {
         result = solve_ida_star(start);
     } else if (config_.algorithm == SearchAlgorithm::A_STAR) {
-        result = solve_a_star(start);
-    } else if (config_.algorithm == SearchAlgorithm::WEIGHTED_A_STAR) {
-        result = solve_weighted_a_star(start);
-    } // else if (config_.algorithm == SearchAlgorithm::PUCT) {
+        result = solve_a_star(start, config_.heuristic_weight);
+    }// else if (config_.algorithm == SearchAlgorithm::PUCT) {
     //     result = solve_puct(start);
     // }
 

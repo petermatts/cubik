@@ -62,7 +62,7 @@ cube = Cube()
 cube = cube.apply_moves(
     [Moves.R, Moves.U, Moves.R_prime, Moves.U_prime])
 
-h = ZeroHeuristic()
+# h = ZeroHeuristic()
 h = RandomHeuristic()
 # h = NeuralHeuristic(CubeNet())
 """
@@ -75,17 +75,17 @@ h = RandomHeuristic()
  Solver constructor.
 """
 cube_solver = solver.Solver(
-    solver.algorithms.IDA_STAR,
+    solver.algorithms.A_STAR,
     5,
     1000000000.0,
-    False,
+    True,
     False,
     [Moves.R, Moves.R_prime, Moves.R2,
-     Moves.U, Moves.U_prime, Moves.U2,],
-    #  Moves.F, Moves.F_prime, Moves.F2,
-    #  Moves.L, Moves.L_prime, Moves.L2,
-    #  Moves.D, Moves.D_prime, Moves.D2,
-    #  Moves.B, Moves.B_prime, Moves.B2],
+     Moves.U, Moves.U_prime, Moves.U2,
+     Moves.F, Moves.F_prime, Moves.F2,
+     Moves.L, Moves.L_prime, Moves.L2,
+     Moves.D, Moves.D_prime, Moves.D2,
+     Moves.B, Moves.B_prime, Moves.B2],
     h
 )
 

@@ -4,28 +4,7 @@
 #include <functional>
 #include <chrono>
 
-struct Node {
-    Cube cube;
-    float g;                // cost so far
-    float h;                // heuristic estimate
-    MoveSequence path;      // moves to reach this state
-};
-
-struct NodeCompare {
-    bool operator()(const Node& a, const Node& b) const {
-        return (a.g + a.h) > (b.g + b.h);
-    }
-};
-
-Solution Solver::solve_a_star(const Cube& start) {
-    return a_star_search(start, 1.0f);
-}
-
-Solution Solver::solve_weighted_a_star(const Cube& start) {
-    return a_star_search(start, config_.heuristic_weight);
-}
-
-Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
+Solution Solver::solve_a_star(const Cube& start, float heuristic_weight) {
     reset_search_state();
 
     Solution result{};
@@ -33,9 +12,9 @@ Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
 
     struct Node {
         Cube cube;
-        float g;
-        float h;
-        MoveSequence path;
+        float g; // cost so far
+        float h; // heuristic estimate
+        MoveSequence path; // moves to reach this state
     };
 
     auto cmp = [&](const Node& a, const Node& b) {
@@ -123,7 +102,6 @@ Solution Solver::a_star_search(const Cube& start, float heuristic_weight) {
     result._solution_moves = solution_;
 
     result.time_taken = std::chrono::duration<double>(t_end - t_start).count();
-
 
     return result;
 }
