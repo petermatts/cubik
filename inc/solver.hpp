@@ -17,7 +17,6 @@ using MoveSequence = std::vector<Move>;
 namespace SearchAlgorithm {
     constexpr const char *IDA_STAR = "IDA_STAR";
     constexpr const char *A_STAR = "A_STAR";
-    constexpr const char *WEIGHTED_A_STAR = "WEIGHTED_A_STAR";
 }
 
 struct _SolverConfig {
@@ -161,8 +160,7 @@ private:
 
     /* Algorithm Entry Points  */
     Solution solve_ida_star(const Cube& start);
-    Solution solve_a_star(const Cube& start);
-    Solution solve_weighted_a_star(const Cube& start);
+    Solution solve_a_star(const Cube& start, float heuristic_weight);
     // Solution solve_puct(const Cube& start);
 
     /* IDA* Internals */
@@ -174,9 +172,6 @@ private:
         MoveSequence& path,
         std::unordered_set<StateKey, StateKeyHash>& path_visited
     );
-
-    /* A* / WA* Internals */
-    Solution a_star_search(const Cube& start, float heuristic_weight);
 
     /* PUCT / MCTS Internals */
     // void puct_simulate(const Cube& root, int simulations);

@@ -36,11 +36,10 @@ class _SolverFiltered:
         self.algorithms = SimpleNamespace(
             IDA_STAR=module.IDA_STAR,
             A_STAR=module.A_STAR,
-            WEIGHTED_A_STAR=module.WEIGHTED_A_STAR
         )
 
         # Remove them from top-level solver namespace
-        for name in ["IDA_STAR", "A_STAR", "WEIGHTED_A_STAR"]:
+        for name in ["IDA_STAR", "A_STAR"]:
             if hasattr(self._module, name):
                 delattr(self._module, name)
 
@@ -71,13 +70,14 @@ del _moves_module
 solver = _SolverFiltered(_solver_module)
 del _solver_module
 
-for elem in ['StringVector', 'SwigPyIterator', 'Uint32Vector', '_MovesFiltered', '_SolverFiltered', '_cubik', '_cubik_moves']:
+for elem in ['StringVector', 'SwigPyIterator', 'Uint32Vector', '_MovesFiltered', '_SolverFiltered', '_cubik', '_cubik_moves', '_cubik_solver']:
     if elem in globals():
         del globals()[elem]
 del elem
 del globals()['cubik']
 del globals()['moves']
 
+del SimpleNamespace
 
 __doc__ = """Cubik Package.
 

@@ -9,8 +9,8 @@ RELEASE_DIR := release
 
 THREADS := 1
 
-.PHONY: clean clean-all all run test release wheel doxygen
-.SILENT: clean clean-all all run test release wheel doxygen
+.PHONY: clean clean-all clean-py all run test release wheel doxygen
+.SILENT: clean clean-all clean-py all run test release wheel doxygen
 
 doxygen:
 	doxygen Doxyfile
@@ -20,14 +20,8 @@ all:
 	cmake -DENABLE_TESTING=ON .. && \
 	cmake --build . --parallel $(THREADS)
 
-	cp $(BUILD_DIR)/_cubik.so ./cubik
-	cp $(BUILD_DIR)/cubik.py ./cubik
-
-	cp $(BUILD_DIR)/_cubik_moves.so ./cubik
-	cp $(BUILD_DIR)/moves.py ./cubik
-
-	cp $(BUILD_DIR)/_cubik_solver.so ./cubik
-	cp $(BUILD_DIR)/solver.py ./cubik
+	cp $(BUILD_DIR)/cubik/*.so ./cubik
+	cp $(BUILD_DIR)/cubik/*.py ./cubik
 
 	cp -r cubik python
 
@@ -46,7 +40,16 @@ test:
 	cd build/tests && ./cubik_tests --gtest_brief=0
 #	cd build/tests/Debug && ./cubik_tests.exe
 
-clean:
+clean-py:
+	rm -f ./cubik/*.so
+	rm -f ./cubik/cubik.py
+	rm -f ./cubik/moves.py
+	rm -f ./cubik/solver.py
+	rm -rf ./cubik/__pycache__
+	rm -rf ./python/cubik
+	rm -rf ./python/cubik
+
+clean: clean-py
 	rm -f src/a.exe
 	mv $(BUILD_DIR)/_deps _deps
 	rm -rf $(BUILD_DIR)
@@ -55,14 +58,9 @@ clean:
 
 	rm -rf $(RELEASE_DIR)
 
-	rm -f ./cubik/*.so
-	rm -f ./cubik/cubik.py
-	rm -f ./cubik/moves.py
-	rm -f ./cubik/solver.py
 
-	rm -rf ./python/cubik
-
-clean-all:
+clean-all: clean-py
 	rm -rf $(BUILD_DIR)
 	rm -rf $(RELEASE_DIR)
 	rm -rf ./python/cubik
+	rm -rf docs/doxygen
